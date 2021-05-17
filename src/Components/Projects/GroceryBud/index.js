@@ -6,8 +6,9 @@ const GroceryBudApp = () => {
 	const [showList, setShowList] = useState(false)
 	const [items, setItems] = useState([])
 	const [editing, setEditing] = useState(false)
-
+	const [inputText, setInputText] = useState({id: null, value: ""})
 	const inputRef = useRef(null)
+	const [showItemInput, setShowItemInput] = useState({id: null, state: false})
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -28,13 +29,13 @@ const GroceryBudApp = () => {
 			item.id !== id  ))
 	}
 
-	const [showItemInput, setShowItemInput] = useState({id: null, state: false})
+	
 
 	const removeItem = () => console.log("")
 
-	const handleEditChange = (text) => {
+	const handleEditChange = (text, id) => {
 		setEditing(true)
-		setText(text)
+		setInputText({id: id, value: text})
 	}
 
 	useEffect(() => {
@@ -46,8 +47,31 @@ const GroceryBudApp = () => {
 	},[showItemInput])
 
 	const handleEditClick = (id) => {
-		setShowItemInput({id: id, state: true})
 	
+		if(!editing)	setShowItemInput( { id: id, state: true })
+		else {
+			setItems([...items].map(item => 
+				item.id === id
+					? {...item, text: inputText.value}
+					: item
+			))
+			setEditing(false)
+			setShowItemInput({id: null, state: false})
+		} 
+	
+	}
+
+	const handleEditKeyDownConfirm = (id,e) => {
+		if(editing && e.keyCode === 13){
+			setItems([...items].map(item => 
+				item.id === id
+					? {...item, text: inputText.value}
+					: item
+			))
+			setEditing(false)
+			setShowItemInput({id: null, state: false})
+		
+		}
 	}
 
 	 
@@ -71,29 +95,34 @@ const GroceryBudApp = () => {
 				{items.map(item => 				
 					(<div 
 						key={item.id}>
-						{!showItemInput.state  
+						{!showItemInput.state 
 							?	<div 	
 									onClick={() => removeItemFromListButKeepOnHistory(item.id)}
 								>{item.text}</div>
-							: <div>
-									<input 
-										ref={inputRef}
-										value ={editing ? text :  item.text}
-										onChange = {(e) => handleEditChange(e.target.value) }
-									></input> 
-								</div>
+							:  showItemInput.id === item.id
+								?	<div>
+										<input 
+											ref={inputRef}
+											value ={editing ? inputText.value :  item.text}
+											onChange = {(e) => handleEditChange(e.target.value, item.id) }
+											onKeyDown = {(e) => handleEditKeyDownConfirm(item.id, e)}
+										></input> 
+									</div>
+									: <div 	
+											onClick={() => removeItemFromListButKeepOnHistory(item.id)}
+										>{item.text}</div>
 						}
 				
 						<button
 							onClick={() => handleEditClick(item.id) }
-						>Edit</button>
+						>Edit</button> 
 						<button onClick={removeItem}>Remove</button>
 					</div>)
 				
 				)}
 			</div>
 		}
- 
+		<button>Clear All</button>
 		</>
 	)
 }

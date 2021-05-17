@@ -11,7 +11,7 @@ test('renders title "GROCERY BUD"', () => {
   expect(linkElement).toBeInTheDocument();
 });
 
-test('on initial render it shows the form with input and its placeholder as well as the button', () => {
+test('on initial render it shows the form with input and its placeholder as well as the submit and clear all button', () => {
   
   const component = render(
     <App />
@@ -22,6 +22,7 @@ test('on initial render it shows the form with input and its placeholder as well
 
   expect(input.getAttribute("placeholder")).toBe("new item")
 	expect(button).toHaveTextContent("Submit")
+	expect(screen.getByText(/Clear All/)).toBeDefined()
  
 })
 
@@ -39,7 +40,7 @@ test('if input is empty click on submit does nothing', () => {
 	const buttonList = component.container.querySelectorAll("button")
 
 	expect(handleSubmit).not.toHaveBeenCalledTimes(1)
-  expect(buttonList).toHaveLength(1)
+  expect(buttonList).toHaveLength(2)
 })
  
 
@@ -180,7 +181,9 @@ test("if edit button is clicked it show an input with the associated item value"
 
 })
 
-test("if edit button is clicked it show an input and user can edit type inmediately and correctly", () => {
+
+
+test("on a single item if edit button is clicked it shows an input and user can edit type inmediately and correctly", () => {
 	const component = render(
 		<App />
 	)
@@ -192,26 +195,202 @@ test("if edit button is clicked it show an input and user can edit type inmediat
   userEvent.click(button)
 
 	const item = screen.getByText("1 package of toilet paper")
-  expect(item).toBeDefined()
+  expect(item).toBeDefined() 
   expect(input.value).toBe("")
 
-	const editButton = screen.getByText(/Edit/)
+	const editButton = item.parentElement.querySelector("button")
 	userEvent.click(editButton)
 
 	const inputs = component.container.querySelectorAll('input')
-  let inputItem 
-	inputs.forEach(element => {
-		if(element.value === "1 package of toilet paper"){
-			inputItem = element
-		}
-	});
-   
-  expect(inputItem).toBeDefined()  
-	expect(inputItem.value).toBe("1 package of toilet paper")
+	expect(inputs).toHaveLength(2)
 	
-	userEvent.type(inputItem, "a new lamborghini")
+ 	userEvent.type(inputs[1], "a new lamborghini") 
 	
-	expect(inputItem.value).toBe("a new lamborghini")
+	//console.log(prettyDOM(component.container.querySelector("body")))
+
+	expect(inputs[1].value).toBe("a new lamborghini") 
+	expect(inputs[0].value).not.toBe("a new lamborghini")   
+	
 	
 
 })
+
+
+test(`on edited item if user clicks edit button 
+ the item new value is saved and shows a div not an input`, () => {
+	const component = render(
+			<App />
+		)
+	
+	const input = component.container.querySelector("input")	
+	userEvent.type(input, "1 package of toilet paper")
+		
+  const button = screen.getByText(/Submit/);
+  userEvent.click(button)
+
+	const item = screen.getByText("1 package of toilet paper") 
+
+	const editButton = item.parentElement.querySelector("button")
+	userEvent.click(editButton)
+
+	const inputs = component.container.querySelectorAll('input')
+	
+ 	userEvent.type(inputs[1], "a new lamborghini") 
+
+	userEvent.click(editButton)
+
+	expect(component.container.querySelectorAll("input")).toHaveLength(1)
+
+	expect(screen.getByText(/a new lamborghini/)).toBeDefined()
+ 
+
+})
+
+test(`on edited item if user press enter button
+ the item new value is saved and shows a div not an input`, () => {
+	const component = render(
+			<App />
+		)
+	
+	const input = component.container.querySelector("input")	
+	userEvent.type(input, "1 package of toilet paper")
+		
+  const button = screen.getByText(/Submit/);
+  userEvent.click(button)
+
+	const item = screen.getByText("1 package of toilet paper") 
+
+	const editButton = item.parentElement.querySelector("button")
+	userEvent.click(editButton)
+
+	const inputs = component.container.querySelectorAll('input')
+	
+ 	userEvent.type(inputs[1], "a new lamborghini") 
+
+	fireEvent.keyDown(inputs[1], { keyCode: 13 })   
+
+	expect(component.container.querySelectorAll("input")).toHaveLength(1)
+
+	expect(screen.getByText(/a new lamborghini/)).toBeDefined()
+ 
+
+})
+
+describe("On multiple items on the list", () => {
+	beforeEach(() => {
+    
+
+  })
+
+	test(`if edit button associated to an item is clicked it shows
+ 		an input for the item only, and user can edit it inmediately and correctly`, () => {	
+		const component = render(
+			<App />
+		)
+		
+		const input = component.container.querySelector("input")	
+		userEvent.type(input, "1 package of toilet paper")
+			
+		const button = screen.getByText(/Submit/);
+		userEvent.click(button)
+
+		userEvent.type(input, "10 bananas")
+		userEvent.click(button)
+
+		userEvent.type(input, "a package of face masks")
+		userEvent.click(button)
+
+		expect(screen.getByText("1 package of toilet paper")).toBeDefined()
+		expect(screen.getByText("10 bananas")).toBeDefined()
+		expect(screen.getByText("a package of face masks")).toBeDefined()
+
+		const item = screen.getByText("1 package of toilet paper")		
+		const editButton = item.parentElement.querySelector("button")
+		userEvent.click(editButton)
+ 
+		const inputs = component.container.querySelectorAll('input')
+		expect(inputs).toHaveLength(2)
+	
+ 		userEvent.type(inputs[1], "a new lamborghini") 
+		
+		expect(inputs[1].value).toBe("a new lamborghini") 
+		expect(inputs[0].value).toBe("")    
+	 
+
+	})
+
+	test(`on edited item if user clicks edit button 
+	the item new value is saved and shows a div not an input`, () => {
+		const component = render(
+				<App />
+			)
+		
+		const input = component.container.querySelector("input")	
+		userEvent.type(input, "1 package of toilet paper")
+			
+		const button = screen.getByText(/Submit/);
+		userEvent.click(button)
+
+		userEvent.type(input, "10 bananas")
+		userEvent.click(button)
+
+		userEvent.type(input, "a package of face masks")
+		userEvent.click(button)
+
+		const item = screen.getByText("1 package of toilet paper")		
+		const editButton = item.parentElement.querySelector("button")
+		userEvent.click(editButton)
+
+		const inputs = component.container.querySelectorAll('input')
+		expect(inputs).toHaveLength(2)
+	
+ 		userEvent.type(inputs[1], "a new lamborghini") 
+
+		userEvent.click(editButton)
+
+		expect(component.container.querySelectorAll("input")).toHaveLength(1)
+
+		expect(screen.getByText(/a new lamborghini/)).toBeDefined()
+	
+
+	})
+
+	test(`on edited item if user press enter button
+	the item new value is saved and shows a div not an input`, () => {
+		const component = render(
+				<App />
+			)
+		
+		const input = component.container.querySelector("input")	
+		userEvent.type(input, "1 package of toilet paper")
+			
+		const button = screen.getByText(/Submit/);
+		userEvent.click(button)
+
+		userEvent.type(input, "10 bananas")
+		userEvent.click(button)
+
+		userEvent.type(input, "a package of face masks")
+		userEvent.click(button)
+
+
+		const item = screen.getByText("1 package of toilet paper") 
+
+		const editButton = item.parentElement.querySelector("button")
+		userEvent.click(editButton)
+
+		const inputs = component.container.querySelectorAll('input')
+		
+		userEvent.type(inputs[1], "a new lamborghini") 
+
+		fireEvent.keyDown(inputs[1], { keyCode: 13 })   
+
+		expect(component.container.querySelectorAll("input")).toHaveLength(1)
+
+		expect(screen.getByText(/a new lamborghini/)).toBeDefined()
+	
+
+	})
+
+})
+
