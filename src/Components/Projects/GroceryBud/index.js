@@ -1,17 +1,56 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 
 const GroceryBudApp = () => {
 	const [text, setText] = useState("")
 	const [showList, setShowList] = useState(false)
-	const [item, setItem] = useState(null)
+	const [items, setItems] = useState([])
+	const [editing, setEditing] = useState(false)
+
+	const inputRef = useRef(null)
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		setShowList(true)
-		setItem(text)
-		setText("")
+		if(text){
+			setShowList(true)
+			setItems([...items].concat({
+				id: new Date().getTime().toString(),
+				text: text
+			}))
+			setText("")
+			setEditing(false)
+		}
+		
 	}
+
+	const removeItemFromListButKeepOnHistory = (id) => {
+		setItems([...items].filter(item => 
+			item.id !== id  ))
+	}
+
+	const [showItemInput, setShowItemInput] = useState({id: null, state: false})
+
+	const removeItem = () => console.log("")
+
+	const handleEditChange = (text) => {
+		setEditing(true)
+		setText(text)
+	}
+
+	useEffect(() => {
+		if(inputRef.current){
+			inputRef.current.focus()
+			inputRef.current.select() 
+		}
+
+	},[showItemInput])
+
+	const handleEditClick = (id) => {
+		setShowItemInput({id: id, state: true})
+	
+	}
+
+	 
 
 	return (
 		<>
@@ -23,18 +62,38 @@ const GroceryBudApp = () => {
 				onChange={(e) => setText(e.target.value)}
 			></input>
 			<button
-				onClick={handleSubmit}
+				onClick={handleSubmit} 
 			>Submit</button>
 		</form> 
 		
 		{showList &&
 			<div>
-				<div>{item}</div>
-				<button>Edit</button>
-				<button>Remove</button>
+				{items.map(item => 				
+					(<div 
+						key={item.id}>
+						{!showItemInput.state  
+							?	<div 	
+									onClick={() => removeItemFromListButKeepOnHistory(item.id)}
+								>{item.text}</div>
+							: <div>
+									<input 
+										ref={inputRef}
+										value ={editing ? text :  item.text}
+										onChange = {(e) => handleEditChange(e.target.value) }
+									></input> 
+								</div>
+						}
+				
+						<button
+							onClick={() => handleEditClick(item.id) }
+						>Edit</button>
+						<button onClick={removeItem}>Remove</button>
+					</div>)
+				
+				)}
 			</div>
 		}
-
+ 
 		</>
 	)
 }
