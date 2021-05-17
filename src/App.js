@@ -1,9 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 import GroceryBudApp from './Components/Projects/GroceryBud'
 
 
-function App() {
+const  App = () => {
+
+
   return (
 		<GroceryBudApp></GroceryBudApp>
   );

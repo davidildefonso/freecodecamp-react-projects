@@ -1,31 +1,40 @@
 import React, { useState } from 'react'
-import Note from './Components/Note'
-import Login from './Components/Login'
-import NoteForm from './Components/NoteForm'
+
 
 const GroceryBudApp = () => {
-	const [note, setNote] = useState({ important : false, content: "A test text for this"})
-	const toggleImportance = () => setNote({...note, important: !note.important})
-	
-	const onSubmit = (userCredentials) => {
-		console.log(userCredentials)
+	const [text, setText] = useState("")
+	const [showList, setShowList] = useState(false)
+	const [item, setItem] = useState(null)
+
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		setShowList(true)
+		setItem(text)
+		setText("")
 	}
-
-	const createNote = (text) => {
-		if(text) return text
-	} 
-
 
 	return (
 		<>
-			<h1>GROCERY BUD</h1>
-			<Note note = {note} toggleImportance = {toggleImportance}>
-			
-			</Note>
-			<Login
-				onSubmit={onSubmit}
-			></Login>
-			<NoteForm createNote= {createNote}></NoteForm>
+		<h1>GROCERY BUD</h1>
+		<form>
+			<input 
+				value = {text}
+				placeholder="new item"
+				onChange={(e) => setText(e.target.value)}
+			></input>
+			<button
+				onClick={handleSubmit}
+			>Submit</button>
+		</form> 
+		
+		{showList &&
+			<div>
+				<div>{item}</div>
+				<button>Edit</button>
+				<button>Remove</button>
+			</div>
+		}
+
 		</>
 	)
 }
