@@ -1,6 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 
+//
+// window.addEventListener("load", () => {
+// 	console.log("page loaded")
+
+// })
+
+
+
 const GroceryBudApp = () => {
 	const [text, setText] = useState("")
 	const [showList, setShowList] = useState(false)
@@ -31,7 +39,10 @@ const GroceryBudApp = () => {
 
 	
 
-	const removeItem = () => console.log("")
+	const removeItem = (id) => {
+		setItems(items.filter(item => 
+			item.id !== id))
+	} 
 
 	const handleEditChange = (text, id) => {
 		setEditing(true)
@@ -74,7 +85,8 @@ const GroceryBudApp = () => {
 		}
 	}
 
-	 
+	const handleClearAll = () => 
+		setItems([])	 
 
 	return (
 		<>
@@ -116,13 +128,15 @@ const GroceryBudApp = () => {
 						<button
 							onClick={() => handleEditClick(item.id) }
 						>Edit</button> 
-						<button onClick={removeItem}>Remove</button>
+						<button onClick={() => removeItem(item.id)}>Remove</button>
 					</div>)
 				
 				)}
 			</div>
 		}
-		<button>Clear All</button>
+		<button
+			onClick={handleClearAll}
+		>Clear All</button>
 		</>
 	)
 }
