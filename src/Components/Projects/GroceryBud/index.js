@@ -19,23 +19,12 @@ const GroceryBudApp = () => {
 	const [showItemInput, setShowItemInput] = useState({id: null, state: false})
 
 	useEffect(() => {
-		//console.log(items)
-		//saveItemsToLocalStorage([123,3123])
 		if(!getItemsFromLocalStorage()) setItems([])
-		else setItems(getItemsFromLocalStorage())
-	
+		else setItems(getItemsFromLocalStorage())	
 	},[])
 
 
-
-	// useEffect(() => {
-	// console.log(localStorage)
-	// 	if(!localStorage.items) setItems([])
-	// 	else setItems(getItemsFromLocalStorage())
-	// },[localStorage.items])
-
 	const saveItemsToLocalStorage = (items) => {
-	
 		localStorage.setItem("items", JSON.stringify(items))
 	}
 
@@ -43,14 +32,9 @@ const GroceryBudApp = () => {
 		JSON.parse(localStorage.getItem("items"))
 
 
-
-
-
 	const handleSubmit = (e) => {
-
 		e.preventDefault()
-		if(text){
-		//	setShowList(true)
+		if(text){	
 		
 			saveItemsToLocalStorage([...items].concat({
 				id: new Date().getTime().toString(),
@@ -79,8 +63,7 @@ const GroceryBudApp = () => {
 	
 
 	const removeItem = (id) => {
-	console.log([...items].filter(item => 
-			item.id !== id  ))
+
 		saveItemsToLocalStorage([...items].filter(item => 
 			item.id !== id  ))
 		// setItems([...items].filter(item => 
@@ -145,7 +128,7 @@ const GroceryBudApp = () => {
 		saveItemsToLocalStorage([])
 		setItems([])	 
 	}
-console.log(items)
+
 
 	return (
 		<>

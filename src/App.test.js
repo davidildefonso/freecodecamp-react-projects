@@ -1,15 +1,26 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, cleanup  } from '@testing-library/react';
 import App from './App';
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event'
 import { prettyDOM } from '@testing-library/dom'
 import GroceryBudApp from './Components/Projects/GroceryBud'
 
+beforeEach(() => {
+	localStorage.clear()
+})
+
+afterEach(() => cleanup()) 
+
+describe("setup initial", () => {
+
+
+})
 
 test('renders title "GROCERY BUD"', () => {
   render(<App />);
   const linkElement = screen.getByText(/GROCERY BUD/);
   expect(linkElement).toBeInTheDocument();
+
 });
 
 test('on initial render it shows the form with input and its placeholder as well as the submit and clear all button', () => {
@@ -24,13 +35,14 @@ test('on initial render it shows the form with input and its placeholder as well
   expect(input.getAttribute("placeholder")).toBe("new item")
 	expect(button).toHaveTextContent("Submit")
 	expect(screen.getByText(/Clear All/)).toBeDefined()
- 
+
 })
 
 
 
 test('if input is empty click on submit does nothing', () => {
 	const handleSubmit = jest.fn()
+	handleSubmit.mockReturnValueOnce()
 	const component = render(
 		<App />
 	)
@@ -42,6 +54,7 @@ test('if input is empty click on submit does nothing', () => {
 
 	expect(handleSubmit).not.toHaveBeenCalledTimes(1)
   expect(buttonList).toHaveLength(2)
+
 })
  
 
@@ -61,7 +74,7 @@ test('if input is not empty click on submit shows the list ', () => {
   expect(buttonList).not.toHaveLength(1)
 
 })
-
+ 
 test('if input is not empty click on submit adds the input value to the list ', () => {
 	const component = render( 
 		<App />
@@ -76,12 +89,14 @@ test('if input is not empty click on submit adds the input value to the list ', 
 	const div = screen.getByText("1 package of toilet paper")
 
   expect(div).toBeDefined()
-})
 
+
+})
+ 
 test('after new item is added the input field is emptied ', () => {
 	const component = render(
 		<App />
-	)
+	) 
 	
 	const input = component.container.querySelector("input")	
 	userEvent.type(input, "1 package of toilet paper")
@@ -94,9 +109,10 @@ test('after new item is added the input field is emptied ', () => {
   expect(div).toBeDefined()
 
   expect(input.value).toBe("")  
+	
 })
 
-
+ 
 test("if item list has at least an item, another item can be added to the list", () => {
 	const component = render(
 		<App />
@@ -124,7 +140,7 @@ test("if item list has at least an item, another item can be added to the list",
 
 
 })
-
+ 
 
 test("if an item is clicked it is removed from the list", () => {
 	const component = render(
@@ -147,7 +163,7 @@ test("if an item is clicked it is removed from the list", () => {
 	expect(component.container).not.toHaveTextContent("1 package of toilet paper")
 
 })
-
+ 
 test("if edit button is clicked it show an input with the associated item value", () => {
 	const component = render(
 		<App />
@@ -182,7 +198,7 @@ test("if edit button is clicked it show an input with the associated item value"
 
 })
 
-
+ 
 
 test("on a single item if edit button is clicked it shows an input and user can edit type inmediately and correctly", () => {
 	const component = render(
@@ -215,7 +231,7 @@ test("on a single item if edit button is clicked it shows an input and user can 
 	
 
 })
-
+ 
 
 test(`on edited item if user clicks edit button 
  the item new value is saved and shows a div not an input`, () => {
@@ -246,7 +262,7 @@ test(`on edited item if user clicks edit button
  
 
 })
-
+  
 test(`on edited item if user press enter button
  the item new value is saved and shows a div not an input`, () => {
 	const component = render(
@@ -275,7 +291,7 @@ test(`on edited item if user press enter button
 	expect(screen.getByText(/a new lamborghini/)).toBeDefined()
  
 
-})
+}) 
 
 
 test("on remove button pressed it deletes de item from the list",() =>{
@@ -288,7 +304,7 @@ test("on remove button pressed it deletes de item from the list",() =>{
 })
 
 
-
+ 
 
 test("on clear all button click all items from the list are removed", () => {
 	const component = render(<App></App>)
@@ -307,7 +323,7 @@ describe("On multiple items on the list", () => {
     
 
   })
-
+ 
 	test(`if edit button associated to an item is clicked it shows
  		an input for the item only, and user can edit it inmediately and correctly`, () => {	
 		const component = render(
@@ -344,7 +360,7 @@ describe("On multiple items on the list", () => {
 	 
 
 	})
-
+ 
 	test(`on edited item if user clicks edit button 
 	the item new value is saved and shows a div not an input`, () => {
 		const component = render(
@@ -380,7 +396,7 @@ describe("On multiple items on the list", () => {
 	
 
 	})
-
+ 
 	test(`on edited item if user press enter button
 	the item new value is saved and shows a div not an input`, () => {
 		const component = render(
@@ -414,10 +430,10 @@ describe("On multiple items on the list", () => {
 		expect(component.container.querySelectorAll("input")).toHaveLength(1)
 
 		expect(screen.getByText(/a new lamborghini/)).toBeDefined()
-	
+
 
 	})
-
+ 
 	test(`on  a single item button remove click y removes the associated item from the list`, () => {
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
@@ -432,7 +448,7 @@ describe("On multiple items on the list", () => {
 		userEvent.click(screen.getAllByText(/Remove/)[0])
 
 		expect(component.container).not.toHaveTextContent("1 kg of sugar") 
-	
+
  
 	})
 
@@ -454,33 +470,34 @@ describe("On multiple items on the list", () => {
 
 })
 
-// describe("for both single item or multiple items on the list", () => {
-// 	test("on page refresh the list items persist", () => {
+
+
+describe("for both single item or multiple items on the list", () => {
+	test("on page refresh the list items persist", () => {
 	   
 	
-// 		const component = render(<App></App>) 
-// 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-// 		userEvent.click(screen.getByText(/Submit/)) 
+		let component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+		userEvent.click(screen.getByText(/Submit/)) 
 	
-// 		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
-// 		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
+		userEvent.click(screen.getByText(/Submit/)) 
 
-// 		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
-// 		userEvent.click(screen.getByText(/Submit/))
-
-// 		component.unmount()   
-
-// 		const component1 = render(<App></App>)  
-
-// 		expect(component1.container).toHaveTextContent("1 kg of sugar")  
-// 		expect(component1.container).toHaveTextContent("1 kg of bananas")  
-// 		expect(component1.container).toHaveTextContent("1 kg of strawberries")  
+		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
+		userEvent.click(screen.getByText(/Submit/))
+		component.debug()
+		component.unmount()    
+		component.debug() 
+		component = render(<App></App>)   
+		component.debug()
+		expect(component.container).toHaveTextContent("1 kg of sugar")  
+		expect(component.container).toHaveTextContent("1 kg of bananas")  
+		expect(component.container).toHaveTextContent("1 kg of strawberries")  
 		
 	
-	
-// 	})
+	 
+	})
  
+})
 
 
-
-// }) 
