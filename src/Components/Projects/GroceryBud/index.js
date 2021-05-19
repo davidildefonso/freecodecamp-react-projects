@@ -11,21 +11,56 @@ import React, { useState, useRef, useEffect } from 'react'
 
 const GroceryBudApp = () => {
 	const [text, setText] = useState("")
-	const [showList, setShowList] = useState(false)
+	const [showList, setShowList] = useState(true)
 	const [items, setItems] = useState([])
 	const [editing, setEditing] = useState(false)
 	const [inputText, setInputText] = useState({id: null, value: ""})
 	const inputRef = useRef(null)
 	const [showItemInput, setShowItemInput] = useState({id: null, state: false})
 
+	useEffect(() => {
+		//console.log(items)
+		//saveItemsToLocalStorage([123,3123])
+		if(!getItemsFromLocalStorage()) setItems([])
+		else setItems(getItemsFromLocalStorage())
+	
+	},[])
+
+
+
+	// useEffect(() => {
+	// console.log(localStorage)
+	// 	if(!localStorage.items) setItems([])
+	// 	else setItems(getItemsFromLocalStorage())
+	// },[localStorage.items])
+
+	const saveItemsToLocalStorage = (items) => {
+	
+		localStorage.setItem("items", JSON.stringify(items))
+	}
+
+	const getItemsFromLocalStorage = () => 
+		JSON.parse(localStorage.getItem("items"))
+
+
+
+
+
 	const handleSubmit = (e) => {
+
 		e.preventDefault()
 		if(text){
-			setShowList(true)
-			setItems([...items].concat({
+		//	setShowList(true)
+		
+			saveItemsToLocalStorage([...items].concat({
 				id: new Date().getTime().toString(),
 				text: text
 			}))
+			setItems(getItemsFromLocalStorage())
+			// setItems([...items].concat({
+			// 	id: new Date().getTime().toString(),
+			// 	text: text
+			// }))
 			setText("")
 			setEditing(false)
 		}
@@ -33,15 +68,24 @@ const GroceryBudApp = () => {
 	}
 
 	const removeItemFromListButKeepOnHistory = (id) => {
-		setItems([...items].filter(item => 
+		saveItemsToLocalStorage([...items].filter(item => 
 			item.id !== id  ))
+		
+		setItems(getItemsFromLocalStorage())
+		 //setItems([...items].filter(item => 
+		// 	item.id !== id  ))
 	}
 
 	
 
 	const removeItem = (id) => {
-		setItems(items.filter(item => 
-			item.id !== id))
+	console.log([...items].filter(item => 
+			item.id !== id  ))
+		saveItemsToLocalStorage([...items].filter(item => 
+			item.id !== id  ))
+		// setItems([...items].filter(item => 
+		// 	item.id !== id  ))
+		setItems(getItemsFromLocalStorage())
 	} 
 
 	const handleEditChange = (text, id) => {
@@ -61,11 +105,17 @@ const GroceryBudApp = () => {
 	
 		if(!editing)	setShowItemInput( { id: id, state: true })
 		else {
-			setItems([...items].map(item => 
+			saveItemsToLocalStorage([...items].map(item => 
 				item.id === id
 					? {...item, text: inputText.value}
 					: item
 			))
+			setItems(getItemsFromLocalStorage())
+			// setItems([...items].map(item => 
+			// 	item.id === id
+			// 		? {...item, text: inputText.value}
+			// 		: item
+			// ))
 			setEditing(false)
 			setShowItemInput({id: null, state: false})
 		} 
@@ -74,19 +124,28 @@ const GroceryBudApp = () => {
 
 	const handleEditKeyDownConfirm = (id,e) => {
 		if(editing && e.keyCode === 13){
-			setItems([...items].map(item => 
+			saveItemsToLocalStorage([...items].map(item => 
 				item.id === id
 					? {...item, text: inputText.value}
 					: item
 			))
+			setItems(getItemsFromLocalStorage())
+			// setItems([...items].map(item => 
+			// 	item.id === id
+			// 		? {...item, text: inputText.value}
+			// 		: item
+			// ))
 			setEditing(false)
 			setShowItemInput({id: null, state: false})
 		
 		}
 	}
 
-	const handleClearAll = () => 
+	const handleClearAll = () => {
+		saveItemsToLocalStorage([])
 		setItems([])	 
+	}
+console.log(items)
 
 	return (
 		<>
@@ -104,7 +163,7 @@ const GroceryBudApp = () => {
 		
 		{showList &&
 			<div>
-				{items.map(item => 				
+				{items.length > 0 &&  items.map(item => 				
 					(<div 
 						key={item.id}>
 						{!showItemInput.state 

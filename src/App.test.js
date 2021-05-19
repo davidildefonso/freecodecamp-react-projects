@@ -3,7 +3,7 @@ import App from './App';
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event'
 import { prettyDOM } from '@testing-library/dom'
-
+import GroceryBudApp from './Components/Projects/GroceryBud'
 
 
 test('renders title "GROCERY BUD"', () => {
@@ -63,7 +63,7 @@ test('if input is not empty click on submit shows the list ', () => {
 })
 
 test('if input is not empty click on submit adds the input value to the list ', () => {
-	const component = render(
+	const component = render( 
 		<App />
 	)
 	
@@ -454,40 +454,33 @@ describe("On multiple items on the list", () => {
 
 })
 
-describe("for both single item or multiple items on the list", () => {
-	test("on page refresh the list items persist", () => {
+// describe("for both single item or multiple items on the list", () => {
+// 	test("on page refresh the list items persist", () => {
 	   
 	
-		const component = render(<App></App>)
-		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+// 		const component = render(<App></App>) 
+// 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+// 		userEvent.click(screen.getByText(/Submit/)) 
 	
-		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
-		userEvent.click(screen.getByText(/Submit/)) 
+// 		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
+// 		userEvent.click(screen.getByText(/Submit/)) 
 
-		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
-		userEvent.click(screen.getByText(/Submit/))
+// 		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
+// 		userEvent.click(screen.getByText(/Submit/))
 
-	
-		require('./reloadEventListener') 
+// 		component.unmount()   
 
-		delete window.location
+// 		const component1 = render(<App></App>)  
 
-		window.location = {
-			reload: jest.fn(),
-		}
-
-		fireEvent.keyDown(window, { key: "F5" })     
-
-		expect(component.container).toHaveTextContent("1 kg of sugar")  
-		expect(component.container).toHaveTextContent("1 kg of bananas")  
-		expect(component.container).toHaveTextContent("1 kg of strawberries")  
+// 		expect(component1.container).toHaveTextContent("1 kg of sugar")  
+// 		expect(component1.container).toHaveTextContent("1 kg of bananas")  
+// 		expect(component1.container).toHaveTextContent("1 kg of strawberries")  
 		
 	
 	
-	})
+// 	})
+ 
 
 
 
-
-})
+// }) 
