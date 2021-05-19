@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event'
 import { prettyDOM } from '@testing-library/dom'
 
 
-
 test('renders title "GROCERY BUD"', () => {
   render(<App />);
   const linkElement = screen.getByText(/GROCERY BUD/);
@@ -207,7 +206,7 @@ test("on a single item if edit button is clicked it shows an input and user can 
 	
  	userEvent.type(inputs[1], "a new lamborghini") 
 	
-	
+	//console.log(prettyDOM(component.container.querySelector("body")))
 
 	expect(inputs[1].value).toBe("a new lamborghini") 
 	expect(inputs[0].value).not.toBe("a new lamborghini")   
@@ -276,31 +275,6 @@ test(`on edited item if user press enter button
  
 
 })
-
-
-test("on remove button pressed it deletes de item from the list",() =>{
-	const component = render(<App></App>)
-	userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-	userEvent.click(screen.getByText(/Submit/)) 
-	userEvent.click(screen.getByText(/Remove/))
-	expect(component.container).not.toHaveTextContent("1 kg of sugar") 
-
-})
-
-
-
-
-test("on clear all button click all items from the list are removed", () => {
-	const component = render(<App></App>)
-	userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-	userEvent.click(screen.getByText(/Submit/)) 
-	userEvent.click(screen.getByText(/Clear All/))
-	expect(component.container).not.toHaveTextContent("1 kg of sugar")  
-
-})
-
-
-
 
 describe("On multiple items on the list", () => {
 	beforeEach(() => {
@@ -417,78 +391,6 @@ describe("On multiple items on the list", () => {
 	
 
 	})
-
-	test(`on  a single item button remove click y removes the associated item from the list`, () => {
-		const component = render(<App></App>)
-		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
-	
-		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
-		userEvent.click(screen.getByText(/Submit/)) 
-
-		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
-		userEvent.click(screen.getByText(/Submit/)) 
-
-		userEvent.click(screen.getAllByText(/Remove/)[0])
-
-		expect(component.container).not.toHaveTextContent("1 kg of sugar") 
-	
- 
-	})
-
-	test("on clear all button click all items from the list are removed", () => {
-		const component = render(<App></App>)
-		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
-	
-		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
-		userEvent.click(screen.getByText(/Submit/)) 
-
-		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
-		userEvent.click(screen.getByText(/Submit/)) 
-
-		userEvent.click(screen.getByText(/Clear All/)) 
-		expect(component.container).not.toHaveTextContent("1 kg of sugar")  
-
-	})
-
-})
-
-describe("for both single item or multiple items on the list", () => {
-	test("on page refresh the list items persist", () => {
-	   
-	
-		const component = render(<App></App>)
-		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
-	
-		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
-		userEvent.click(screen.getByText(/Submit/)) 
-
-		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
-		userEvent.click(screen.getByText(/Submit/))
-
-	
-		require('./reloadEventListener') 
-
-		delete window.location
-
-		window.location = {
-			reload: jest.fn(),
-		}
-
-		fireEvent.keyDown(window, { key: "F5" })     
-
-		expect(component.container).toHaveTextContent("1 kg of sugar")  
-		expect(component.container).toHaveTextContent("1 kg of bananas")  
-		expect(component.container).toHaveTextContent("1 kg of strawberries")  
-		
-	
-	
-	})
-
-
-
 
 })
 
