@@ -231,9 +231,135 @@ test("on a single item if edit button is clicked it shows an input and user can 
 	
 
 })
+
+test("on a single item if edit button is clicked it shows buttons 'OK' and 'Cancel' and does not show 'Edit' and 'Remove' buttons ", () => {
+	const component = render(<App />)
+	
+	const input = component.container.querySelector("input")	
+	userEvent.type(input, "1 package of toilet paper")
+		
+  const button = screen.getByText(/Submit/);
+  userEvent.click(button)
+
+	const item = screen.getByText("1 package of toilet paper") 
+
+	const editButton = item.parentElement.querySelector("button")
+	userEvent.click(screen.getByText(/Edit/))
+
+	expect(component.container).toHaveTextContent("OK")
+	expect(component.container).toHaveTextContent("Cancel")
+	expect(component.container).not.toHaveTextContent("Edit")
+	expect(component.container).not.toHaveTextContent("Remove")
+
+})
+
+
+test("on editing mode of a single item if either button  'OK' or 'Cancel' is clicked item returnes to normal mode, and OK Cancel button are replace for Edit Remove buttons ", () => {
+	const component = render(<App />)
+	
+	const input = component.container.querySelector("input")	
+	userEvent.type(input, "1 package of toilet paper")
+		
+  const button = screen.getByText(/Submit/);
+  userEvent.click(button)
+
+	const item = screen.getByText("1 package of toilet paper") 
+
+	userEvent.click(screen.getByText(/Edit/))
+
+	expect(component.container).toHaveTextContent("OK")
+	expect(component.container).toHaveTextContent("Cancel")
+	expect(component.container).not.toHaveTextContent("Edit")
+	expect(component.container).not.toHaveTextContent("Remove")
+
+	const inputs = component.container.querySelectorAll('input')
+	expect(inputs).toHaveLength(2)
+
+	userEvent.click(screen.getByText(/OK/))
+
+	expect(component.container).not.toHaveTextContent("OK")
+	expect(component.container).not.toHaveTextContent("Cancel")
+	expect(component.container).toHaveTextContent("Edit")
+	expect(component.container).toHaveTextContent("Remove")
+
+	expect(inputs).toHaveLength(1)
+
+	userEvent.click(screen.getByText(/Edit/))
+
+	expect(component.container).toHaveTextContent("OK")
+	expect(component.container).toHaveTextContent("Cancel")
+	expect(component.container).not.toHaveTextContent("Edit")
+	expect(component.container).not.toHaveTextContent("Remove")
+
+	expect(inputs).toHaveLength(2)
+
+	userEvent.click(screen.getByText(/Cancel/))
+
+	expect(component.container).not.toHaveTextContent("OK")
+	expect(component.container).not.toHaveTextContent("Cancel")
+	expect(component.container).toHaveTextContent("Edit")
+	expect(component.container).toHaveTextContent("Remove")
+
+	expect(inputs).toHaveLength(1)
+
+})
+
+
+test(`on edited item if no changes are made to the item and  user clicks OK button 
+ the item  value doesnt change  and item returns to normal mode (not an input)`, () => {
+	const component = render(
+			<App />
+		)
+	
+	const input = component.container.querySelector("input")	
+	userEvent.type(input, "1 package of toilet paper")
+		
+  const button = screen.getByText(/Submit/);
+  userEvent.click(button)
+
+	const item = screen.getByText("1 package of toilet paper") 
+
+	const editButton = item.parentElement.querySelector("button")
+	userEvent.click(editButton)
+	
+	userEvent.click(screen.getByText(/OK/))
+
+	expect(component.container.querySelectorAll("input")).toHaveLength(1)
+
+	expect(screen.getByText(/1 package of toilet paper/)).toBeDefined()
  
 
-test(`on edited item if user clicks edit button 
+})
+
+
+test(`on edited mode if no changes are made to the item and  user clicks 'Cancel' button 
+ the item  value doesnt change  and item returns to normal mode (not an input)`, () => {
+	const component = render(
+			<App />
+		)
+	
+	const input = component.container.querySelector("input")	
+	userEvent.type(input, "1 package of toilet paper")
+		
+  const button = screen.getByText(/Submit/);
+  userEvent.click(button)
+
+	const item = screen.getByText("1 package of toilet paper") 
+
+	const editButton = item.parentElement.querySelector("button")
+	userEvent.click(editButton)
+	
+	userEvent.click(screen.getByText(/Cancel/))
+
+	expect(component.container.querySelectorAll("input")).toHaveLength(1)
+
+	expect(screen.getByText(/1 package of toilet paper/)).toBeDefined()
+ 
+
+})
+
+
+test(`on edited item if user clicks OK button 
  the item new value is saved and shows a div not an input`, () => {
 	const component = render(
 			<App />
@@ -254,7 +380,8 @@ test(`on edited item if user clicks edit button
 	
  	userEvent.type(inputs[1], "a new lamborghini") 
 
-	userEvent.click(editButton)
+	
+	userEvent.click(screen.getByText(/OK/))
 
 	expect(component.container.querySelectorAll("input")).toHaveLength(1)
 
@@ -263,7 +390,7 @@ test(`on edited item if user clicks edit button
 
 })
   
-test(`on edited item if user press enter button
+test(`on edited item if user presses enter key
  the item new value is saved and shows a div not an input`, () => {
 	const component = render(
 			<App />
@@ -292,6 +419,37 @@ test(`on edited item if user press enter button
  
 
 }) 
+
+test(`on edited item if user edited the item value and clicks Cancel button 
+ the item return to previous value and shows a div not an input`, () => {
+ 	
+	 const component = render(<App />)
+	
+	const input = component.container.querySelector("input")	
+	userEvent.type(input, "1 package of toilet paper")
+		
+  const button = screen.getByText(/Submit/);
+  userEvent.click(button)
+
+	const item = screen.getByText("1 package of toilet paper") 
+
+	
+	userEvent.click(screen.getByText(/Edit/))
+
+	const inputs = component.container.querySelectorAll('input')
+	
+ 	userEvent.type(inputs[1], "a new lamborghini") 
+	expect(component.container).toHaveTextContent("a new lamborghini")
+	expect(component.container).not.toHaveTextContent("1 package of toilet paper")
+
+	userEvent.click(screen.getByText(/Cancel/))
+
+	expect(component.container.querySelectorAll("input")).toHaveLength(1)
+	expect(component.container).toHaveTextContent("1 package of toilet paper")
+ 
+
+})
+
 
 
 test("on remove button pressed it deletes de item from the list",() =>{
@@ -323,6 +481,7 @@ describe("On multiple items on the list", () => {
     
 
   })
+
  
 	test(`if edit button associated to an item is clicked it shows
  		an input for the item only, and user can edit it inmediately and correctly`, () => {	
@@ -361,7 +520,32 @@ describe("On multiple items on the list", () => {
 
 	})
  
-	test(`on edited item if user clicks edit button 
+
+	test("on a single item if edit button is clicked it shows buttons 'OK' and 'Cancel'  associated with the item", () => {
+		const component = render(<App />)
+		
+		const input = component.container.querySelector("input")	
+		userEvent.type(input, "1 package of toilet paper")
+			
+		const button = screen.getByText(/Submit/);
+		userEvent.click(button)
+
+		userEvent.type(input, "10 bananas")
+		userEvent.click(button)
+
+		userEvent.type(input, "a package of face masks")
+		userEvent.click(button)
+
+		const item = screen.getByText("1 package of toilet paper")		
+		const editButton = item.parentElement.querySelector("button")
+		userEvent.click(editButton)
+
+		expect(item.parentElement).toHaveTextContent("OK")
+		expect(item.parentElement).toHaveTextContent("Cancel")
+
+	})
+
+	test(`on edited item if user clicks OK button 
 	the item new value is saved and shows a div not an input`, () => {
 		const component = render(
 				<App />
@@ -388,7 +572,8 @@ describe("On multiple items on the list", () => {
 	
  		userEvent.type(inputs[1], "a new lamborghini") 
 
-		userEvent.click(editButton)
+		
+		userEvent.click(screen.getByText(/OK/))
 
 		expect(component.container.querySelectorAll("input")).toHaveLength(1)
 
@@ -397,7 +582,7 @@ describe("On multiple items on the list", () => {
 
 	})
  
-	test(`on edited item if user press enter button
+	test(`on edited item if user press enter key
 	the item new value is saved and shows a div not an input`, () => {
 		const component = render(
 				<App />
@@ -432,6 +617,61 @@ describe("On multiple items on the list", () => {
 		expect(screen.getByText(/a new lamborghini/)).toBeDefined()
 
 
+	})
+
+	
+	test(`on edited item if user clicks Cancel button 
+	the item is not changed and shows a div not an input`, () => {
+		
+		const component = render(<App />)
+		
+		const input = component.container.querySelector("input")	
+		userEvent.type(input, "1 package of toilet paper")
+			
+		const button = screen.getByText(/Submit/);
+		userEvent.click(button)
+
+		userEvent.type(input, "10 bananas")
+		userEvent.click(button)
+
+		userEvent.type(input, "a package of face masks")
+		userEvent.click(button)
+
+		const item = screen.getByText("1 package of toilet paper") 
+
+		const editButton = item.parentElement.querySelector("button")
+		userEvent.click(screen.getByText(/Edit/))
+		userEvent.click(item.parentElement.getByText(/Cancel/))
+
+		expect(component.container.querySelectorAll("input")).toHaveLength(1)
+		expect(component.container).toHaveTextContent("1 package of toilet paper")
+	
+
+	})
+
+
+	test("user can only edit one item at a time, click on Edit of a second item does nothing", () => {
+		const component = render(<App />)
+		
+		const input = component.container.querySelector("input")	
+		userEvent.type(input, "1 package of toilet paper")
+			
+		const button = screen.getByText(/Submit/);
+		userEvent.click(button)
+
+		userEvent.type(input, "10 bananas")
+		userEvent.click(button)
+
+		userEvent.type(input, "a package of face masks") 
+		userEvent.click(button)
+
+		const item = screen.getByText("1 package of toilet paper") 
+		userEvent.click(item.parentElement.getByText(/Edit/))
+
+		const item2 = screen.getByText("10 bananas")	
+		userEvent.click(item2.parentElement.getByText(/Edit/))
+
+		expect(component.container.querySelectorAll("input")).toHaveLength(2)
 	})
  
 	test(`on  a single item button remove click y removes the associated item from the list`, () => {
@@ -497,7 +737,107 @@ describe("for both single item or multiple items on the list", () => {
 	
 	 
 	})
+
+	test("when item is added it shows a notification with the text 'item added' for 5 seconds", () => {
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+		userEvent.click(screen.getByText(/Submit/)) 
+
+		expect(component.container).toHaveTextContent("Item added!")  
+
+		jest.useFakeTimers()
+		jest.advanceTimersByTime(6000);
+
+		expect(component.container).not.toHaveTextContent("Item added!")  
+
+	})
+
+	test("when item remove button is clicked is deleted it shows a notification with the text 'item deleted' for 5 seconds", () => {
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Remove/))
+
+		expect(component.container).not.toHaveTextContent("Item added!")  
+		expect(component.container).toHaveTextContent("Item removed from list!")  
+
+		jest.useFakeTimers()
+		jest.advanceTimersByTime(6000);
+
+		expect(component.container).not.toHaveTextContent("Item removed from list!")  
+	})
+
+	test("when all items are deleted with button 'clear all' it shows a notification with the text 'all items deleted' for 5 seconds", () => {
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Clear All/))
+
+		expect(component.container).toHaveTextContent("List cleared!")  
+	
+		jest.useFakeTimers()
+		jest.advanceTimersByTime(6000);
+
+		expect(component.container).not.toHaveTextContent("List cleared!")  
+	})
+
+	test("when item is edited it shows a notification with the text 'item edited' for 5 seconds", () => {
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Edit/))		
+
+		const inputs = component.container.querySelectorAll('input')
+	
+ 		userEvent.type(inputs[1], "a new lamborghini") 
+		userEvent.click(screen.getByText(/Edit/))	
+
+		expect(component.container).toHaveTextContent("Item Edited!")  
+	
+		jest.useFakeTimers()
+		jest.advanceTimersByTime(6000);
+
+		expect(component.container).not.toHaveTextContent("Item Edited!") 
+	})
+
+
+
+	test("when item text is clicked it shows a notification with the text 'item purchased moved to history' for 5 seconds", () => {
+	
+	})
+
+	test("when item text is clicked it shows an undo icon ", () => {
+	
+	})
+
+	test("when undo icon is clicked the item just deleted is returned to the list ", () => {
+	
+	})
+
+	test("when at least one item is finished the history | list option is showed ", () => {
+	
+	})
  
+
+	test("on history link is clicked the history tab is showed ", () => {
+		
+	})
+
+	test("when user selects history tab it shows a list with all purchased items most recent at top ", () => {
+		
+	})
+
+	test("when user clicks 'clear all' with empty list it does not show any notification", () => {
+		const component = render(<App></App>) 
+		userEvent.click(screen.getByText(/Clear All/))
+
+		expect(component.container).not.toHaveTextContent("List cleared!")  
+
+	})
+	
+
+
+
 })
 
 
