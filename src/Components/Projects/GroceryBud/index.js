@@ -3,12 +3,13 @@ import React, { useState, useRef, useEffect } from 'react'
 
 const GroceryBudApp = () => {
 	const [text, setText] = useState("")
-	const [showList, setShowList] = useState(true)
+	const [notification, setNotification] = useState("")
 	const [items, setItems] = useState([])
 	const [editing, setEditing] = useState(false)
 	const [editInputValue, setEditInputValue] = useState({id: null, value: ""})
 	const inputRef = useRef(null)
 	const [showItemInput, setShowItemInput] = useState({id: null, state: false})
+
 
 	useEffect(() => {
 		if(!getItemsFromLocalStorage()) setItems([])
@@ -34,22 +35,38 @@ const GroceryBudApp = () => {
 			setItems(getItemsFromLocalStorage())		
 			setText("")
 			setEditing(false)
+			updateNotification("Item added!")
+	
 		}		
 	}
 
 	const removeItemFromListButKeepOnHistory = (id) => {
-		saveItemsToLocalStorage([...items].filter(item => 
-			item.id !== id  ))		
-		setItems(getItemsFromLocalStorage())
+		if(!editing){
+			saveItemsToLocalStorage([...items].filter(item => 
+				item.id !== id  ))		
+			setItems(getItemsFromLocalStorage())
+		}
 	}
 
 	
 
 	const removeItem = (id) => {
-		saveItemsToLocalStorage([...items].filter(item => 
-			item.id !== id  ))
-		setItems(getItemsFromLocalStorage())
+		if(!editing){
+			saveItemsToLocalStorage([...items].filter(item => 
+				item.id !== id  ))
+			setItems(getItemsFromLocalStorage())
+			updateNotification("Item removed from list!")
+		
+
+		}	
 	} 
+
+	const updateNotification = (str) => { 
+		setNotification(str)
+		setTimeout(() => {
+			setNotification("")
+		},5000) 
+	}
 
 	const handleEditInputChange = (text, item) => {
 		setEditing(true)
@@ -81,13 +98,17 @@ const GroceryBudApp = () => {
 			setItems(getItemsFromLocalStorage())
 			setEditing(false)
 			setShowItemInput({id: null, state: false})
-		
+			updateNotification("Item Edited!")
 		}
 	}
 
 	const handleClearAll = () => {
-		saveItemsToLocalStorage([])
-		setItems([])	 
+		if(items.length > 0){
+			saveItemsToLocalStorage([])
+			setItems([])	 
+			updateNotification("List cleared!")
+		}
+
 	}
 
 	const confirmEditItemWithClick = (id) => {	
@@ -99,6 +120,7 @@ const GroceryBudApp = () => {
 		setItems(getItemsFromLocalStorage())
 		setEditing(false)
 		setShowItemInput({id: null, state: false})
+		updateNotification("Item Edited!")
 	}
 
 	const cancelItemEdition = (id) => {
@@ -107,9 +129,11 @@ const GroceryBudApp = () => {
 	}
 
 
+
 	return (
 		<>
 		<h1>GROCERY BUD</h1>
+		<h3>{notification}</h3>
 		<form>
 			<input 
 				value = {text}
@@ -121,7 +145,7 @@ const GroceryBudApp = () => {
 			>Submit</button>
 		</form> 
 		
-		{showList &&
+		{
 			<div>
 				{items.length > 0 &&  items.map(item => 				
 					(<div 
@@ -143,7 +167,7 @@ const GroceryBudApp = () => {
 										onClick={() => removeItemFromListButKeepOnHistory(item.id)}
 									>{item.text}</div>
 						}
-						{editing
+						{editing && showItemInput.id === item.id
 							? <>
 									<button
 										onClick={() => confirmEditItemWithClick(item.id, item.value) }
