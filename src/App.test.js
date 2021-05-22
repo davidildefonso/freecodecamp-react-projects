@@ -266,10 +266,13 @@ test.only("on editing mode of a single item if either button  'OK' or 'Cancel' i
 	expect(component.container).not.toHaveTextContent("Edit")
 	expect(component.container).not.toHaveTextContent("Remove")
 
-	const inputs = component.container.querySelectorAll('input')
+	let inputs = component.container.querySelectorAll('input')
 	expect(inputs).toHaveLength(2)
-	component.debug()
-	userEvent.click(screen.getByText(/OK/))
+ //	component.debug()
+
+ 	 userEvent.click(screen.getByText(/OK/))
+
+
 
 	expect(component.container).not.toHaveTextContent("OK")
 	expect(component.container).not.toHaveTextContent("Cancel")
@@ -277,26 +280,28 @@ test.only("on editing mode of a single item if either button  'OK' or 'Cancel' i
 	expect(component.container).toHaveTextContent("Remove")
 
 
-component.debug()
+ 	inputs = component.container.querySelectorAll('input')
+ 	expect(inputs).toHaveLength(1)
+ 
+	userEvent.click(screen.getByText(/Edit/))
+
+	expect(component.container).toHaveTextContent("OK")
+	expect(component.container).toHaveTextContent("Cancel")
+	expect(component.container).not.toHaveTextContent("Edit")
+	expect(component.container).not.toHaveTextContent("Remove")
+
+	inputs = component.container.querySelectorAll('input')
+	expect(inputs).toHaveLength(2)
+
+	userEvent.click(screen.getByText(/Cancel/))
+
+	expect(component.container).not.toHaveTextContent("OK")
+	expect(component.container).not.toHaveTextContent("Cancel")
+	expect(component.container).toHaveTextContent("Edit")
+	expect(component.container).toHaveTextContent("Remove")
+
+	inputs = component.container.querySelectorAll('input')
 	expect(inputs).toHaveLength(1)
-
-	// userEvent.click(screen.getByText(/Edit/))
-
-	// expect(component.container).toHaveTextContent("OK")
-	// expect(component.container).toHaveTextContent("Cancel")
-	// expect(component.container).not.toHaveTextContent("Edit")
-	// expect(component.container).not.toHaveTextContent("Remove")
-
-	// expect(inputs).toHaveLength(2)
-
-	// userEvent.click(screen.getByText(/Cancel/))
-
-	// expect(component.container).not.toHaveTextContent("OK")
-	// expect(component.container).not.toHaveTextContent("Cancel")
-	// expect(component.container).toHaveTextContent("Edit")
-	// expect(component.container).toHaveTextContent("Remove")
-
-	// expect(inputs).toHaveLength(1)
 
 })
 

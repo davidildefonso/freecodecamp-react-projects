@@ -6,7 +6,7 @@ const GroceryBudApp = () => {
 	const [showList, setShowList] = useState(true)
 	const [items, setItems] = useState([])
 	const [editing, setEditing] = useState(false)
-	const [inputText, setInputText] = useState({id: null, value: ""})
+	const [editInputValue, setEditInputValue] = useState({id: null, value: ""})
 	const inputRef = useRef(null)
 	const [showItemInput, setShowItemInput] = useState({id: null, state: false})
 
@@ -26,46 +26,34 @@ const GroceryBudApp = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		if(text){	
-		
+		if(text){			
 			saveItemsToLocalStorage([...items].concat({
 				id: new Date().getTime().toString(),
 				text: text
 			}))
-			setItems(getItemsFromLocalStorage())
-			// setItems([...items].concat({
-			// 	id: new Date().getTime().toString(),
-			// 	text: text
-			// }))
+			setItems(getItemsFromLocalStorage())		
 			setText("")
 			setEditing(false)
-		}
-		
+		}		
 	}
 
 	const removeItemFromListButKeepOnHistory = (id) => {
 		saveItemsToLocalStorage([...items].filter(item => 
-			item.id !== id  ))
-		
+			item.id !== id  ))		
 		setItems(getItemsFromLocalStorage())
-		 //setItems([...items].filter(item => 
-		// 	item.id !== id  ))
 	}
 
 	
 
 	const removeItem = (id) => {
-
 		saveItemsToLocalStorage([...items].filter(item => 
 			item.id !== id  ))
-		// setItems([...items].filter(item => 
-		// 	item.id !== id  ))
 		setItems(getItemsFromLocalStorage())
 	} 
 
-	const handleEditChange = (text, id) => {
+	const handleEditInputChange = (text, item) => {
 		setEditing(true)
-		setInputText({id: id, value: text})
+		setEditInputValue({id: item.id, value: text})
 	}
 
 	useEffect(() => {
@@ -76,31 +64,21 @@ const GroceryBudApp = () => {
 
 	},[showItemInput])
 
-	const handleEditClick = (id) => {
+	const startEditingItem = (id) => {
 		setShowItemInput( { id: id, state: true })
 		setEditing(true)
-		
-		// if(!editing) {
-		
-		// }	else {
-	
-		// } 
-	 
+		const value = items.find(i => i.id === id).text		
+		setEditInputValue({...editInputValue, value: value})		
 	}
 
-	const handleEditKeyDownConfirm = (id,e) => {
+	const confirmEditItemWithEnterKey = (item,e) => {
 		if(editing && e.keyCode === 13){
-			saveItemsToLocalStorage([...items].map(item => 
-				item.id === id
-					? {...item, text: inputText.value}
-					: item
+			saveItemsToLocalStorage([...items].map(it => 
+				item.id === it.id
+					? {...it, text: editInputValue.value}
+					: it
 			))
 			setItems(getItemsFromLocalStorage())
-			// setItems([...items].map(item => 
-			// 	item.id === id
-			// 		? {...item, text: inputText.value}
-			// 		: item
-			// ))
 			setEditing(false)
 			setShowItemInput({id: null, state: false})
 		
@@ -112,20 +90,20 @@ const GroceryBudApp = () => {
 		setItems([])	 
 	}
 
-	const confirmEditItem = (id) => {
+	const confirmEditItemWithClick = (id) => {	
 		saveItemsToLocalStorage([...items].map(item => 
 			item.id === id
-				? {...item, text: inputText.value}
+				? {...item, text: editInputValue.value}
 				: item
 		))
 		setItems(getItemsFromLocalStorage())
-
 		setEditing(false)
 		setShowItemInput({id: null, state: false})
 	}
 
 	const cancelItemEdition = (id) => {
-	
+		setEditing(false)
+		setShowItemInput({id: null, state: false})
 	}
 
 
@@ -156,29 +134,25 @@ const GroceryBudApp = () => {
 								?	<div>
 										<input 
 											ref={inputRef}
-											value ={editing 
-												? inputText.value 
-													? inputText.value 
-													: item.text
-												:  item.text}
-											onChange = {(e) => handleEditChange(e.target.value, item.id) }
-											onKeyDown = {(e) => handleEditKeyDownConfirm(item.id, e)}
+											value ={editInputValue.value}
+											onChange = {(e) => handleEditInputChange(e.target.value, item) }
+											onKeyDown = {(e) => confirmEditItemWithEnterKey(item, e)}
 										></input> 
 									</div>
-									: <div 	
-											onClick={() => removeItemFromListButKeepOnHistory(item.id)}
-										>{item.text}</div>
+								: <div 	
+										onClick={() => removeItemFromListButKeepOnHistory(item.id)}
+									>{item.text}</div>
 						}
 						{editing
 							? <>
 									<button
-										onClick={() => confirmEditItem(item.id) }
+										onClick={() => confirmEditItemWithClick(item.id, item.value) }
 									>OK</button> 
 									<button onClick={() => cancelItemEdition(item.id)}>Cancel</button>
 							</>
 						:	<>
 								<button
-									onClick={() => handleEditClick(item.id) }
+									onClick={() => startEditingItem(item.id) }
 								>Edit</button> 
 								<button onClick={() => removeItem(item.id)}>Remove</button>
 							</>
