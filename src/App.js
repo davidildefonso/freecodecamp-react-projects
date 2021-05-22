@@ -8,6 +8,8 @@ const  App = () => {
   return (
 		<GroceryBudApp></GroceryBudApp>
   );
+
+
 }
 
 export default App;
