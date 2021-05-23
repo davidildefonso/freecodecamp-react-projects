@@ -902,17 +902,106 @@ describe("for both single item or multiple items on the list", () => {
 
 
 
-// 	test("when item text is clicked it shows a notification with the text 'item purchased moved to history' for 5 seconds", () => {
-	
-// 	})
+	test("when item text is clicked it shows a notification with the text 'item purchased moved to history' for 5 seconds", () => {
+		jest.useFakeTimers()
+		const component = render(
+				<App />
+			)
+		
+		const input = component.container.querySelector("input")	
+		userEvent.type(input, "1 package of toilet paper")
+			
+		const button = screen.getByText(/Submit/);
+		userEvent.click(button)
 
-///// 	test("when user  add multiple items notification is updated for the last item added and it is shown correctly", () => {
-	
-// 	})
+		const item = screen.getByText("1 package of toilet paper") 
+		userEvent.click(item)
 
-// 	test("when item text is clicked it shows an undo icon ", () => {
+		expect(component.container).toHaveTextContent("Item purchased! Moved to history")   
 	
-// 	})
+	
+		act(() => {
+			jest.advanceTimersByTime(5000)
+		})
+
+		expect(component.container).not.toHaveTextContent("Item purchased! Moved to history") 
+
+
+	})
+
+  test("when user  add multiple items notification is updated for the last item added and it is shown correctly", () => {
+		jest.useFakeTimers() 
+		
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+		userEvent.click(screen.getByText(/Submit/)) 
+
+		act(() => {
+			jest.advanceTimersByTime(4000) 
+		})	
+
+		expect(component.container).toHaveTextContent("Item added!")  
+ 
+		userEvent.type(component.container.querySelector("input"), "bananas") 
+		userEvent.click(screen.getByText(/Submit/)) 
+
+		expect(component.container).toHaveTextContent("Item added!") 
+
+		act(() => {
+			jest.advanceTimersByTime(1000) 
+		})	
+
+		expect(component.container).toHaveTextContent("Item added!")  
+
+		act(() => {
+			jest.advanceTimersByTime(1000) 
+		})	
+
+		expect(component.container).toHaveTextContent("Item added!")  
+
+		act(() => {
+			jest.advanceTimersByTime(1000) 
+		})	
+
+		expect(component.container).toHaveTextContent("Item added!")  
+
+		act(() => {
+			jest.advanceTimersByTime(1000) 
+		})	
+
+		expect(component.container).toHaveTextContent("Item added!")  
+
+		act(() => {
+			jest.advanceTimersByTime(1000) 
+		})	
+
+		expect(component.container).not.toHaveTextContent("Item added!")  
+
+		
+	})
+
+	test("when item text is clicked(sent to history) it shows an undo icon ", () => {
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "bananas")
+		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText("bananas")) 
+		expect(component.container).toHaveTextContent("undo")  
+
+	})
+
+	test("undo icon is visible for 8 seconds ", () => {
+		jest.useFakeTimers() 
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "bananas")
+		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText("bananas")) 
+		 
+		act(() => {
+			jest.advanceTimersByTime(8000) 
+		})	
+
+		expect(component.container).not.toHaveTextContent("undo")
+	})
 
 // 	test("when undo icon is clicked the item just deleted is returned to the list ", () => {
 	

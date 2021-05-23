@@ -9,7 +9,8 @@ const GroceryBudApp = () => {
 	const [editInputValue, setEditInputValue] = useState({id: null, value: ""})
 	const inputRef = useRef(null)
 	const [showItemInput, setShowItemInput] = useState({id: null, state: false})
-
+	const ref = useRef({})
+	const [lastItemSentToHistory, setLastItemSentToHistory] = useState(null)
 
 	useEffect(() => {
 		if(!getItemsFromLocalStorage()) setItems([])
@@ -42,13 +43,20 @@ const GroceryBudApp = () => {
 
 	const removeItemFromListButKeepOnHistory = (id) => {
 		if(!editing){
-			saveItemsToLocalStorage([...items].filter(item => 
-				item.id !== id  ))		
+			const itemClicked = items.find(item => 
+				item.id === id)				
+			saveItemsToLocalStorage(items.filter(item => item !== itemClicked))		
 			setItems(getItemsFromLocalStorage())
+			showUndo([],8000)					
+			updateNotification("Item purchased! Moved to history")
+ 
 		}
 	}
 
-	
+	const showUndo = (newValue,delay) => {
+			setLastItemSentToHistory(newValue) 
+			setTimeout(() => setLastItemSentToHistory(null), delay) 
+	}
 
 	const removeItem = (id) => {
 		if(!editing){
@@ -62,8 +70,9 @@ const GroceryBudApp = () => {
 	} 
 
 	const updateNotification = (str) => { 
+		if(ref.current.timeout) clearTimeout(ref.current.timeout)
 		setNotification(str)
-		setTimeout(() => {
+		ref.current.timeout = setTimeout(() => {
 			setNotification("")
 		},5000) 
 	}
@@ -97,7 +106,7 @@ const GroceryBudApp = () => {
 			))
 			setItems(getItemsFromLocalStorage())
 			setEditing(false)
-			setShowItemInput({id: null, state: false})
+			setShowItemInput({id: null, state: false})		
 			updateNotification("Item Edited!")
 		}
 	}
@@ -134,6 +143,7 @@ const GroceryBudApp = () => {
 		<>
 		<h1>GROCERY BUD</h1>
 		<h3>{notification}</h3>
+		{lastItemSentToHistory && <p>undo</p>}
 		<form>
 			<input 
 				value = {text}
@@ -148,8 +158,10 @@ const GroceryBudApp = () => {
 		{
 			<div>
 				{items.length > 0 &&  items.map(item => 				
-					(<div 
+
+					<div 
 						key={item.id}>
+					
 						{!showItemInput.state 
 							?	<div 	
 									onClick={() => removeItemFromListButKeepOnHistory(item.id)}
@@ -182,7 +194,8 @@ const GroceryBudApp = () => {
 							</>
 						}
 				
-					</div>)
+					</div>
+				
 				
 				)}
 			</div>
