@@ -29,26 +29,58 @@ const GroceryBudApp = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		if(text){			
-			saveItemsToLocalStorage([...items].concat({
-				id: new Date().getTime().toString(),
-				text: text
-			}))
-			setItems(getItemsFromLocalStorage())		
-			setText("")
-			setEditing(false)
-			updateNotification("Item added!")
+		const id = new Date().getTime().toString()
+		if(text){	
+			addItem(text,id)		
+			// saveItemsToLocalStorage([...items].concat({
+			// 	id: id,
+			// 	text: text
+			// }))
+			// setItems(getItemsFromLocalStorage())		
+			// setText("")
+			// setEditing(false)
+			// updateNotification("Item added!")
 	
-		}		
+		}		 
+	} 
+
+	const addItem = (content, id) => {
+		saveItemsToLocalStorage([...items].concat({
+				id: id,
+				text: content
+			}))
+		setItems(getItemsFromLocalStorage())		
+		setText("")
+		setEditing(false)
+		updateNotification("Item added!")
+	}
+
+	const insertItemAtPosition = (content, id, position) => {
+		const items1 = items.slice(0,position)
+		const newItem =  {
+				id: id,
+				text: content
+		}
+		const items2 = items.slice(position,)
+		const updatedItems = items1.concat(newItem).concat(items2)
+		console.log(updatedItems) 
+		saveItemsToLocalStorage(updatedItems)
+		setItems(getItemsFromLocalStorage())	 	
+		setText("")
+		setEditing(false)
+		updateNotification("Item added!")
 	}
 
 	const removeItemFromListButKeepOnHistory = (id) => {
 		if(!editing){
-			const itemClicked = items.find(item => 
-				item.id === id)				
+			let index
+			const itemClicked = items.find((item, idx) => {
+				index = idx
+				return item.id === id
+			})				
 			saveItemsToLocalStorage(items.filter(item => item !== itemClicked))		
 			setItems(getItemsFromLocalStorage())
-			setLastItemSentToHistory(itemClicked)			
+			setLastItemSentToHistory({...itemClicked, index})	 		
 			updateNotification("Item purchased! Moved to history")
  
 		}
@@ -149,13 +181,19 @@ const GroceryBudApp = () => {
 		setShowItemInput({id: null, state: false})
 	}
 
-
+	const restoreLastItemFromHistory = () => {
+		console.log(lastItemSentToHistory)  
+		insertItemAtPosition(lastItemSentToHistory.text, lastItemSentToHistory.id, lastItemSentToHistory.index)  
+	}
  
 	return (
 		<>
 		<h1>GROCERY BUD</h1>
 		<h3>{notification}</h3>
-		{showUndo &&  <p >undo</p>}   
+		{showUndo &&
+		  <p
+				onClick={restoreLastItemFromHistory}
+			>undo</p>}   
 		<form>
 			<input 
 				value = {text}

@@ -487,6 +487,18 @@ describe("when list has only one item: ", () => {
 
 	})
 
+	test("when undo icon is clicked the item just deleted is returned to the list ", () => {
+		jest.useFakeTimers() 
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "bananas")
+		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText("bananas"))  
+		 
+		userEvent.click(screen.getByText("undo")) 
+ 
+		expect(component.container).toHaveTextContent("bananas")
+ 	})
+
 })
 
 
@@ -769,6 +781,28 @@ describe("On multiple items on the list", () => {
 
 	})
 
+	test("when undo icon is clicked the item just deleted is returned to the list on the same position", () => {
+		jest.useFakeTimers() 
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "bananas")
+		userEvent.click(screen.getByText(/Submit/)) 	
+		userEvent.type(component.container.querySelector("input"), "grapes")
+		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.type(component.container.querySelector("input"), "watermelon")
+		userEvent.click(screen.getByText(/Submit/)) 	
+
+		userEvent.click(screen.getByText("bananas"))   
+		  
+		userEvent.click(screen.getByText("undo")) 
+ 
+		const item = screen.getByText(/bananas/)  
+
+		const items =  item.parentElement.parentElement 
+	
+		expect(items).toHaveTextContent(/bananas.*grapes.*watermelon/)  
+		
+ 	})
+
 })
 
 
@@ -1003,9 +1037,7 @@ describe("for both single item or multiple items on the list", () => {
 		expect(component.container).not.toHaveTextContent("undo")
 	})
 
-// 	test("when undo icon is clicked the item just deleted is returned to the list ", () => {
-	
-// 	})
+
 
 // 	test("when at least one item is finished the history | list option is showed ", () => {
 	
