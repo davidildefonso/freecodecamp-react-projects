@@ -24,8 +24,8 @@ describe("setup initial", () => {
 
 	test('on initial render it shows the form with input and its placeholder as well as the submit and clear all button', () => {
   
-		const component = render(
-			<App />
+		const component = render( 
+			<App /> 
 		)
 
 		const input = component.container.querySelector('input')
@@ -1067,18 +1067,49 @@ describe("for both single item or multiple items on the list", () => {
 	})
  
 
-// 	test("when at least one item is finished the history | list option is showed ", () => {
-	
-// 	})
+	test("when at least one item is finished the history | list option is showed ", () => {
+		jest.useFakeTimers() 
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "bananas")
+		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText("bananas"))  
+		expect(component.container).toHaveTextContent("History")
+		expect(component.container).toHaveTextContent("List")
+	})
+   
+
+	test("if history link is clicked the history tab is showed ", () => {
+		jest.useFakeTimers() 
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "bananas")
+		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText("bananas"))  
+		userEvent.click(screen.getByText("History"))
+		expect(component.container).toHaveTextContent(/HISTORY/)
+		expect(component.container).toHaveTextContent(/ID/) 
+		expect(component.container).toHaveTextContent(/ITEM/)
+		expect(component.container).not.toHaveTextContent(/new item/)
+		expect(component.container).not.toHaveTextContent(/Submit/)
+		expect(component.container).not.toHaveTextContent(/Clear All/)
+
+	})
+
+	test("when user selects history tab it shows a list with all purchased items most recent at top ", () => {
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "bananas")
+		userEvent.click(screen.getByText(/Submit/)) 	
+		userEvent.type(component.container.querySelector("input"), "honey")
+		userEvent.click(screen.getByText(/Submit/)) 	
+		userEvent.type(component.container.querySelector("input"), "milk")
+		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText("bananas"))
+		userEvent.click(screen.getByText("honey"))
+		userEvent.click(screen.getByText("milk")) 
  
+		userEvent.click(screen.getByText("History"))
 
-// 	test("on history link is clicked the history tab is showed ", () => {
-		
-// 	})
-
-// 	test("when user selects history tab it shows a list with all purchased items most recent at top ", () => {
-		
-// 	})
+		expect(component.container).toHaveTextContent(/milk.*honey.*bananas/)   
+	}) 
 
 	test("when user clicks 'clear all' with empty list it does not show any notification", () => {
 		const component = render(<App></App>) 

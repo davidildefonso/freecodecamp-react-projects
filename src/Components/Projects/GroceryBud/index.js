@@ -12,20 +12,35 @@ const GroceryBudApp = () => {
 	const ref = useRef({})
 	const [lastItemSentToHistory, setLastItemSentToHistory] = useState(null)
 	const [showUndo, setShowUndo] = useState(false)
-	
+	const [showNavbar, setShowNavbar] = useState(false)
+	const [showHistory, setShowHistory] = useState(false) 
+	const [historyItems, setHistoryItems] = useState([])
 
 	useEffect(() => {
-		if(!getItemsFromLocalStorage()) setItems([])
-		else setItems(getItemsFromLocalStorage())	
+		setItems(getItemsFromLocalStorage())	
+		setHistoryItems(getItemsFromLocalStorage("history"))	
 	},[])
 
+  
+	useEffect(() => {
+		if(lastItemSentToHistory) {	
+			setShowNavbar(true)
+			const currentItems = getItemsFromLocalStorage("history")
+			const newItem = [lastItemSentToHistory]	
+			saveItemsToLocalStorage( newItem.concat(currentItems) , "history")
+		} 
+		else setShowNavbar(false)
+	},[lastItemSentToHistory])
 
-	const saveItemsToLocalStorage = (items) => {
-		localStorage.setItem("items", JSON.stringify(items))
+	const saveItemsToLocalStorage = (items, field = "items") => {
+		localStorage.setItem(field, JSON.stringify(items))
 	}
 
-	const getItemsFromLocalStorage = () => 
-		JSON.parse(localStorage.getItem("items"))
+	const getItemsFromLocalStorage = (field= "items") => {	
+		if(localStorage.getItem(field))	return JSON.parse(localStorage.getItem(field))
+		else return []		
+	} 
+
  
 
 	const handleSubmit = (e) => {
@@ -37,12 +52,13 @@ const GroceryBudApp = () => {
 	} 
 
 	const addItem = (content, id) => {
-	
-		saveItemsToLocalStorage([...items].concat({
+		saveItemsToLocalStorage(items.concat({
 				id: id,
 				text: content
 			}))
-		setItems(getItemsFromLocalStorage())		
+			
+		setItems(getItemsFromLocalStorage())	
+	
 		setText("")
 		setEditing(false)
 		updateNotification("Item added!")
@@ -80,10 +96,12 @@ const GroceryBudApp = () => {
 			let index
 			const itemClicked = items.find((item, idx) => {
 				index = idx
-				return item.id === id
+				return item.id === id 
 			})				
 			saveItemsToLocalStorage(items.filter(item => item !== itemClicked))		
 			setItems(getItemsFromLocalStorage())
+		
+			setHistoryItems(historyItems.concat(itemClicked))
 			setLastItemSentToHistory({...itemClicked, index})	 		
 			updateNotification("Item purchased! Moved to history")
  	
@@ -156,7 +174,7 @@ const GroceryBudApp = () => {
 	}
  
 	const handleClearAll = () => {
-		if(items.length > 0){
+		if(items){
 			saveItemsToLocalStorage([])
 			setItems([])	 
 			updateNotification("List cleared!")
@@ -188,73 +206,119 @@ const GroceryBudApp = () => {
 		insertItemAtPosition(lastItemSentToHistory.text, lastItemSentToHistory.id, lastItemSentToHistory.index)  
 	}
   
+
+	const displayHistorySection = () => {
+		setShowHistory(true)
+		setHistoryItems(getItemsFromLocalStorage("history"))
+	}
+
+	const displayListSection = () => {
+		setShowHistory(false)
+	} 
+
+
 	return (  
 		<> 
 		<h1>GROCERY BUD</h1>
 		<h3>{notification}</h3> 
-		{showUndo &&
-		  <p
-				onClick={restoreLastItemFromHistory}
-			>undo</p>}   
-		<form>
-			<input 
-				value = {text}
-				placeholder="new item"
-				onChange={(e) => setText(e.target.value)}
-			></input>
-			<button
-				onClick={handleSubmit} 
-			>Submit</button>
-		</form> 
-		
-		{
-			<div>
-				{items.length > 0 &&  items.map(item => 				
-
-					<div 
-						key={item.id}>
-					
-						{!showItemInput.state 
-							?	<div 	
-									onClick={() => removeItemFromListButKeepOnHistory(item.id)}
-								>{item.text}</div>
-							:  showItemInput.id === item.id
-								?	<div>
-										<input 
-											ref={inputRef}
-											value ={editInputValue.value}
-											onChange = {(e) => handleEditInputChange(e.target.value, item) }
-											onKeyDown = {(e) => confirmEditItemWithEnterKey(item, e)}
-										></input> 
-									</div>
-								: <div 	
-										onClick={() => removeItemFromListButKeepOnHistory(item.id)}
-									>{item.text}</div>
-						}
-						{editing && showItemInput.id === item.id
-							? <>
-									<button
-										onClick={() => confirmEditItemWithClick(item.id, item.value) }
-									>OK</button> 
-									<button onClick={() => cancelItemEdition(item.id)}>Cancel</button>
-							</>
-						:	<>
-								<button
-									onClick={() => startEditingItem(item.id) }
-								>Edit</button> 
-								<button onClick={() => removeItem(item.id)}>Remove</button>
-							</>
-						}
-				
-					</div>
-				
-				
-				)}
-			</div>
+		{ showNavbar && 
+				<div>
+					<span
+						onClick={displayListSection}
+					>List</span>
+					<span>|</span> 
+					<span
+						onClick={displayHistorySection}
+					>History</span> 
+				</div>
 		}
-		<button
-			onClick={handleClearAll}
-		>Clear All</button>
+		{ showHistory 
+			? <div>
+					<h3>HISTORY</h3>
+					<div>
+						<div>
+							<div>ID</div>
+							<div>ITEM</div>
+						</div>
+						
+						<div>
+							{historyItems && historyItems.map(item => 				
+								<div 
+									key={item.id}>
+									{item.id} {item.text}							
+								</div>							
+							)}
+						</div>
+						 
+					</div>
+				</div>
+			: <>
+					{showUndo &&
+						<p
+							onClick={restoreLastItemFromHistory}
+						>undo</p>}   
+					<form>
+						<input 
+							value = {text}
+							placeholder="new item"
+							onChange={(e) => setText(e.target.value)}
+						></input>
+						<button
+							onClick={handleSubmit} 
+						>Submit</button>
+					</form> 
+		
+					{
+						<div>
+							{items &&  items.map(item => 				
+
+								<div 
+									key={item.id}>
+								
+									{!showItemInput.state 
+										?	<div 	
+												onClick={() => removeItemFromListButKeepOnHistory(item.id)}
+											>{item.text}</div>
+										:  showItemInput.id === item.id
+											?	<div>
+													<input 
+														ref={inputRef}
+														value ={editInputValue.value}
+														onChange = {(e) => handleEditInputChange(e.target.value, item) }
+														onKeyDown = {(e) => confirmEditItemWithEnterKey(item, e)}
+													></input> 
+												</div>
+											: <div 	
+													onClick={() => removeItemFromListButKeepOnHistory(item.id)}
+												>{item.text}</div>
+									}
+									{editing && showItemInput.id === item.id
+										? <>
+												<button
+													onClick={() => confirmEditItemWithClick(item.id, item.value) }
+												>OK</button> 
+												<button onClick={() => cancelItemEdition(item.id)}>Cancel</button>
+										</>
+									:	<>
+											<button
+												onClick={() => startEditingItem(item.id) }
+											>Edit</button> 
+											<button onClick={() => removeItem(item.id)}>Remove</button>
+										</>
+									}
+							
+								</div>
+							
+							
+							)}
+						</div>
+					}
+					<button
+						onClick={handleClearAll}
+					>Clear All</button>
+				</>
+		
+		}
 		</>
 	)
 }
