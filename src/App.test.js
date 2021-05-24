@@ -825,7 +825,10 @@ describe("for both single item or multiple items on the list", () => {
 
   })
 
-	afterEach(() => cleanup())
+	afterEach(() =>  {
+		jest.clearAllTimers()
+		cleanup()
+	})
 
 
 
@@ -1036,6 +1039,8 @@ describe("for both single item or multiple items on the list", () => {
 
 	})
 
+
+
 	test("undo icon is visible for 8 seconds ", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
@@ -1051,6 +1056,16 @@ describe("for both single item or multiple items on the list", () => {
 	})
 
 
+	test("when undo icon is clicked it is not  displayed in the screen ", () => {
+		jest.useFakeTimers() 
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "bananas")
+		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText("bananas")) 
+		userEvent.click(screen.getByText("undo")) 	 
+		expect(component.container).not.toHaveTextContent("undo")
+	})
+ 
 
 // 	test("when at least one item is finished the history | list option is showed ", () => {
 	

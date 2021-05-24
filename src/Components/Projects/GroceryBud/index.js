@@ -12,8 +12,7 @@ const GroceryBudApp = () => {
 	const ref = useRef({})
 	const [lastItemSentToHistory, setLastItemSentToHistory] = useState(null)
 	const [showUndo, setShowUndo] = useState(false)
-	const [showNotification, setShowNotification] = useState(false)
-	const [timer, setTimer] = useState(null)
+	
 
 	useEffect(() => {
 		if(!getItemsFromLocalStorage()) setItems([])
@@ -67,8 +66,7 @@ const GroceryBudApp = () => {
 				text: content
 		}
 		const items2 = items.slice(position,)
-		const updatedItems = items1.concat(newItem).concat(items2)
-		console.log(updatedItems) 
+		const updatedItems = items1.concat(newItem).concat(items2)	
 		saveItemsToLocalStorage(updatedItems)
 		setItems(getItemsFromLocalStorage())	 	
 		setText("")
@@ -186,7 +184,7 @@ const GroceryBudApp = () => {
 	}
  
 	const restoreLastItemFromHistory = () => {
-	 
+	 	setShowUndo(false)
 		insertItemAtPosition(lastItemSentToHistory.text, lastItemSentToHistory.id, lastItemSentToHistory.index)  
 	}
   
