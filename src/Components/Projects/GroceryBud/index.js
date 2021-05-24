@@ -12,6 +12,8 @@ const GroceryBudApp = () => {
 	const ref = useRef({})
 	const [lastItemSentToHistory, setLastItemSentToHistory] = useState(null)
 	const [showUndo, setShowUndo] = useState(false)
+	const [showNotification, setShowNotification] = useState(false)
+	const [timer, setTimer] = useState(null)
 
 	useEffect(() => {
 		if(!getItemsFromLocalStorage()) setItems([])
@@ -25,26 +27,18 @@ const GroceryBudApp = () => {
 
 	const getItemsFromLocalStorage = () => 
 		JSON.parse(localStorage.getItem("items"))
-
+ 
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		const id = new Date().getTime().toString()
 		if(text){	
-			addItem(text,id)		
-			// saveItemsToLocalStorage([...items].concat({
-			// 	id: id,
-			// 	text: text
-			// }))
-			// setItems(getItemsFromLocalStorage())		
-			// setText("")
-			// setEditing(false)
-			// updateNotification("Item added!")
-	
+			addItem(text,id)			
 		}		 
 	} 
 
 	const addItem = (content, id) => {
+	
 		saveItemsToLocalStorage([...items].concat({
 				id: id,
 				text: content
@@ -53,6 +47,17 @@ const GroceryBudApp = () => {
 		setText("")
 		setEditing(false)
 		updateNotification("Item added!")
+	}
+
+	const updateNotification = (str) => {
+	
+		if(ref.current.timeout) clearTimeout(ref.current.timeout)  
+		setNotification(str)
+	
+		ref.current.timeout =  setTimeout(() => {
+				setNotification("")
+			
+		}, 5000) 
 	}
 
 	const insertItemAtPosition = (content, id, position) => {
@@ -69,6 +74,7 @@ const GroceryBudApp = () => {
 		setText("")
 		setEditing(false)
 		updateNotification("Item added!")
+		
 	}
 
 	const removeItemFromListButKeepOnHistory = (id) => {
@@ -82,7 +88,7 @@ const GroceryBudApp = () => {
 			setItems(getItemsFromLocalStorage())
 			setLastItemSentToHistory({...itemClicked, index})	 		
 			updateNotification("Item purchased! Moved to history")
- 
+ 	
 		}
 	}
 
@@ -94,8 +100,10 @@ const GroceryBudApp = () => {
 
 	useEffect(() => {	
 		let undoTimeout 
+		
 		if(showUndo){		
 			undoTimeout =  setTimeout(() => setShowUndo(false), 8000) 
+			
 		}
     return () => {
 			clearTimeout(undoTimeout)
@@ -113,19 +121,12 @@ const GroceryBudApp = () => {
 		}	
 	} 
 
-	const updateNotification = (str) => { 
-		if(ref.current.timeout) clearTimeout(ref.current.timeout)
-		setNotification(str)
-		ref.current.timeout = setTimeout(() => {
-			setNotification("")
-		},5000) 
-	}
-
+	
 	const handleEditInputChange = (text, item) => {
 		setEditing(true)
 		setEditInputValue({id: item.id, value: text})
 	}
-
+  
 	useEffect(() => {
 		if(inputRef.current){
 			inputRef.current.focus()
@@ -140,7 +141,7 @@ const GroceryBudApp = () => {
 		const value = items.find(i => i.id === id).text		
 		setEditInputValue({...editInputValue, value: value})		
 	}
-
+ 
 	const confirmEditItemWithEnterKey = (item,e) => {
 		if(editing && e.keyCode === 13){
 			saveItemsToLocalStorage([...items].map(it => 
@@ -152,14 +153,16 @@ const GroceryBudApp = () => {
 			setEditing(false)
 			setShowItemInput({id: null, state: false})		
 			updateNotification("Item Edited!")
+			
 		}
 	}
-
+ 
 	const handleClearAll = () => {
 		if(items.length > 0){
 			saveItemsToLocalStorage([])
 			setItems([])	 
 			updateNotification("List cleared!")
+		
 		}
 
 	}
@@ -174,22 +177,23 @@ const GroceryBudApp = () => {
 		setEditing(false)
 		setShowItemInput({id: null, state: false})
 		updateNotification("Item Edited!")
+	
 	}
 
 	const cancelItemEdition = (id) => {
 		setEditing(false)
 		setShowItemInput({id: null, state: false})
 	}
-
+ 
 	const restoreLastItemFromHistory = () => {
-		console.log(lastItemSentToHistory)  
+	 
 		insertItemAtPosition(lastItemSentToHistory.text, lastItemSentToHistory.id, lastItemSentToHistory.index)  
 	}
- 
-	return (
-		<>
+  
+	return (  
+		<> 
 		<h1>GROCERY BUD</h1>
-		<h3>{notification}</h3>
+		<h3>{notification}</h3> 
 		{showUndo &&
 		  <p
 				onClick={restoreLastItemFromHistory}

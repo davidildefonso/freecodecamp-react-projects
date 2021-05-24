@@ -107,9 +107,14 @@ describe("when list has only one item: ", () => {
 
 	beforeEach(() => { 
 		localStorage.clear() 
+		jest.clearAllTimers() 
 	})
 
-	afterEach(() => cleanup()) 
+	afterEach(() => {
+		jest.clearAllTimers()
+		cleanup()
+		  jest.useRealTimers();
+	}) 
 
 	test('after new item is added the input field is emptied ', () => {
 		const component = render(
@@ -497,6 +502,9 @@ describe("when list has only one item: ", () => {
 		userEvent.click(screen.getByText("undo")) 
  
 		expect(component.container).toHaveTextContent("bananas")
+
+		jest.clearAllTimers()
+		 
  	})
 
 })
@@ -513,8 +521,11 @@ describe("On multiple items on the list", () => {
 
   })
 
-	afterEach(() => cleanup())
-
+	afterEach(() => {
+		jest.clearAllTimers()
+		cleanup()
+	})
+  
  
 	test(`if edit button associated to an item is clicked it shows
  		an input for the item only, and user can edit it inmediately and correctly`, () => {	
@@ -800,6 +811,8 @@ describe("On multiple items on the list", () => {
 		const items =  item.parentElement.parentElement 
 	
 		expect(items).toHaveTextContent(/bananas.*grapes.*watermelon/)  
+
+		jest.clearAllTimers()
 		
  	})
 
@@ -912,7 +925,7 @@ describe("for both single item or multiple items on the list", () => {
 		const button = screen.getByText(/Submit/);
 		userEvent.click(button)
 
-		const item = screen.getByText("1 package of toilet paper") 
+		const item = screen.getByText("1 package of toilet paper")  
 
 		const editButton = item.parentElement.querySelector("button")
 		userEvent.click(editButton)
@@ -941,7 +954,7 @@ describe("for both single item or multiple items on the list", () => {
 		const component = render(
 				<App />
 			)
-		
+		 
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
@@ -970,10 +983,10 @@ describe("for both single item or multiple items on the list", () => {
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
 		userEvent.click(screen.getByText(/Submit/)) 
 
-		act(() => {
-			jest.advanceTimersByTime(4000) 
-		})	
-
+		act(() => { 
+			jest.advanceTimersByTime(4000)  
+		})	 
+  
 		expect(component.container).toHaveTextContent("Item added!")  
  
 		userEvent.type(component.container.querySelector("input"), "bananas") 
