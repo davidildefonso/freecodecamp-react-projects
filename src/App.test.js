@@ -532,7 +532,7 @@ describe("On multiple items on the list", () => {
  
 		const inputs = component.container.querySelectorAll('input')
 		expect(inputs).toHaveLength(2)
-	component.debug()
+	//component.debug()
  		userEvent.type(inputs[1], "a new lamborghini") 
 		
 		expect(inputs[1].value).toBe("a new lamborghini") 
@@ -998,7 +998,7 @@ describe("for both single item or multiple items on the list", () => {
 		 
 		act(() => {
 			jest.advanceTimersByTime(8000) 
-		})	
+		})	 
 
 		expect(component.container).not.toHaveTextContent("undo")
 	})

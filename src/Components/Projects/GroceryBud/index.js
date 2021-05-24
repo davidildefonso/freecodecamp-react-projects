@@ -11,6 +11,7 @@ const GroceryBudApp = () => {
 	const [showItemInput, setShowItemInput] = useState({id: null, state: false})
 	const ref = useRef({})
 	const [lastItemSentToHistory, setLastItemSentToHistory] = useState(null)
+	const [showUndo, setShowUndo] = useState(false)
 
 	useEffect(() => {
 		if(!getItemsFromLocalStorage()) setItems([])
@@ -47,16 +48,27 @@ const GroceryBudApp = () => {
 				item.id === id)				
 			saveItemsToLocalStorage(items.filter(item => item !== itemClicked))		
 			setItems(getItemsFromLocalStorage())
-			showUndo([],8000)					
+			setLastItemSentToHistory(itemClicked)			
 			updateNotification("Item purchased! Moved to history")
  
 		}
 	}
 
-	const showUndo = (newValue,delay) => {
-			setLastItemSentToHistory(newValue) 
-			setTimeout(() => setLastItemSentToHistory(null), delay) 
-	}
+
+
+	useEffect(() => {
+		if(lastItemSentToHistory) setShowUndo(true)
+	},[lastItemSentToHistory]) 
+
+	useEffect(() => {	
+		let undoTimeout 
+		if(showUndo){		
+			undoTimeout =  setTimeout(() => setShowUndo(false), 8000) 
+		}
+    return () => {
+			clearTimeout(undoTimeout)
+		} 
+	}, [showUndo]) 
 
 	const removeItem = (id) => {
 		if(!editing){
@@ -138,12 +150,12 @@ const GroceryBudApp = () => {
 	}
 
 
-
+ 
 	return (
 		<>
 		<h1>GROCERY BUD</h1>
 		<h3>{notification}</h3>
-		{lastItemSentToHistory && <p>undo</p>}
+		{showUndo &&  <p >undo</p>}   
 		<form>
 			<input 
 				value = {text}
