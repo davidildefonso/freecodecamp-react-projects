@@ -15,6 +15,8 @@ const GroceryBudApp = () => {
 	const [showNavbar, setShowNavbar] = useState(false)
 	const [showHistory, setShowHistory] = useState(false) 
 	const [historyItems, setHistoryItems] = useState([])
+	const [showModal, setShowModal] = useState(false)
+	const [itemIdToBeDeleted, setItemIdToBeDeleted] = useState(null)
 
 	useEffect(() => {
 		setItems(getItemsFromLocalStorage())	
@@ -47,7 +49,7 @@ const GroceryBudApp = () => {
 		e.preventDefault()
 		const id = new Date().getTime().toString()
 		if(text){	
-			addItem(text,id)			
+			addItem(text,id)			 
 		}		 
 	} 
 
@@ -126,13 +128,19 @@ const GroceryBudApp = () => {
 		} 
 	}, [showUndo]) 
 
-	const removeItem = (id) => {
-		if(!editing){
+	const showRemoveItemConfirmationModal = (id) => {
+		setShowModal(true)
+		setItemIdToBeDeleted(id)
+	}
+
+	const removeItem = (e) => { 
+		e.preventDefault()
+		if(itemIdToBeDeleted){
 			saveItemsToLocalStorage([...items].filter(item => 
-				item.id !== id  ))
+				item.id !== itemIdToBeDeleted  ))
 			setItems(getItemsFromLocalStorage())
 			updateNotification("Item removed from list!")
-		
+			setShowModal(false)
 
 		}	
 	} 
@@ -226,6 +234,21 @@ const GroceryBudApp = () => {
 		setShowHistory(false)
 	} 
 
+	const cancelRemoveItem = (e) => {
+		e.preventDefault()
+		setShowModal(false)
+	}
+
+	const modalStyle = {
+		position: "fixed",
+		zIndex: 10,
+		width: "100vw",
+		height: "100vh",
+		top:0,
+
+
+	}  
+
 
 	return (  
 		<> 
@@ -313,7 +336,9 @@ const GroceryBudApp = () => {
 											<button
 												onClick={() => startEditingItem(item.id) }
 											>Edit</button> 
-											<button onClick={() => removeItem(item.id)}>Remove</button>
+											<button 
+												onClick={() => showRemoveItemConfirmationModal(item.id)}
+											>Remove</button>
 										</>
 									}
 							
@@ -326,6 +351,30 @@ const GroceryBudApp = () => {
 					<button
 						onClick={handleClearAll}
 					>Clear All</button>
+
+					{showModal &&  
+						<div onClick = {cancelRemoveItem} style={modalStyle} >
+							<span
+								onClick = {cancelRemoveItem}
+							>×</span>
+							<form>
+								<div>
+									<h1>Confirm Delete</h1>
+									<p>Are you sure you want to delete the item from list?</p>							
+									<div> 
+										<button
+											onClick =  {removeItem}
+										>Yes</button>
+										<button
+											onClick = {cancelRemoveItem}
+										>No</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					}
+				
+ 
 				</>
 		
 		}

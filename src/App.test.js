@@ -36,8 +36,30 @@ describe("setup initial", () => {
 		expect(screen.getByText(/Clear All/)).toBeDefined()
 
 	})
+ 
+	test('on initial render it does not show the delete item modal', () => {  
+  
+		const component = render(<App />)
+
+		const input = component.container.querySelector('input')
+		const button = component.container.querySelector('button')
+
+		expect(input.getAttribute("placeholder")).toBe("new item")
+		expect(button).toHaveTextContent("Submit")
+		expect(screen.getByText(/Clear All/)).toBeDefined()
+
+		expect(component.container).not.toHaveTextContent("Confirm Delete")
+		expect(component.container).not.toHaveTextContent("Are you sure you want to delete the item from list?")
+		expect(component.container).not.toHaveTextContent("Yes")
+		expect(component.container).not.toHaveTextContent("No")
+		expect(component.container).not.toHaveTextContent("×")
+	})
 
 })
+
+
+
+
 
 describe("If no items added yet: ", () =>  {
 
@@ -473,14 +495,81 @@ describe("when list has only one item: ", () => {
 
 
 
-	test("on remove button pressed it deletes de item from the list",() =>{
+	// test("on remove button pressed it deletes de item from the list",() =>{
+	// 	const component = render(<App></App>)
+	// 	userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+	// 	userEvent.click(screen.getByText(/Submit/)) 
+	// 	userEvent.click(screen.getByText(/Remove/))
+	// 	expect(component.container).not.toHaveTextContent("1 kg of sugar") 
+
+	// })
+
+	test("on remove button pressed it promps user to confirm deletion",() =>{
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
 		userEvent.click(screen.getByText(/Submit/)) 
 		userEvent.click(screen.getByText(/Remove/))
+		expect(component.container).toHaveTextContent("Confirm Delete") 
+		expect(component.container).toHaveTextContent("Are you sure you want to delete the item from list?")
+		expect(component.container).toHaveTextContent("Yes")
+		expect(component.container).toHaveTextContent("No")   
+
+	})
+
+	test("when  remove is confirmed by user it deletes de item from the list",() =>{
+		const component = render(<App></App>)
+		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Remove/))
+		userEvent.click(screen.getByText(/Yes/))
 		expect(component.container).not.toHaveTextContent("1 kg of sugar") 
 
 	})
+
+	test("when  remove is CANCELLED confirmed by user it does not make any modification to the list and modal is hidden",() =>{
+		const component = render(<App></App>)
+		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Remove/))
+		userEvent.click(screen.getByText(/No/))
+		expect(component.container).toHaveTextContent("1 kg of sugar")
+
+		expect(component.container).not.toHaveTextContent("Confirm Delete") 
+		expect(component.container).not.toHaveTextContent("Are you sure you want to delete the item from list?")
+		expect(component.container).not.toHaveTextContent("Yes") 
+		expect(component.container).not.toHaveTextContent("No")    
+
+	}) 
+
+	test("when close icon × on modal is clicked by user it does not make any modification to the list and modal is hidden",() =>{
+		const component = render(<App></App>)
+		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Remove/))
+		userEvent.click(screen.getByText(/×/))
+		expect(component.container).toHaveTextContent("1 kg of sugar")
+
+		expect(component.container).not.toHaveTextContent("Confirm Delete") 
+		expect(component.container).not.toHaveTextContent("Are you sure you want to delete the item from list?")
+		expect(component.container).not.toHaveTextContent("Yes")  
+		expect(component.container).not.toHaveTextContent("No")    
+
+	}) 
+
+	test("when modal is shown a click anywhere on the screen but a  button of the modal, closes the modal",() =>{
+		const component = render(<App></App>)
+		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
+		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Remove/))
+		userEvent.click(screen.getByText(/Confirm Delete/)) 
+		expect(component.container).toHaveTextContent("1 kg of sugar")
+
+		expect(component.container).not.toHaveTextContent("Confirm Delete") 
+		expect(component.container).not.toHaveTextContent("Are you sure you want to delete the item from list?")
+		expect(component.container).not.toHaveTextContent("Yes")  
+		expect(component.container).not.toHaveTextContent("No")    
+     
+	})  
 
 	
 	test("on clear all button click all items from the list are removed", () => {
@@ -756,7 +845,7 @@ describe("On multiple items on the list", () => {
 	}) 
 
 	 
-	test(`on  an item  remove button click y removes the associated item from the list`, () => {
+	test(`if an item is confirmed to be removed  the associated item from the list is removed`, () => {
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
 		userEvent.click(screen.getByText(/Submit/))  
@@ -768,6 +857,7 @@ describe("On multiple items on the list", () => {
 		userEvent.click(screen.getByText(/Submit/)) 
 
 		userEvent.click(screen.getAllByText(/Remove/)[0])
+		userEvent.click(screen.getByText(/Yes/)) 
 
 		expect(component.container).not.toHaveTextContent("1 kg of sugar") 
 
@@ -875,7 +965,7 @@ describe("for both single item or multiple items on the list", () => {
 
 	})
 
-	test("when item remove button is clicked is deleted it shows a notification with the text 'item deleted' for 5 seconds", () => {
+	test("when item remove is confirmed, the item is deleted and app shows a notification with the text 'item deleted' for 5 seconds", () => {
 		jest.useFakeTimers()
 
 		let component = render(<App></App>) 
@@ -884,6 +974,7 @@ describe("for both single item or multiple items on the list", () => {
 
 		const item = screen.getByText(/1 kg of sugar/)
 		userEvent.click(item.parentElement.querySelectorAll("button")[1]) 
+		userEvent.click(screen.getByText(/Yes/))   
  
 		expect(component.container).not.toHaveTextContent("Item added!")  
 		expect(component.container).toHaveTextContent("Item removed from list!")  
