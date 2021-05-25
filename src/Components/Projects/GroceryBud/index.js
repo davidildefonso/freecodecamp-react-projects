@@ -244,8 +244,8 @@ const GroceryBudApp = () => {
 		zIndex: 10,
 		width: "100vw",
 		height: "100vh",
-		top:0,
-
+		top:0,		
+		background : "rgba(0,0,0,0.4)"
 
 	}  
 
