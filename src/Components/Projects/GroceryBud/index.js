@@ -137,6 +137,12 @@ const GroceryBudApp = () => {
 		}	
 	} 
 
+	const removeItemFromHistoryList = (id) => {
+			saveItemsToLocalStorage(historyItems.filter(item => 
+				item.id !== id  ), "history")
+			setHistoryItems(getItemsFromLocalStorage("history"))
+	} 
+
 	
 	const handleEditInputChange = (text, item) => {
 		setEditing(true)
@@ -174,7 +180,8 @@ const GroceryBudApp = () => {
 	}
  
 	const handleClearAll = () => {
-		if(items){
+
+		if(items.length > 0){
 			saveItemsToLocalStorage([])
 			setItems([])	 
 			updateNotification("List cleared!")
@@ -203,7 +210,10 @@ const GroceryBudApp = () => {
  
 	const restoreLastItemFromHistory = () => {
 	 	setShowUndo(false)
-		insertItemAtPosition(lastItemSentToHistory.text, lastItemSentToHistory.id, lastItemSentToHistory.index)  
+		insertItemAtPosition(lastItemSentToHistory.text,
+		 lastItemSentToHistory.id,
+		 lastItemSentToHistory.index)
+		removeItemFromHistoryList(lastItemSentToHistory.id)   
 	}
   
 

@@ -1065,6 +1065,16 @@ describe("for both single item or multiple items on the list", () => {
 		userEvent.click(screen.getByText("undo")) 	 
 		expect(component.container).not.toHaveTextContent("undo")
 	})
+
+	test("when item is restored with undo button it is removed from history", () => {	
+		const component = render(<App></App>) 
+		userEvent.type(component.container.querySelector("input"), "bananas")
+		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText("bananas")) 
+		userEvent.click(screen.getByText("undo")) 
+		userEvent.click(screen.getByText("History")) 	 
+		expect(component.container).not.toHaveTextContent("bananas") 
+	})
  
 
 	test("when at least one item is finished the history | list option is showed ", () => {
