@@ -1168,15 +1168,15 @@ describe("for both single item or multiple items on the list", () => {
 	})
  
 
-	test("when at least one item is finished the history | list option is showed ", () => {
-		jest.useFakeTimers() 
-		const component = render(<App></App>) 
-		userEvent.type(component.container.querySelector("input"), "bananas")
-		userEvent.click(screen.getByText(/Submit/)) 		
-		userEvent.click(screen.getByText("bananas"))  
-		expect(component.container).toHaveTextContent("History")
-		expect(component.container).toHaveTextContent("List")
-	})
+	// test("when at least one item is finished the history | list option is showed ", () => {
+	// 	jest.useFakeTimers() 
+	// 	const component = render(<App></App>) 
+	// 	userEvent.type(component.container.querySelector("input"), "bananas")
+	// 	userEvent.click(screen.getByText(/Submit/)) 		
+	// 	userEvent.click(screen.getByText("bananas"))  
+	// 	expect(component.container).toHaveTextContent("History")
+	// 	expect(component.container).toHaveTextContent("List")
+	// })
    
 
 	test("if history link is clicked the history tab is showed ", () => {
@@ -1189,6 +1189,7 @@ describe("for both single item or multiple items on the list", () => {
 		expect(component.container).toHaveTextContent(/HISTORY/)
 		expect(component.container).toHaveTextContent(/ID/) 
 		expect(component.container).toHaveTextContent(/ITEM/)
+		// 		expect(component.container).toHaveTextContent(/STATUS/)
 		expect(component.container).not.toHaveTextContent(/new item/)
 		expect(component.container).not.toHaveTextContent(/Submit/)
 		expect(component.container).not.toHaveTextContent(/Clear All/)
@@ -1211,6 +1212,14 @@ describe("for both single item or multiple items on the list", () => {
 
 		expect(component.container).toHaveTextContent(/milk.*honey.*bananas/)   
 	}) 
+
+	// test("when an item is removed the item appears in history with status 'Removed'", () => {
+	// })
+
+	// test("when an item is finished from list the item appears in history with status 'Purchased'", () => {
+	// })
+
+
 
 	test("when user clicks 'clear all' with empty list it does not show any notification", () => {
 		const component = render(<App></App>) 
