@@ -1,5 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react'
 import Modal from '../Modal'
+import UndoIcon from '../Undo'
+import NewItemForm from '../NewItemForm'
+import ItemsList from '../ItemsList'
 
 const List = ({items, setItems, getItemsFromLocalStorage,
 	historyItems, setHistoryItems, setNotification 
@@ -8,9 +11,8 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 	const [showUndo, setShowUndo] = useState(false) 
 	const [text, setText] = useState("")
 	const [editing, setEditing] = useState(false)
-	const [editInputValue, setEditInputValue] = useState({id: null, value: ""})
-	const inputRef = useRef(null) 
-	const [showItemInput, setShowItemInput] = useState({id: null, state: false})
+
+
 	const ref = useRef({})
 	const [lastItemSentToHistory, setLastItemSentToHistory] = useState(null)
 	const [showModal, setShowModal] = useState(false)
@@ -28,20 +30,13 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 	useEffect(() => {
 		if(lastItemSentToHistory) {	
 			//setShowNavbar(true)
+			setShowUndo(true)
 			const currentItems = getItemsFromLocalStorage("history")
 			const newItem = [lastItemSentToHistory]	
 			saveItemsToLocalStorage( newItem.concat(currentItems) , "history")
 		} 
 	//	else setShowNavbar(false)
 	},[lastItemSentToHistory])
-
-
-
-	useEffect(() => {
-		if(lastItemSentToHistory) setShowUndo(true)
-	},[lastItemSentToHistory]) 
-
-
 
 
 	const removeItem = (e) => { 
@@ -94,13 +89,7 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 	}
 
 
-	const handleSubmit = (e) => {
-		e.preventDefault()
-		const id = new Date().getTime().toString()
-		if(text){	
-			addItem(text,id)			 
-		}		 
-	} 
+	
 
 	const addItem = (content, id) => {
 		saveItemsToLocalStorage(items.concat({
@@ -115,32 +104,6 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 		updateNotification("Item added!")
 	}
 
-	const handleEditInputChange = (text, item) => {
-		setEditing(true)
-		setEditInputValue({id: item.id, value: text})
-	}
-
-		const startEditingItem = (id) => {
-		setShowItemInput( { id: id, state: true })
-		setEditing(true)
-		const value = items.find(i => i.id === id).text		
-		setEditInputValue({...editInputValue, value: value})		
-	}
- 
-	const confirmEditItemWithEnterKey = (item,e) => {
-		if(editing && e.keyCode === 13){
-			saveItemsToLocalStorage([...items].map(it => 
-				item.id === it.id
-					? {...it, text: editInputValue.value}
-					: it
-			))
-			setItems(getItemsFromLocalStorage())
-			setEditing(false)
-			setShowItemInput({id: null, state: false})		
-			updateNotification("Item Edited!")
-			
-		}
-	}
 
 	const handleClearAll = () => {
 
@@ -153,23 +116,7 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 
 	}
 
-	const confirmEditItemWithClick = (id) => {	
-		saveItemsToLocalStorage([...items].map(item => 
-			item.id === id
-				? {...item, text: editInputValue.value}
-				: item
-		))
-		setItems(getItemsFromLocalStorage())
-		setEditing(false)
-		setShowItemInput({id: null, state: false})
-		updateNotification("Item Edited!")
 	
-	}
-
-	const cancelItemEdition = (id) => {
-		setEditing(false)
-		setShowItemInput({id: null, state: false})
-	}
 
 	const restoreLastItemFromHistory = () => {
 	 	setShowUndo(false)
@@ -180,27 +127,17 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 	}
 
 
-	const showRemoveItemConfirmationModal = (id) => {
-		setShowModal(true)
-		setItemIdToBeDeleted(id)
+
+
+	 
+
+
+
+	const cancelRemoveItem = (e) => {
+		e.preventDefault()
+		setShowModal(false)
 	}
 
-	const removeItemFromListButKeepOnHistory = (id) => {
-		if(!editing){
-			let index
-			const itemClicked = items.find((item, idx) => {
-				index = idx
-				return item.id === id 
-			})				
-			saveItemsToLocalStorage(items.filter(item => item !== itemClicked))		
-			setItems(getItemsFromLocalStorage())
-		
-			setHistoryItems(historyItems.concat(itemClicked))
-			setLastItemSentToHistory({...itemClicked, index})	 		
-			updateNotification("Item purchased! Moved to history")
- 	
-		}
-	}
 
 	useEffect(() => {	
 		let undoTimeout 
@@ -215,90 +152,35 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 	}, [showUndo]) 
 
 
-	 
-	useEffect(() => {
-		if(inputRef.current){
-			inputRef.current.focus()
-			inputRef.current.select() 
-		}
-
-	},[showItemInput])
-
-
-
-
-
-	const cancelRemoveItem = (e) => {
-		e.preventDefault()
-		setShowModal(false)
-	}
-
-
 
 	return (
 		<div>			 
-			{showUndo &&
-				<p
-					onClick={restoreLastItemFromHistory}
-				>undo</p>}   
-			<form>
-				<input 
-					value = {text}
-					placeholder="new item"
-					onChange={(e) => setText(e.target.value)}
-				></input>
-				<button
-					onClick={handleSubmit} 
-				>Submit</button>
-			</form> 
+			<UndoIcon
+				showUndo = {showUndo}
+				restoreLastItemFromHistory = {restoreLastItemFromHistory}
+			></UndoIcon>  
+		
+			<NewItemForm
+				text = {text}
+				setText = {setText}
+				addItem = {addItem}
+			></NewItemForm>
 
-			{
-				<div>
-					{items &&  items.map(item => 				
+			<ItemsList
+				items={items}
+				setItems = {setItems}
+				editing = {editing}
+				setEditing = {setEditing}
+				getItemsFromLocalStorage = {getItemsFromLocalStorage}
+				saveItemsToLocalStorage = {saveItemsToLocalStorage}
+				historyItems = {historyItems}
+				setHistoryItems = {setHistoryItems}
+				setLastItemSentToHistory = {setLastItemSentToHistory}
+				updateNotification = {updateNotification}
+				setShowModal = {setShowModal}
+				setItemIdToBeDeleted = {setItemIdToBeDeleted}
+			></ItemsList>
 
-						<div 
-							key={item.id}>
-						
-							{!showItemInput.state 
-								?	<div 	
-										onClick={() => removeItemFromListButKeepOnHistory(item.id)}
-									>{item.text}</div>
-								:  showItemInput.id === item.id
-									?	<div>
-											<input 
-												ref={inputRef}
-												value ={editInputValue.value}
-												onChange = {(e) => handleEditInputChange(e.target.value, item) }
-												onKeyDown = {(e) => confirmEditItemWithEnterKey(item, e)}
-											></input> 
-										</div>
-									: <div 	
-											onClick={() => removeItemFromListButKeepOnHistory(item.id)}
-										>{item.text}</div>
-							}
-							{editing && showItemInput.id === item.id
-								? <>
-										<button
-											onClick={() => confirmEditItemWithClick(item.id, item.value) }
-										>OK</button> 
-										<button onClick={() => cancelItemEdition(item.id)}>Cancel</button>
-								</>
-							:	<>
-									<button
-										onClick={() => startEditingItem(item.id) }
-									>Edit</button> 
-									<button 
-										onClick={() => showRemoveItemConfirmationModal(item.id)}
-									>Remove</button>
-								</>
-							}
-					
-						</div>
-					
-					
-					)}
-				</div>
-			}
 			<button
 				onClick={handleClearAll}
 			>Clear All</button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Navbar from './Components/Navbar'
 import History from './Components/History'
 import List from './Components/List'
@@ -8,8 +8,6 @@ const GroceryBudApp = () => {
 
 	const [notification, setNotification] = useState("")
 	const [items, setItems] = useState([])
-	
-
 	//const [showNavbar, setShowNavbar] = useState(false)
 	const [showHistory, setShowHistory] = useState(false) 
 	const [historyItems, setHistoryItems] = useState([])
@@ -27,9 +25,7 @@ const GroceryBudApp = () => {
 		if(localStorage.getItem(field))	return JSON.parse(localStorage.getItem(field))
 		else return []		
 	} 
-
-
-
+	
 	return (  
 		<> 
 		<h1>GROCERY BUD</h1>
