@@ -1,14 +1,23 @@
 import React from 'react'
 
-const Navbar = ({handleListLinkClick, handleHistoryLinkClick}) => {
+const Navbar = ({setShowHistory}) => {
+
+	const displayHistorySection = () => { 
+		setShowHistory(true)		
+	}
+
+	const displayListSection = () => {
+		setShowHistory(false)
+	} 
+
 	return (
 		<div>
 			<span
-				onClick={handleListLinkClick}
+				onClick={displayListSection}  
 			>List</span>
 			<span>|</span> 
 			<span
-				onClick={handleHistoryLinkClick}
+				onClick={displayHistorySection}
 			>History</span> 
 		</div>
 	)
