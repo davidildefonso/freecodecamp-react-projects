@@ -1,8 +1,8 @@
 import React, {useState, useRef, useEffect} from 'react'
+import { saveItemsToLocalStorage, getItemsFromLocalStorage} from '../../Utils/Functions' 
 
-const ItemsList = ({items, setItems, editing, setEditing, saveItemsToLocalStorage,
-	getItemsFromLocalStorage, historyItems, setHistoryItems, setLastItemSentToHistory,
-	updateNotification , setShowModal, setItemIdToBeDeleted
+const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHistory,
+	updateNotification , setShowModal, setItemIdToBeDeleted, setUpdateHistoryList
 }) => { 
 
 	const inputRef = useRef(null) 
@@ -80,11 +80,9 @@ const ItemsList = ({items, setItems, editing, setEditing, saveItemsToLocalStorag
 			})				
 			saveItemsToLocalStorage(items.filter(item => item !== itemClicked))		
 			setItems(getItemsFromLocalStorage()) 
-		
-			setHistoryItems(historyItems.concat(itemClicked))
+			setUpdateHistoryList({state: true, action: "addItem", id: id ,body: itemClicked})
 			setLastItemSentToHistory({...itemClicked, index})	 		
-			updateNotification("Item purchased! Moved to history")
- 	
+			updateNotification("Item purchased! Moved to history") 	
 		}
 	}
 

@@ -3,16 +3,14 @@ import Modal from '../Modal'
 import UndoIcon from '../Undo'
 import NewItemForm from '../NewItemForm'
 import ItemsList from '../ItemsList'
+import { saveItemsToLocalStorage, getItemsFromLocalStorage} from '../../Utils/Functions' 
 
-const List = ({items, setItems, getItemsFromLocalStorage,
-	historyItems, setHistoryItems, setNotification 
-}) => {
-
+const List = ({setUpdateHistoryList, setNotification }) => { 
+	
+	const [items, setItems] = useState([]) 
 	const [showUndo, setShowUndo] = useState(false) 
 	const [text, setText] = useState("")
 	const [editing, setEditing] = useState(false)
-
-
 	const ref = useRef({})
 	const [lastItemSentToHistory, setLastItemSentToHistory] = useState(null)
 	const [showModal, setShowModal] = useState(false)
@@ -20,12 +18,7 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 
  	useEffect(() => {
 		setItems(getItemsFromLocalStorage())	
-		setHistoryItems(getItemsFromLocalStorage("history"))	
 	},[]) 
-	
-	const saveItemsToLocalStorage = (items, field = "items") => {
-		localStorage.setItem(field, JSON.stringify(items))
-	}
 
 	useEffect(() => {
 		if(lastItemSentToHistory) {	
@@ -51,13 +44,9 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 		}	
 	} 
 
-	const removeItemFromHistoryList = (id) => {
-			saveItemsToLocalStorage(historyItems.filter(item => 
-				item.id !== id  ), "history")
-			setHistoryItems(getItemsFromLocalStorage("history"))
-	} 
-
-	
+	const removeItemFromHistoryList = (id) => {	
+		setUpdateHistoryList({state: true, action: "remove", id: id})
+	} 	
 
 	const insertItemAtPosition = (content, id, position) => {
 		const items1 = items.slice(0,position)
@@ -71,34 +60,25 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 		setItems(getItemsFromLocalStorage())	 	
 		setText("")
 		setEditing(false)
-		updateNotification("Item added!")
-		
+		updateNotification("Item added!")		
 	}
 
 	
 	
-	const updateNotification = (str) => {
-	
+	const updateNotification = (str) => {	
 		if(ref.current.timeout) clearTimeout(ref.current.timeout)  
-		setNotification(str)
-	
+		setNotification(str)	
 		ref.current.timeout =  setTimeout(() => {
-				setNotification("")
-			
+				setNotification("")			
 		}, 5000) 
 	}
-
-
 	
-
 	const addItem = (content, id) => {
 		saveItemsToLocalStorage(items.concat({
 				id: id,
 				text: content
-			}))
-			
+			}))			
 		setItems(getItemsFromLocalStorage())	
-	
 		setText("")
 		setEditing(false)
 		updateNotification("Item added!")
@@ -106,32 +86,24 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 
 
 	const handleClearAll = () => {
-
 		if(items.length > 0){
 			saveItemsToLocalStorage([])
 			setItems([])	 
-			updateNotification("List cleared!")
-		
+			updateNotification("List cleared!")		
 		}
-
 	}
 
 	
 
 	const restoreLastItemFromHistory = () => {
 	 	setShowUndo(false)
-		insertItemAtPosition(lastItemSentToHistory.text,
-		 lastItemSentToHistory.id,
-		 lastItemSentToHistory.index)
+		insertItemAtPosition(
+			lastItemSentToHistory.text,
+		 	lastItemSentToHistory.id,
+		 	lastItemSentToHistory.index
+		)		
 		removeItemFromHistoryList(lastItemSentToHistory.id)   
 	}
-
-
-
-
-	 
-
-
 
 	const cancelRemoveItem = (e) => {
 		e.preventDefault()
@@ -140,11 +112,9 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 
 
 	useEffect(() => {	
-		let undoTimeout 
-		
+		let undoTimeout 		
 		if(showUndo){		
-			undoTimeout =  setTimeout(() => setShowUndo(false), 8000) 
-			
+			undoTimeout =  setTimeout(() => setShowUndo(false), 8000) 			
 		}
     return () => {
 			clearTimeout(undoTimeout)
@@ -170,15 +140,12 @@ const List = ({items, setItems, getItemsFromLocalStorage,
 				items={items}
 				setItems = {setItems}
 				editing = {editing}
-				setEditing = {setEditing}
-				getItemsFromLocalStorage = {getItemsFromLocalStorage}
-				saveItemsToLocalStorage = {saveItemsToLocalStorage}
-				historyItems = {historyItems}
-				setHistoryItems = {setHistoryItems}
+				setEditing = {setEditing}			
 				setLastItemSentToHistory = {setLastItemSentToHistory}
 				updateNotification = {updateNotification}
 				setShowModal = {setShowModal}
 				setItemIdToBeDeleted = {setItemIdToBeDeleted}
+				setUpdateHistoryList = {setUpdateHistoryList}
 			></ItemsList>
 
 			<button
