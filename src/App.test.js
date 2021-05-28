@@ -2,7 +2,7 @@ import { render, screen, fireEvent, cleanup, act  } from '@testing-library/react
 import App from './App';
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event'
-import { prettyDOM } from '@testing-library/dom'
+import { getByText, prettyDOM } from '@testing-library/dom'
 import GroceryBudApp from './Components/Projects/GroceryBud'
 
 
@@ -1269,12 +1269,15 @@ describe("on initial render and screen size ", () => {
 
 	})
  
-	test(" is for a tablet, its screen width is more than 768px and less than 992px  only items List is shown with descriptive buttons labels ", () => {
+	test.only(" is for a tablet, its screen width is more than 768px and less than 992px  only items List is shown with descriptive buttons labels ", () => {
 		const component = render(<App></App>)
+		console.log(window.innerWidth)
 		resizeWindow(800, 500)
-		expect(component.container).not.toHaveTextContent(/HISTORY/) 
-		expect(component.container).not.toHaveTextContent("ID")
-		expect(component.container).not.toHaveTextContent(/ITEM/)
+			console.log(window.innerWidth)
+		expect(screen.getByText("HISTORY")).not.toBeVisible()    
+		expect(screen.getByText("ID")).not.toBeVisible()  
+		expect(screen.getByText("ITEM")).not.toBeVisible()   
+	
 	//	expect(component.container).not.toHaveTextContent("STATUS")
 	
 	})
