@@ -1,8 +1,9 @@
 import React from 'react'
+import { Content } from './Elements'
 
 const Notification = ({notification}) => {
 	return (
-		<h3>{notification}</h3>  
+		<Content>{notification}</Content>  
 	)
 }
 

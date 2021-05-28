@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { saveItemsToLocalStorage, getItemsFromLocalStorage} from '../../Utils/Functions' 
+import { Container } from './Elements'
 
 const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 
@@ -33,7 +34,7 @@ const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 	}  
 
 	return (
-		<div>
+		<Container>
 			<h3>HISTORY</h3>
 			<div>
 				<div>
@@ -51,7 +52,7 @@ const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 				</div>
 					
 			</div>
-		</div>
+		</Container> 
 	)
 } 
 

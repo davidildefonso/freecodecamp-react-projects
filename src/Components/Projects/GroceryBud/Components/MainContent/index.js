@@ -1,6 +1,8 @@
-import React, { useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import History from '../History'
-import List from '../List'  
+import List from '../List' 
+import { Container } from './Elements' 
+import { getWindowWidth } from '../../Utils/Functions'
 
 const MainContent = ({showHistory, setNotification}) => {  
 
@@ -8,20 +10,23 @@ const MainContent = ({showHistory, setNotification}) => {
 		state: false, action: null, id: null })
 
 	return (
-		<>
-		{ showHistory 
-			? <History
+		<Container>
+		{/* { !showHistory 
+			?  */}
+	
+				 <List			
+					setNotification = {setNotification}	 	
+					setUpdateHistoryList = {setUpdateHistoryList}
+				></List>
+			{/* :  */}
+					<History
 					updateHistoryList = {updateHistoryList}
 					showHistory = {showHistory}
 					setUpdateHistoryList = {setUpdateHistoryList}
 				></History>
-			: <List			
-					setNotification = {setNotification}	 	
-					setUpdateHistoryList = {setUpdateHistoryList}
-				></List>
 		
-		}
-		</>
+		{/* } */}
+		</Container>
 	)
 }
 

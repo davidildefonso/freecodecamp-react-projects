@@ -4,6 +4,7 @@ import UndoIcon from '../Undo'
 import NewItemForm from '../NewItemForm'
 import ItemsList from '../ItemsList'
 import { saveItemsToLocalStorage, getItemsFromLocalStorage} from '../../Utils/Functions' 
+import { Container } from './Elements'
 
 const List = ({setUpdateHistoryList, setNotification }) => { 
 	
@@ -124,7 +125,7 @@ const List = ({setUpdateHistoryList, setNotification }) => {
 
 
 	return (
-		<div>			 
+		<Container>			 
 			<UndoIcon
 				showUndo = {showUndo}
 				restoreLastItemFromHistory = {restoreLastItemFromHistory}
@@ -160,7 +161,7 @@ const List = ({setUpdateHistoryList, setNotification }) => {
 		
 
 				
-		</div>
+		</Container>
 	)
 }
 

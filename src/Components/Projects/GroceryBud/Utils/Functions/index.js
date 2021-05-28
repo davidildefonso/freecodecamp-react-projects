@@ -6,3 +6,8 @@ export const getItemsFromLocalStorage = (field= "items") => {
 export const saveItemsToLocalStorage = (items, field = "items") => {
 	localStorage.setItem(field, JSON.stringify(items))
 }
+
+
+export const getScrollPos = () => window.pageYOffset 
+
+export const getWindowWidth = () => window.innerWidth 

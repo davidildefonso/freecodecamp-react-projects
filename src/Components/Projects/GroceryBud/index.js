@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Navbar from './Components/Navbar'
 import Notification from './Components/Notification'
 import MainContent from './Components/MainContent'
+import { Container, Title } from './Elements'
 
 const GroceryBudApp = () => {
 
@@ -9,19 +10,19 @@ const GroceryBudApp = () => {
 	const [showHistory, setShowHistory] = useState(false) 	
 
 	return (  
-		<> 
-		<h1>GROCERY BUD</h1>
-		<Notification
-			notification = {notification}
-		></Notification>
-		<Navbar
-			setShowHistory = {setShowHistory}
-		></Navbar>	
-		<MainContent 
-			showHistory={showHistory}
-			setNotification = {setNotification}
-		></MainContent>	
-		</>
+		<Container> 
+			<Title>GROCERY BUD</Title>
+			<Notification
+				notification = {notification}
+			></Notification>
+			<Navbar
+				setShowHistory = {setShowHistory}
+			></Navbar>	
+			<MainContent 
+				showHistory={showHistory}
+				setNotification = {setNotification}
+			></MainContent>	
+		</Container>
 	)
 }
  

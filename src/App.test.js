@@ -1235,3 +1235,66 @@ describe("for both single item or multiple items on the list", () => {
 })
 
 
+
+
+
+
+describe("on initial render and screen size ", () => {
+
+	const resizeWindow = (x, y) => {
+		window.innerWidth = x;
+		window.innerHeight = y;
+		window.dispatchEvent(new Event('resize'));
+	}
+
+	beforeEach(() => {
+    localStorage.clear()
+		 
+
+  })
+
+	afterEach(() =>  {
+		jest.clearAllTimers()
+		cleanup()
+	})
+
+
+
+	test("is for a desktop, its screen width is more than or equal to 992px item list and history are shown on the screen", () => {
+		const component = render(<App></App>)
+		expect(component.container).toHaveTextContent("History")
+		expect(component.container).toHaveTextContent("ID")
+		expect(component.container).toHaveTextContent(/ITEM/)
+	//	expect(component.container).toHaveTextContent("STATUS")  
+
+	})
+ 
+	test(" is for a tablet, its screen width is more than 768px and less than 992px  only items List is shown with descriptive buttons labels ", () => {
+		const component = render(<App></App>)
+		resizeWindow(800, 500)
+		expect(component.container).not.toHaveTextContent(/HISTORY/) 
+		expect(component.container).not.toHaveTextContent("ID")
+		expect(component.container).not.toHaveTextContent(/ITEM/)
+	//	expect(component.container).not.toHaveTextContent("STATUS")
+	
+	})
+
+	test(" is for a mobile, its screen width is less than 768px  only items List is shown with icons only ", () => {
+		const component = render(<App></App>)
+		resizeWindow(500, 500)
+		expect(component.container).not.toHaveTextContent("ID")
+		expect(component.container).not.toHaveTextContent(/ITEM/)
+	//	expect(component.container).not.toHaveTextContent("STATUS")
+		expect(component.container).not.toHaveTextContent(/Add/)
+		expect(component.container).not.toHaveTextContent("Edit")
+		expect(component.container).not.toHaveTextContent("Remove")
+	
+	})
+	
+	
+
+
+
+})
+
+

@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-	width: 100vw;
+	width: 0%;
+	
 
+	@media only screen and (min-width: 992px) {
+		width: 40%
 
-`
-
-export const Title = styled.h1`
-
-
+	
+	}
 
 `
