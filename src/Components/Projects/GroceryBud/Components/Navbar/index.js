@@ -1,4 +1,8 @@
 import React from 'react'
+import {Container} from './Elements'
+
+
+
 
 const Navbar = ({setShowHistory}) => {
 
@@ -11,7 +15,7 @@ const Navbar = ({setShowHistory}) => {
 	} 
 
 	return (
-		<div>
+		<Container>
 			<span
 				onClick={displayListSection}  
 			>List</span>
@@ -19,7 +23,7 @@ const Navbar = ({setShowHistory}) => {
 			<span
 				onClick={displayHistorySection}
 			>History</span> 
-		</div>
+		</Container>
 	)
 }
 

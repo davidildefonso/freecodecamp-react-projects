@@ -1,5 +1,10 @@
 import React, {useState, useRef, useEffect} from 'react'
 import { saveItemsToLocalStorage, getItemsFromLocalStorage} from '../../Utils/Functions' 
+import Button from '../Button'
+import { GrEdit } from 'react-icons/gr'
+import { ImCancelCircle } from 'react-icons/im'
+import { GiConfirmed } from 'react-icons/gi'
+import { SingleItem, ItemText } from './Elements'
 
 const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHistory,
 	updateNotification , setShowModal, setItemIdToBeDeleted, setUpdateHistoryList
@@ -90,44 +95,54 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 		<div>
 			{items &&  items.map(item => 				
 
-				<div 
+				<SingleItem 
 					key={item.id}>
 				
 					{!showItemInput.state 
-						?	<div 	
+						?	<ItemText 	
 								onClick={() => removeItemFromListButKeepOnHistory(item.id)}
-							>{item.text}</div>
+							>{item.text}</ItemText>
 						:  showItemInput.id === item.id
-							?	<div>
+							?	<ItemText>
 									<input 
 										ref={inputRef}
 										value ={editInputValue.value}
 										onChange = {(e) => handleEditInputChange(e.target.value, item) }
 										onKeyDown = {(e) => confirmEditItemWithEnterKey(item, e)}
 									></input> 
-								</div>
-							: <div 	
+								</ItemText>
+							: <ItemText 	
 									onClick={() => removeItemFromListButKeepOnHistory(item.id)}
-								>{item.text}</div>
+								>{item.text}</ItemText>
 					}
 					{editing && showItemInput.id === item.id
 						? <>
-								<button
-									onClick={() => confirmEditItemWithClick(item.id, item.value) }
-								>OK</button> 
-								<button onClick={() => cancelItemEdition(item.id)}>Cancel</button>
+								<Button
+									handleClick={() => confirmEditItemWithClick(item.id, item.value) }
+									text = "OK"
+								>
+									<GiConfirmed></GiConfirmed>
+								</Button> 
+								<Button 
+									handleClick={() => cancelItemEdition(item.id)}
+									text  = "Cancel"
+								>
+									<ImCancelCircle></ImCancelCircle>
+								</Button>
 						</>
 					:	<>
-							<button
-								onClick={() => startEditingItem(item.id) }
-							>Edit</button> 
-							<button 
-								onClick={() => showRemoveItemConfirmationModal(item.id)}
-							>Remove</button>
+							<Button
+								handleClick={() => startEditingItem(item.id) }
+								text  = "Edit"
+							>	<GrEdit></GrEdit></Button>  
+							<Button 
+								handleClick={() => showRemoveItemConfirmationModal(item.id)}
+								text  = "Remove"
+							>			<ImCancelCircle></ImCancelCircle></Button>
 						</>
 					}
 			
-				</div>
+				</SingleItem>
 			
 			
 			)}

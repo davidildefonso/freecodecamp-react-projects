@@ -22,7 +22,7 @@ describe("setup initial", () => {
 
 	});
 
-	test('on initial render it shows the form with input and its placeholder as well as the submit and clear all button', () => {
+	test('on initial render it shows the form with input and its placeholder as well as the add and clear all button', () => {
   
 		const component = render( 
 			<App /> 
@@ -32,7 +32,7 @@ describe("setup initial", () => {
 		const button = component.container.querySelector('button')
 
 		expect(input.getAttribute("placeholder")).toBe("new item")
-		expect(button).toHaveTextContent("Submit")
+		expect(button).toHaveTextContent("Add")
 		expect(screen.getByText(/Clear All/)).toBeDefined()
 
 	})
@@ -45,7 +45,7 @@ describe("setup initial", () => {
 		const button = component.container.querySelector('button')
 
 		expect(input.getAttribute("placeholder")).toBe("new item")
-		expect(button).toHaveTextContent("Submit")
+		expect(button).toHaveTextContent("Add")
 		expect(screen.getByText(/Clear All/)).toBeDefined()
 
 		expect(component.container).not.toHaveTextContent("Confirm Delete")
@@ -69,14 +69,14 @@ describe("If no items added yet: ", () =>  {
 
 	afterEach(() => cleanup()) 
 
-	test('if input is empty click on submit does nothing', () => {
+	test('if input is empty click on add does nothing', () => {
 		const handleSubmit = jest.fn()
 		handleSubmit.mockReturnValueOnce()
 		const component = render(
-			<App />
+			<App /> 
 		)
 
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const buttonList = component.container.querySelectorAll("button")
@@ -87,7 +87,7 @@ describe("If no items added yet: ", () =>  {
 	})
 	
 
-	test('if input is not empty click on submit shows the list ', () => {
+	test('if input is not empty click on add shows the list ', () => {
 		const component = render(
 			<App />
 		)
@@ -95,7 +95,7 @@ describe("If no items added yet: ", () =>  {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const buttonList = component.container.querySelectorAll("button")
@@ -104,7 +104,7 @@ describe("If no items added yet: ", () =>  {
 
 	})
 	
-	test('if input is not empty click on submit adds the input value to the list ', () => {
+	test('if input is not empty click on add adds the input value to the list ', () => {
 		const component = render( 
 			<App />
 		)
@@ -112,7 +112,7 @@ describe("If no items added yet: ", () =>  {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const div = screen.getByText("1 package of toilet paper")
@@ -146,7 +146,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const div = screen.getByText("1 package of toilet paper")
@@ -166,7 +166,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const div = screen.getByText("1 package of toilet paper")
@@ -195,7 +195,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper")
@@ -217,7 +217,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper")
@@ -247,7 +247,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper")
@@ -277,7 +277,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper") 
@@ -299,7 +299,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper") 
@@ -360,7 +360,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper") 
@@ -387,7 +387,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper") 
@@ -414,7 +414,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper") 
@@ -445,7 +445,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper") 
@@ -473,7 +473,7 @@ describe("when list has only one item: ", () => {
 		
 		userEvent.type(component.container.querySelector("input"), "1 package of toilet paper")
 			
-		userEvent.click(screen.getByText(/Submit/))
+		userEvent.click(screen.getByText(/Add/))
 
 		userEvent.click(screen.getByText(/Edit/))
 
@@ -498,7 +498,7 @@ describe("when list has only one item: ", () => {
 	// test("on remove button pressed it deletes de item from the list",() =>{
 	// 	const component = render(<App></App>)
 	// 	userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-	// 	userEvent.click(screen.getByText(/Submit/)) 
+	// 	userEvent.click(screen.getByText(/Add/)) 
 	// 	userEvent.click(screen.getByText(/Remove/))
 	// 	expect(component.container).not.toHaveTextContent("1 kg of sugar") 
 
@@ -507,7 +507,7 @@ describe("when list has only one item: ", () => {
 	test("on remove button pressed it promps user to confirm deletion",() =>{
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 		userEvent.click(screen.getByText(/Remove/))
 		expect(component.container).toHaveTextContent("Confirm Delete") 
 		expect(component.container).toHaveTextContent("Are you sure you want to delete the item from list?")
@@ -519,7 +519,7 @@ describe("when list has only one item: ", () => {
 	test("when  remove is confirmed by user it deletes de item from the list",() =>{
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 		userEvent.click(screen.getByText(/Remove/))
 		userEvent.click(screen.getByText(/Yes/))
 		expect(component.container).not.toHaveTextContent("1 kg of sugar") 
@@ -529,7 +529,7 @@ describe("when list has only one item: ", () => {
 	test("when  remove is CANCELLED confirmed by user it does not make any modification to the list and modal is hidden",() =>{
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 		userEvent.click(screen.getByText(/Remove/))
 		userEvent.click(screen.getByText(/No/))
 		expect(component.container).toHaveTextContent("1 kg of sugar")
@@ -544,7 +544,7 @@ describe("when list has only one item: ", () => {
 	test("when close icon × on modal is clicked by user it does not make any modification to the list and modal is hidden",() =>{
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 		userEvent.click(screen.getByText(/Remove/))
 		userEvent.click(screen.getByText(/×/))
 		expect(component.container).toHaveTextContent("1 kg of sugar")
@@ -559,7 +559,7 @@ describe("when list has only one item: ", () => {
 	test("when modal is shown a click anywhere on the screen but a  button of the modal, closes the modal",() =>{
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 		userEvent.click(screen.getByText(/Remove/))
 		userEvent.click(screen.getByText(/Confirm Delete/)) 
 		expect(component.container).toHaveTextContent("1 kg of sugar")
@@ -575,7 +575,7 @@ describe("when list has only one item: ", () => {
 	test("on clear all button click all items from the list are removed", () => {
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 		userEvent.click(screen.getByText(/Clear All/))
 		expect(component.container).not.toHaveTextContent("1 kg of sugar")  
 
@@ -585,7 +585,7 @@ describe("when list has only one item: ", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
-		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas"))  
 		 
 		userEvent.click(screen.getByText("undo")) 
@@ -625,7 +625,7 @@ describe("On multiple items on the list", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		userEvent.type(input, "10 bananas")
@@ -659,7 +659,7 @@ describe("On multiple items on the list", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		userEvent.type(input, "10 bananas")
@@ -689,7 +689,7 @@ describe("On multiple items on the list", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		userEvent.type(input, "10 bananas")
@@ -726,7 +726,7 @@ describe("On multiple items on the list", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		userEvent.type(input, "10 bananas")
@@ -763,7 +763,7 @@ describe("On multiple items on the list", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		userEvent.type(input, "10 bananas")
@@ -790,7 +790,7 @@ describe("On multiple items on the list", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		userEvent.type(input, "10 bananas")
@@ -811,13 +811,13 @@ describe("On multiple items on the list", () => {
 	test("on editing mode any other item is not allowed to be sent to history", () => {
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/))  
+		userEvent.click(screen.getByText(/Add/))  
 	
 		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		const item = screen.getByText("1 kg of sugar") 
 		userEvent.click(item.parentElement.querySelector("button"))  
@@ -829,13 +829,13 @@ describe("On multiple items on the list", () => {
 	test("on editing mode any other item is not allowed to be removed", () => {
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/))  
+		userEvent.click(screen.getByText(/Add/))  
 	
 		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		const item = screen.getByText("1 kg of sugar") 
 		userEvent.click(item.parentElement.querySelector("button"))  
@@ -848,13 +848,13 @@ describe("On multiple items on the list", () => {
 	test(`if an item is confirmed to be removed  the associated item from the list is removed`, () => {
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/))  
+		userEvent.click(screen.getByText(/Add/))  
 	
 		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		userEvent.click(screen.getAllByText(/Remove/)[0])
 		userEvent.click(screen.getByText(/Yes/)) 
@@ -867,13 +867,13 @@ describe("On multiple items on the list", () => {
 	test("on clear all button click all items from the list are removed", () => {
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 	
 		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		userEvent.click(screen.getByText(/Clear All/)) 
 		expect(component.container).not.toHaveTextContent("1 kg of sugar")  
@@ -886,11 +886,11 @@ describe("On multiple items on the list", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
-		userEvent.click(screen.getByText(/Submit/)) 	
+		userEvent.click(screen.getByText(/Add/)) 	
 		userEvent.type(component.container.querySelector("input"), "grapes")
-		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.type(component.container.querySelector("input"), "watermelon")
-		userEvent.click(screen.getByText(/Submit/)) 	
+		userEvent.click(screen.getByText(/Add/)) 	
 
 		userEvent.click(screen.getByText("bananas"))   
 		  
@@ -927,13 +927,13 @@ describe("for both single item or multiple items on the list", () => {
 	
 		let component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 	
 		userEvent.type(component.container.querySelector("input"), "1 kg of bananas")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		userEvent.type(component.container.querySelector("input"), "1 kg of strawberries")
-		userEvent.click(screen.getByText(/Submit/))
+		userEvent.click(screen.getByText(/Add/))
 		//component.debug()
 		component.unmount()    
 	//	component.debug() 
@@ -952,7 +952,7 @@ describe("for both single item or multiple items on the list", () => {
 		
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		expect(component.container).toHaveTextContent("Item added!")  
 
@@ -970,7 +970,7 @@ describe("for both single item or multiple items on the list", () => {
 
 		let component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		const item = screen.getByText(/1 kg of sugar/)
 		userEvent.click(item.parentElement.querySelectorAll("button")[1]) 
@@ -994,7 +994,7 @@ describe("for both single item or multiple items on the list", () => {
 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 		userEvent.click(screen.getByText(/Clear All/))
 
 		expect(component.container).toHaveTextContent("List cleared!")  
@@ -1016,7 +1016,7 @@ describe("for both single item or multiple items on the list", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper")  
@@ -1052,7 +1052,7 @@ describe("for both single item or multiple items on the list", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Submit/);
+		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper") 
@@ -1075,7 +1075,7 @@ describe("for both single item or multiple items on the list", () => {
 		
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		act(() => { 
 			jest.advanceTimersByTime(4000)  
@@ -1084,7 +1084,7 @@ describe("for both single item or multiple items on the list", () => {
 		expect(component.container).toHaveTextContent("Item added!")  
  
 		userEvent.type(component.container.querySelector("input"), "bananas") 
-		userEvent.click(screen.getByText(/Submit/)) 
+		userEvent.click(screen.getByText(/Add/)) 
 
 		expect(component.container).toHaveTextContent("Item added!") 
 
@@ -1124,7 +1124,7 @@ describe("for both single item or multiple items on the list", () => {
 	test("when item text is clicked(sent to history) it shows an undo icon ", () => {
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
-		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas")) 
 		expect(component.container).toHaveTextContent("undo")  
 
@@ -1136,7 +1136,7 @@ describe("for both single item or multiple items on the list", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
-		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas")) 
 		 
 		act(() => {
@@ -1151,7 +1151,7 @@ describe("for both single item or multiple items on the list", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
-		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas")) 
 		userEvent.click(screen.getByText("undo")) 	 
 		expect(component.container).not.toHaveTextContent("undo")
@@ -1160,7 +1160,7 @@ describe("for both single item or multiple items on the list", () => {
 	test("when item is restored with undo button it is removed from history", () => {	
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
-		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas")) 
 		userEvent.click(screen.getByText("undo")) 
 		userEvent.click(screen.getByText("History")) 	 
@@ -1172,7 +1172,7 @@ describe("for both single item or multiple items on the list", () => {
 	// 	jest.useFakeTimers() 
 	// 	const component = render(<App></App>) 
 	// 	userEvent.type(component.container.querySelector("input"), "bananas")
-	// 	userEvent.click(screen.getByText(/Submit/)) 		
+	// 	userEvent.click(screen.getByText(/Add/)) 		
 	// 	userEvent.click(screen.getByText("bananas"))  
 	// 	expect(component.container).toHaveTextContent("History")
 	// 	expect(component.container).toHaveTextContent("List")
@@ -1183,7 +1183,7 @@ describe("for both single item or multiple items on the list", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
-		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas"))  
 		userEvent.click(screen.getByText("History"))
 		expect(component.container).toHaveTextContent(/HISTORY/)
@@ -1191,7 +1191,7 @@ describe("for both single item or multiple items on the list", () => {
 		expect(component.container).toHaveTextContent(/ITEM/)
 		// 		expect(component.container).toHaveTextContent(/STATUS/)
 		expect(component.container).not.toHaveTextContent(/new item/)
-		expect(component.container).not.toHaveTextContent(/Submit/)
+		expect(component.container).not.toHaveTextContent(/Add/)
 		expect(component.container).not.toHaveTextContent(/Clear All/)
 
 	})
@@ -1199,11 +1199,11 @@ describe("for both single item or multiple items on the list", () => {
 	test("when user selects history tab it shows a list with all purchased items most recent at top ", () => {
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
-		userEvent.click(screen.getByText(/Submit/)) 	
+		userEvent.click(screen.getByText(/Add/)) 	
 		userEvent.type(component.container.querySelector("input"), "honey")
-		userEvent.click(screen.getByText(/Submit/)) 	
+		userEvent.click(screen.getByText(/Add/)) 	
 		userEvent.type(component.container.querySelector("input"), "milk")
-		userEvent.click(screen.getByText(/Submit/)) 		
+		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas"))
 		userEvent.click(screen.getByText("honey"))
 		userEvent.click(screen.getByText("milk")) 
@@ -1249,6 +1249,7 @@ describe("on initial render and screen size ", () => {
 
 	beforeEach(() => {
     localStorage.clear()
+		resizeWindow(1024, 500)
 		 
 
   })
@@ -1256,48 +1257,82 @@ describe("on initial render and screen size ", () => {
 	afterEach(() =>  {
 		jest.clearAllTimers()
 		cleanup()
+		resizeWindow(1024, 500) 
 	})
 
 
 
 	test("is for a desktop, its screen width is more than or equal to 992px item list and history are shown on the screen", () => {
-		const component = render(<App></App>)
-		expect(component.container).toHaveTextContent("History")
-		expect(component.container).toHaveTextContent("ID")
-		expect(component.container).toHaveTextContent(/ITEM/)
-	//	expect(component.container).toHaveTextContent("STATUS")  
-
+		const component = render(<App></App>)	 
+		expect(component.container).toHaveTextContent(/HISTORY/)
+		expect(component.container).toHaveTextContent(/ID/)
+		expect(component.container).toHaveTextContent(/ITEM/)    
+		
 	})
  
-	test.only(" is for a tablet, its screen width is more than 768px and less than 992px  only items List is shown with descriptive buttons labels ", () => {
-		const component = render(<App></App>)
-		console.log(window.innerWidth)
-		resizeWindow(800, 500)
-			console.log(window.innerWidth)
+	test(" is for a tablet, its screen width is more than 768px and less than 992px  only items List is shown with descriptive buttons labels ", () => {
+		const component = render(<App></App>)	
+		resizeWindow(800, 500)		
 		expect(screen.getByText("HISTORY")).not.toBeVisible()    
 		expect(screen.getByText("ID")).not.toBeVisible()  
 		expect(screen.getByText("ITEM")).not.toBeVisible()   
 	
 	//	expect(component.container).not.toHaveTextContent("STATUS")
-	
+
+
 	})
 
-	test(" is for a mobile, its screen width is less than 768px  only items List is shown with icons only ", () => {
-		const component = render(<App></App>)
+	test(" is for a mobile,  screen width  less than 768px  items List is shows icons only without text ", () => {
+		const component = render(<App></App>) 
 		resizeWindow(500, 500)
-		expect(component.container).not.toHaveTextContent("ID")
-		expect(component.container).not.toHaveTextContent(/ITEM/)
-	//	expect(component.container).not.toHaveTextContent("STATUS")
-		expect(component.container).not.toHaveTextContent(/Add/)
-		expect(component.container).not.toHaveTextContent("Edit")
-		expect(component.container).not.toHaveTextContent("Remove")
+		expect(screen.getByText("HISTORY")).not.toBeVisible()    
+		expect(screen.getByText("ID")).not.toBeVisible()  
+		expect(screen.getByText("ITEM")).not.toBeVisible() 
+		expect(screen.getByText("Add")).not.toBeVisible()    
+		expect(component.container).not.toHaveTextContent(/Edit/) 
+		expect(component.container).not.toHaveTextContent(/Remove/)
 	
 	})
 	
-	
+	// test.only("navbar is show only for screen width less than 992px", () => {
+	// 	jest.useFakeTimers() 
+
+		 
+	// 	const component = render(<App></App>)
+
+	// 	// expect(component.container).not.toHaveTextContent(/List/)   
+	// 	// expect(component.container).not.toHaveTextContent(/History/)
+
+	// 	// resizeWindow(800, 500)
+	// 	// expect(screen.getByText("List").parentElement).toBeVisible()    
+	// 	// expect(screen.getByText("History").parentElement).toBeVisible()
+
+	// 	// resizeWindow(300, 500)
+	// 	// expect(screen.getByText("List").parentElement).toBeVisible()     
+	// 	// expect(screen.getByText("History").parentElement).toBeVisible() 
+
+	// // const cssFile = fs.readFileSync(
+  // //   path.resolve(__dirname, '../TestItem.css'),
+  // //   'utf8'
+  // // )
+  // // const { container, getByText, debug } = render(<TestItem hide={true} />)
+
+  // // const style = document.createElement('style')
+  // // style.type = 'text/css'
+  // // style.innerHTML = cssFile
+  // // container.append(style)
+
+
+	// act(() => {
+	// 		jest.advanceTimersByTime(8000)  
+	// 	})
+
+	// 	component.debug()
+	// })
 
 
 
+ 
 })
 
 

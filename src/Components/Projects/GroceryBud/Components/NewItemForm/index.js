@@ -1,4 +1,8 @@
 import React from 'react'
+import { CgAdd } from 'react-icons/cg';
+import Button from '../Button' 
+import {Form} from './Elements'
+
 
 const NewItemForm = ({text, setText, addItem}) => {
 
@@ -10,18 +14,22 @@ const NewItemForm = ({text, setText, addItem}) => {
 		}		 
 	} 
 
-	return (
+	return ( 
 		<div>
-			<form>
+			<Form>
 				<input 
 					value = {text}
 					placeholder="new item"
 					onChange={(e) => setText(e.target.value)}
 				></input>
-				<button
-					onClick={handleSubmit} 
-				>Submit</button>
-			</form> 
+				<Button
+					handleClick={handleSubmit} 
+					text = "Add" 
+				>
+						<CgAdd></CgAdd>
+				</Button>
+			
+			</Form> 
 		</div>
 	)
 }

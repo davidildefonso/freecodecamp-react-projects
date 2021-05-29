@@ -22,6 +22,9 @@ const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 	},[updateHistoryList.state])
 
 	const addItemToHistory = (newItem) => {
+		console.log(newItem)
+		// saveItemsToLocalStorage(historyItems.filter(item => 
+		// 	item.id !== id  ), "history")
 		setHistoryItems(historyItems.concat(newItem)) 
 		setUpdateHistoryList({state: false, action: null, id: null, body: null})
 	}
