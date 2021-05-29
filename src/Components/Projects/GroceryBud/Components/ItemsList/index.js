@@ -84,9 +84,9 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 				return item.id === id 
 			})				
 			saveItemsToLocalStorage(items.filter(item => item !== itemClicked))		
-			setItems(getItemsFromLocalStorage()) 
-			setUpdateHistoryList({state: true, action: "addItem", id: id ,body: itemClicked})
-			setLastItemSentToHistory({...itemClicked, index})	 		
+			setItems(getItemsFromLocalStorage()) 		
+			setUpdateHistoryList({state: true, action: "addItem", id: id ,body: itemClicked, index: index})
+		//	setLastItemSentToHistory({...itemClicked, index})	 		
 			updateNotification("Item purchased! Moved to history") 	
 		}
 	}

@@ -11,3 +11,10 @@ export const saveItemsToLocalStorage = (items, field = "items") => {
 export const getScrollPos = () => window.pageYOffset 
 
 export const getWindowWidth = () => window.innerWidth 
+
+
+export const  insertItemAtPosition = (list, newItem, position) => {
+		const items1 = list.slice(0,position)
+		const items2 = list.slice(position,)
+		return  items1.concat(newItem).concat(items2)		
+}

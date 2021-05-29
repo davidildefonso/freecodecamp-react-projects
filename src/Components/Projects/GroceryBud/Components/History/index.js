@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react'
-import { saveItemsToLocalStorage, getItemsFromLocalStorage} from '../../Utils/Functions' 
+import { saveItemsToLocalStorage, getItemsFromLocalStorage, insertItemAtPosition} from '../../Utils/Functions' 
 import { Container } from './Elements'
 
 const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 
-	const [historyItems, setHistoryItems] = useState([])
+	const [historyItems, setHistoryItems] = useState([])	
 
 	useEffect(() => {
-		showHistory && setHistoryItems(getItemsFromLocalStorage("history"))
+		showHistory && setHistoryItems(getItemsFromLocalStorage("history")) 
+
 	}, [showHistory])
 
 	useEffect(() => {	
@@ -15,17 +16,16 @@ const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 			if(updateHistoryList.action === "remove"){			
 				removeItemFromHistoryList(updateHistoryList.id)				 
 			}
-			if(updateHistoryList.type === "addItem"){
+			if(updateHistoryList.action === "addItem"){
+		
 				addItemToHistory(updateHistoryList.body)		
 			}  
 		} 
 	},[updateHistoryList.state])
 
 	const addItemToHistory = (newItem) => {
-		console.log(newItem)
-		// saveItemsToLocalStorage(historyItems.filter(item => 
-		// 	item.id !== id  ), "history")
-		setHistoryItems(historyItems.concat(newItem)) 
+		setHistoryItems(insertItemAtPosition(historyItems, newItem, 0)) 		
+		saveItemsToLocalStorage(insertItemAtPosition(historyItems, newItem, 0), "history")
 		setUpdateHistoryList({state: false, action: null, id: null, body: null})
 	}
 
@@ -36,8 +36,10 @@ const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 		setUpdateHistoryList({state: false, action: null, id: null, body: null})
 	}  
 
+
+
 	return (
-		<Container>
+		<Container showHistory = {showHistory} >
 			<h3>HISTORY</h3>
 			<div>
 				<div>

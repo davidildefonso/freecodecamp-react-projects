@@ -6,7 +6,7 @@ import ItemsList from '../ItemsList'
 import { saveItemsToLocalStorage, getItemsFromLocalStorage} from '../../Utils/Functions' 
 import { Container } from './Elements'
 
-const List = ({setUpdateHistoryList, setNotification }) => { 
+const List = ({setUpdateHistoryList, setNotification, updateHistoryList, showHistory }) => { 
 	
 	const [items, setItems] = useState([]) 
 	const [showUndo, setShowUndo] = useState(false) 
@@ -14,6 +14,7 @@ const List = ({setUpdateHistoryList, setNotification }) => {
 	const [editing, setEditing] = useState(false)
 	const ref = useRef({})
 	const [lastItemSentToHistory, setLastItemSentToHistory] = useState(null)
+//		setLastItemSentToHistory({...itemClicked, index})	 		
 	const [showModal, setShowModal] = useState(false)
 	const [itemIdToBeDeleted, setItemIdToBeDeleted] = useState(null)
 
@@ -22,14 +23,31 @@ const List = ({setUpdateHistoryList, setNotification }) => {
 	},[]) 
 
 	useEffect(() => {
+
+	
+		if(updateHistoryList.state){		
+			if(updateHistoryList.action === "addItem"){
+				setLastItemSentToHistory({...updateHistoryList.body, index: updateHistoryList.index})
+			}
+			if(updateHistoryList.action === "remove"){
+				setLastItemSentToHistory(null)
+			}
+			
+		}
+		
+		return () => {
+			 
+		}
+	}, [updateHistoryList.state])
+
+	useEffect(() => {
+	
 		if(lastItemSentToHistory) {	
-			//setShowNavbar(true)
 			setShowUndo(true)
-			const currentItems = getItemsFromLocalStorage("history")
-			const newItem = [lastItemSentToHistory]	
-			saveItemsToLocalStorage( newItem.concat(currentItems) , "history")
-		} 
-	//	else setShowNavbar(false)
+			
+		
+		}else setShowUndo(false) 
+		//else  setShowUndo(false) //setShowNavbar(false)
 	},[lastItemSentToHistory])
 
 
@@ -57,6 +75,7 @@ const List = ({setUpdateHistoryList, setNotification }) => {
 		}
 		const items2 = items.slice(position,)
 		const updatedItems = items1.concat(newItem).concat(items2)	
+	
 		saveItemsToLocalStorage(updatedItems)
 		setItems(getItemsFromLocalStorage())	 	
 		setText("")
@@ -97,13 +116,15 @@ const List = ({setUpdateHistoryList, setNotification }) => {
 	
 
 	const restoreLastItemFromHistory = () => {
-	 	setShowUndo(false)
+	 	
 		insertItemAtPosition(
 			lastItemSentToHistory.text,
 		 	lastItemSentToHistory.id,
-		 	lastItemSentToHistory.index
+		 	lastItemSentToHistory.index 
 		)		
 		removeItemFromHistoryList(lastItemSentToHistory.id)   
+		setLastItemSentToHistory({index: null})
+		
 	}
 
 	const cancelRemoveItem = (e) => {
@@ -125,7 +146,7 @@ const List = ({setUpdateHistoryList, setNotification }) => {
 
 
 	return (
-		<Container>			 
+		<Container showHistory = {showHistory}>			 
 			<UndoIcon
 				showUndo = {showUndo}
 				restoreLastItemFromHistory = {restoreLastItemFromHistory}
@@ -142,7 +163,7 @@ const List = ({setUpdateHistoryList, setNotification }) => {
 				setItems = {setItems}
 				editing = {editing}
 				setEditing = {setEditing}			
-				setLastItemSentToHistory = {setLastItemSentToHistory}
+				// setLastItemSentToHistory = {setLastItemSentToHistory}
 				updateNotification = {updateNotification}
 				setShowModal = {setShowModal}
 				setItemIdToBeDeleted = {setItemIdToBeDeleted}

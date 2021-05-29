@@ -1,11 +1,22 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+	
 
-	display: none;
+	display: ${
+			({  showHistory	}) =>
+					showHistory
+						? "block"
+						: "none"
+	};
 	
 	@media only screen and (min-width: 768px) {	
-		
+		display: ${
+			({  showHistory	}) =>
+					showHistory
+						? "block"
+						: "none" 
+		};
 	}
 	
 

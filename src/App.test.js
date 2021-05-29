@@ -190,7 +190,7 @@ describe("when list has only one item: ", () => {
 	test("if an item is clicked it is removed from the list", () => {
 		const component = render(
 			<App />
-		)
+		) 
 		
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
@@ -203,9 +203,9 @@ describe("when list has only one item: ", () => {
 		expect(input.value).toBe("")
 
 		userEvent.click(item)
-
+	
+		expect(component.container).toHaveTextContent(/HISTORY.*1 package of toilet paper/) 
 		
-		expect(component.container).not.toHaveTextContent("1 package of toilet paper")
 
 	})
 	
@@ -910,15 +910,25 @@ describe("On multiple items on the list", () => {
 
 
 describe("for both single item or multiple items on the list", () => {
+	
+	const resizeWindow = (x, y) => {
+		window.innerWidth = x;
+		window.innerHeight = y;
+		window.dispatchEvent(new Event('resize')); 
+	}
+	
 	beforeEach(() => {
     	localStorage.clear()
+			resizeWindow(1024,500)
 
-  })
+  }) 
 
 	afterEach(() =>  {
 		jest.clearAllTimers()
 		cleanup()
-	})
+		resizeWindow(1024,500)
+	}) 
+
 
 
 
@@ -1163,8 +1173,20 @@ describe("for both single item or multiple items on the list", () => {
 		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas")) 
 		userEvent.click(screen.getByText("undo")) 
-		userEvent.click(screen.getByText("History")) 	 
-		expect(component.container).not.toHaveTextContent("bananas") 
+		userEvent.click(screen.getByText("History")) 	  
+
+
+		expect(component.container).toHaveTextContent(/bananas.*HISTORY/) 
+		 
+		resizeWindow(800,500)
+ 
+		expect(screen.getByText(/bananas/)).not.toBeVisible()  
+
+		resizeWindow(300, 500) 
+
+		expect(screen.getByText(/bananas/)).not.toBeVisible() 
+
+
 	})
  
 
@@ -1184,15 +1206,26 @@ describe("for both single item or multiple items on the list", () => {
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
 		userEvent.click(screen.getByText(/Add/)) 		
-		userEvent.click(screen.getByText("bananas"))  
+		userEvent.click(screen.getByText("bananas"))   
+
+		resizeWindow(700,500) 
+
 		userEvent.click(screen.getByText("History"))
 		expect(component.container).toHaveTextContent(/HISTORY/)
 		expect(component.container).toHaveTextContent(/ID/) 
-		expect(component.container).toHaveTextContent(/ITEM/)
+		expect(component.container).toHaveTextContent(/ITEM/) 
 		// 		expect(component.container).toHaveTextContent(/STATUS/)
-		expect(component.container).not.toHaveTextContent(/new item/)
-		expect(component.container).not.toHaveTextContent(/Add/)
-		expect(component.container).not.toHaveTextContent(/Clear All/)
+		const input = component.container.querySelector('input')	
+		expect(input.getAttribute("placeholder")).toBe("new item") 
+		
+		expect(screen.getByText(/Add/)).not.toBeVisible()
+		expect(screen.getByText(/Clear All/)).not.toBeVisible()
+
+
+
+
+
+
 
 	})
 

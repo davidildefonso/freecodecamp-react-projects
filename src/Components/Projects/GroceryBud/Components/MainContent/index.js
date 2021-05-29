@@ -9,6 +9,8 @@ const MainContent = ({showHistory, setNotification}) => {
 	const [updateHistoryList, setUpdateHistoryList] = useState({
 		state: false, action: null, id: null })
 
+
+
 	return (
 		<Container>
 		{/* { !showHistory 
@@ -17,6 +19,8 @@ const MainContent = ({showHistory, setNotification}) => {
 				 <List			
 					setNotification = {setNotification}	 	
 					setUpdateHistoryList = {setUpdateHistoryList}
+					updateHistoryList = {updateHistoryList}
+					showHistory = {showHistory}
 				></List>
 			{/* :  */}
 					<History
