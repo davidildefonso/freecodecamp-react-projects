@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
 	width: 100%;
-	padding: 40px 10px;
+	padding: 40px 0;
 	display: ${
 			({  showHistory	}) =>
 					showHistory
@@ -26,9 +26,10 @@ export const Container = styled.div`
 	}
 
 	@media only screen and (min-width: 992px) {
-		width: 60%;
-		display: block;
-	
+		width: 70%;
+		display: flex;
+		background: green;
+		padding: 40px 0;
 	}
 
 `

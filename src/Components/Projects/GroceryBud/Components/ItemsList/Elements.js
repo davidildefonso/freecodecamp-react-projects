@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const SingleItem = styled.div`
 	margin-bottom: 20px;
 	display: flex;
+	flex-direction: column;
 	justify-content: space-around;
 	font-size: min(10vw, 20px);
 	width: 80%;
@@ -15,6 +16,20 @@ export const SingleItem = styled.div`
 		border: 1px rgba(0,0,0,0.3) solid;
 		cursor: pointer;
 	}
+
+	@media only screen and (min-width: 550px) {
+			flex-direction: row;
+		
+	
+	}
+
+	@media only screen and (min-width: 992px) {
+	
+		max-width: 500px;
+		width: 80%;
+		background: red;
+	}
+
 
 
 `
@@ -43,6 +58,27 @@ export const Input = styled.input`
 		border:none;
 		background: #fff;
 		border-radius: 5px;
+	}
+
+`
+
+export const ButtonsContainer = styled.div`
+
+	display: flex;
+	flex-direction: row;
+	
+	margin-top: 20px;
+	justify-content: center;
+
+	@media only screen and (min-width: 550px) {
+		
+			margin-top: 0px;
+	
+	}
+
+	@media only screen and (min-width: 992px) {
+	
+	
 	}
 
 `

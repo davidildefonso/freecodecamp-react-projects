@@ -5,11 +5,11 @@ import { BiEditAlt } from 'react-icons/bi'
 import { ImCancelCircle } from 'react-icons/im'
 import { GiConfirmed } from 'react-icons/gi'
 import { FaTimes } from 'react-icons/fa'
-import { SingleItem, ItemText , Input, Container } from './Elements'
+import { SingleItem, ItemText , Input, Container , ButtonsContainer} from './Elements'
 
 
 
-const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHistory,
+const ItemsList = ({items, setItems, editing, setEditing,
 	updateNotification , setShowModal, setItemIdToBeDeleted, setUpdateHistoryList
 }) => { 
 
@@ -89,8 +89,7 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 			})				
 			saveItemsToLocalStorage(items.filter(item => item !== itemClicked))		
 			setItems(getItemsFromLocalStorage()) 		
-			setUpdateHistoryList({state: true, action: "addItem", id: id ,body: itemClicked, index: index})
-		//	setLastItemSentToHistory({...itemClicked, index})	 		
+			setUpdateHistoryList({state: true, action: "addItem", id: id ,body: itemClicked, index: index})	
 			updateNotification("Item purchased! Moved to history") 	
 		}
 	}
@@ -120,7 +119,7 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 								>{item.text}</ItemText>
 					}
 					{editing && showItemInput.id === item.id
-						? <>
+						? <ButtonsContainer>
 								<Button
 									handleClick={() => confirmEditItemWithClick(item.id, item.value) }
 									text = "OK"
@@ -133,8 +132,8 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 								>
 									<ImCancelCircle></ImCancelCircle>
 								</Button>
-						</>
-					:	<>
+						</ButtonsContainer>
+					:	<ButtonsContainer>
 							<Button
 								handleClick={() => startEditingItem(item.id) }
 								text  = "Edit"
@@ -146,7 +145,7 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 								handleClick={() => showRemoveItemConfirmationModal(item.id)}
 								text  = "Remove"
 							>			<FaTimes></FaTimes></Button>
-						</>
+						</ButtonsContainer>
 					}
 			
 				</SingleItem>

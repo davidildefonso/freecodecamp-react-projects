@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { saveItemsToLocalStorage, getItemsFromLocalStorage, insertItemAtPosition} from '../../Utils/Functions' 
-import { Container } from './Elements'
+import { Container, Title,  IconWrap, ItemsWrap, ItemsUl, ItemsLi, BagWrap} from './Elements'
+import { BsBag } from 'react-icons/bs'
+
 
 const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 
@@ -46,23 +48,22 @@ const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 
 	return (
 		<Container showHistory = {showHistory} >
-			<h3>HISTORY</h3>
-			<div>
-				<div>
-					<div>ID</div>
-					<div>ITEM</div>
-				</div>
-				
-				<div> 
+			<BagWrap>
+			<Title>BAG</Title>
+			<IconWrap><BsBag></BsBag></IconWrap>
+			<ItemsWrap>
+				<ItemsUl>
 					{historyItems.map(item => 				
-						<div 
+						<ItemsLi 
 							key={item.id}>
-							{item.id} {item.text}							
-						</div>							
+							{item.text}
+							
+						</ItemsLi>							
 					)}
-				</div>
-					
-			</div>
+				</ItemsUl>
+				
+			</ItemsWrap>
+			</BagWrap>
 		</Container> 
 	)
 } 

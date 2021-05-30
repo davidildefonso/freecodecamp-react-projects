@@ -13,7 +13,7 @@ export const ButtonWrapper = styled.button`
 	padding: ${
 			({  type	}) =>
 					type === "Modal"
-						&& "5px"
+						? "5px" : "5px"
 	};
 
 	border-radius: ${
@@ -103,6 +103,12 @@ export const ButtonWrapper = styled.button`
 
 	@media only screen and (min-width: 768px) {
 		
+
+	
+	}
+
+	@media only screen and (min-width: 992px) {
+			font-size: min(12vw, 20px);
 
 	
 	}

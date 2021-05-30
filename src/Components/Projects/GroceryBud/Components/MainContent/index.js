@@ -13,9 +13,6 @@ const MainContent = ({showHistory, setNotification, setNotificationTop, notifica
 
 	return (
 		<Container>
-		{/* { !showHistory 
-			?  */}
-	
 				 <List			
 					setNotification = {setNotification}	 	
 					setUpdateHistoryList = {setUpdateHistoryList}
@@ -24,14 +21,13 @@ const MainContent = ({showHistory, setNotification, setNotificationTop, notifica
 					setNotificationTop = {setNotificationTop}
 					notificationTop = {notificationTop}
 				></List>
-			{/* :  */}
+		
 					<History
 					updateHistoryList = {updateHistoryList}
 					showHistory = {showHistory}
 					setUpdateHistoryList = {setUpdateHistoryList}
-				></History>
-		
-		{/* } */}
+				></History>	
+
 		</Container>
 	)
 }
