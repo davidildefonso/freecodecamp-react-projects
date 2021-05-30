@@ -1,9 +1,13 @@
 import React from 'react'
-import { Content } from './Elements'
+import { Content, Container } from './Elements'
 
 const Notification = ({notification}) => {
 	return (
-		<Content>{notification}</Content>  
+
+		<Container>
+				<Content>{notification}</Content>  
+		</Container>
+	
 	)
 }
 

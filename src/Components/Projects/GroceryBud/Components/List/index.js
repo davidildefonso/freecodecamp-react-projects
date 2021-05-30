@@ -5,6 +5,7 @@ import NewItemForm from '../NewItemForm'
 import ItemsList from '../ItemsList'
 import { saveItemsToLocalStorage, getItemsFromLocalStorage} from '../../Utils/Functions' 
 import { Container } from './Elements'
+import { Button }  from './Elements'
 
 const List = ({setUpdateHistoryList, setNotification, updateHistoryList, showHistory }) => { 
 	
@@ -170,9 +171,10 @@ const List = ({setUpdateHistoryList, setNotification, updateHistoryList, showHis
 				setUpdateHistoryList = {setUpdateHistoryList}
 			></ItemsList>
 
-			<button
+			<Button
 				onClick={handleClearAll}
-			>Clear All</button>
+				
+			>Clear All</Button>
 
 			<Modal
 				showModal = {showModal}

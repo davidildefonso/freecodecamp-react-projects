@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from './Components/Navbar'
 import Notification from './Components/Notification'
 import MainContent from './Components/MainContent'
-import { Container, Title } from './Elements'
+import { Container, Title , Span, Icon } from './Elements'
 import { getWindowWidth } from './Utils/Functions'
+import  {GiSlicedBread} from 'react-icons/gi'
 
 const GroceryBudApp = () => {
 
@@ -32,11 +33,12 @@ const GroceryBudApp = () => {
 
 	return (  
 		<Container> 
-			<Title>GROCERY BUD</Title>
+			<Title>GROCERY <Span> BUD  <Icon> <GiSlicedBread></GiSlicedBread></Icon> </Span></Title>
 			<Notification
 				notification = {notification}
 			></Notification>
 			<Navbar
+				showHistory = {showHistory}
 				setShowHistory = {setShowHistory}
 			></Navbar>	
 			<MainContent 

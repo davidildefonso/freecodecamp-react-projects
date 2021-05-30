@@ -1,10 +1,13 @@
 import React, {useState, useRef, useEffect} from 'react'
 import { saveItemsToLocalStorage, getItemsFromLocalStorage} from '../../Utils/Functions' 
 import Button from '../Button'
-import { GrEdit } from 'react-icons/gr'
+import { BiEditAlt } from 'react-icons/bi'
 import { ImCancelCircle } from 'react-icons/im'
 import { GiConfirmed } from 'react-icons/gi'
-import { SingleItem, ItemText } from './Elements'
+import { FaTimes } from 'react-icons/fa'
+import { SingleItem, ItemText , Input, Container } from './Elements'
+
+
 
 const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHistory,
 	updateNotification , setShowModal, setItemIdToBeDeleted, setUpdateHistoryList
@@ -92,7 +95,7 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 	}
 
 	return (			
-		<div>
+		<Container>
 			{items &&  items.map(item => 				
 
 				<SingleItem 
@@ -104,12 +107,12 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 							>{item.text}</ItemText>
 						:  showItemInput.id === item.id
 							?	<ItemText>
-									<input 
+									<Input 
 										ref={inputRef}
 										value ={editInputValue.value}
 										onChange = {(e) => handleEditInputChange(e.target.value, item) }
 										onKeyDown = {(e) => confirmEditItemWithEnterKey(item, e)}
-									></input> 
+									></Input> 
 								</ItemText>
 							: <ItemText 	
 									onClick={() => removeItemFromListButKeepOnHistory(item.id)}
@@ -134,11 +137,14 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 							<Button
 								handleClick={() => startEditingItem(item.id) }
 								text  = "Edit"
-							>	<GrEdit></GrEdit></Button>  
+							>	
+								<BiEditAlt></BiEditAlt>
+							
+							</Button>  
 							<Button 
 								handleClick={() => showRemoveItemConfirmationModal(item.id)}
 								text  = "Remove"
-							>			<ImCancelCircle></ImCancelCircle></Button>
+							>			<FaTimes></FaTimes></Button>
 						</>
 					}
 			
@@ -146,7 +152,7 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 			
 			
 			)}
-		</div>	
+		</Container>	
 	)
 }
 

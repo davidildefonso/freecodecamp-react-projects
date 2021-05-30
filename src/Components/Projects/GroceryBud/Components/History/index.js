@@ -7,6 +7,12 @@ const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 	const [historyItems, setHistoryItems] = useState([])	
 
 	useEffect(() => {
+		setHistoryItems(getItemsFromLocalStorage("history")) 
+
+	}, [])
+
+
+	useEffect(() => {
 		showHistory && setHistoryItems(getItemsFromLocalStorage("history")) 
 
 	}, [showHistory])

@@ -1,10 +1,10 @@
 import React from 'react'
-import {Container} from './Elements'
+import {Container, List, History, Pipe} from './Elements'
 
 
 
 
-const Navbar = ({setShowHistory}) => {
+const Navbar = ({showHistory , setShowHistory}) => {
 
 	const displayHistorySection = () => { 
 		setShowHistory(true)		
@@ -16,13 +16,15 @@ const Navbar = ({setShowHistory}) => {
 
 	return (
 		<Container>
-			<span
+			<List
+				show={!showHistory}
 				onClick={displayListSection}  
-			>List</span>
-			<span>|</span> 
-			<span
+			>List</List>
+			<Pipe>|</Pipe> 
+			<History
+				show={showHistory}
 				onClick={displayHistorySection}
-			>History</span> 
+			>History</History> 
 		</Container>
 	)
 }
