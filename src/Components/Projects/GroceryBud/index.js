@@ -9,6 +9,8 @@ import  {GiSlicedBread} from 'react-icons/gi'
 const GroceryBudApp = () => {
 
 	const [notification, setNotification] = useState("")
+	const [showNotification, setShowNotification] = useState(false)
+	const [notificationTop, setNotificationTop] = useState(null)
 	const [showHistory, setShowHistory] = useState(false) 	
 	const ref = useRef({})
 
@@ -18,6 +20,17 @@ const GroceryBudApp = () => {
 		ref.current.windowWidth = width
 	
 	}
+
+	useEffect(() => {
+		if(notification !== ""){
+			setShowNotification(true)
+		}else{
+			setShowNotification(false)
+		}
+		return () => {
+			
+		}
+	}, [notification])
 
 	window.addEventListener("resize", saveWindowWidth)  
 	 
@@ -36,6 +49,8 @@ const GroceryBudApp = () => {
 			<Title>GROCERY <Span> BUD  <Icon> <GiSlicedBread></GiSlicedBread></Icon> </Span></Title>
 			<Notification
 				notification = {notification}
+				show = {showNotification}
+				notificationTop = {notificationTop}
 			></Notification>
 			<Navbar
 				showHistory = {showHistory}
@@ -44,6 +59,8 @@ const GroceryBudApp = () => {
 			<MainContent 
 				showHistory={showHistory}
 				setNotification = {setNotification}
+				setNotificationTop = {setNotificationTop}
+				notificationTop= {notificationTop}
 			></MainContent>	
 		</Container>
 	)

@@ -12,7 +12,7 @@ export const Container = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	
+	//position: relative;
 
 	@media only screen and (min-width: 768px) {
 		width: 100%;		

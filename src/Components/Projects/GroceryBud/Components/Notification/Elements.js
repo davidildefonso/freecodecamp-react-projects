@@ -4,41 +4,38 @@ import styled, { keyframes } from "styled-components";
 export const Container = styled.div`
 
 
-	position: relative;
-	width: 100%;
-	text-align: left;
+	background: #000;
+	margin-bottom: 20px;
+	color: #f0f0f0;
+	padding: 18px 16px;
+	transition: all 0.2s ease-in-out;
+	font-size: 20px;
+	border-radius: 0 10px 10px 0px;
+	position: absolute;
+	left: 0;
 
-	
-	
-	
-@keyframes appear{
-	0%{
-		transform: translateY(-100%);
-	}
+	top: ${
+			({ top	}) =>
+					top+"px" 
+	};
 
-	5%{
-		transform: translateY(0%);
-	}
 
-	95%{
-		transform: translateY(0%);
-	}
+	transform: ${
+			({ show	}) =>
+					show ? `translateX(0%)` : `translateX(-200%)`
+	};
 
-	100%{
-		transform: translateY(-100%);
-	}
-}
+	opacity: ${
+			({ show	}) =>
+					show ? "1" : "0"
+	};
 
 `
 
 
 export const Content = styled.h3`
 
-	margin: 0;
-	padding: 0;
-	position: absolute;
-	left: 0;
-	top: 0;
+	
 
 
 `

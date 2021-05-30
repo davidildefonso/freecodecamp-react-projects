@@ -4,7 +4,7 @@ import List from '../List'
 import { Container } from './Elements' 
 import { getWindowWidth } from '../../Utils/Functions'
 
-const MainContent = ({showHistory, setNotification}) => {  
+const MainContent = ({showHistory, setNotification, setNotificationTop, notificationTop}) => {  
 
 	const [updateHistoryList, setUpdateHistoryList] = useState({
 		state: false, action: null, id: null })
@@ -21,6 +21,8 @@ const MainContent = ({showHistory, setNotification}) => {
 					setUpdateHistoryList = {setUpdateHistoryList}
 					updateHistoryList = {updateHistoryList}
 					showHistory = {showHistory}
+					setNotificationTop = {setNotificationTop}
+					notificationTop = {notificationTop}
 				></List>
 			{/* :  */}
 					<History

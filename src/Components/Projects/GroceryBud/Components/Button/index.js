@@ -9,9 +9,10 @@ const Button = ({handleClick, text, children, type}) => {
 	return (
 		<ButtonWrapper
 			onClick={handleClick}	
+			type={type}
 		>
 			<Icon type={type}>{children}</Icon>	
-			<Text>{text}</Text>			
+			<Text type={type} >{text}</Text>			
 		</ButtonWrapper>
 	)
 }

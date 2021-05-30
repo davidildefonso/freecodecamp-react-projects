@@ -80,6 +80,7 @@ const ItemsList = ({items, setItems, editing, setEditing, setLastItemSentToHisto
 	}
 
 	const removeItemFromListButKeepOnHistory = (id) => {
+		
 		if(!editing){
 			let index
 			const itemClicked = items.find((item, idx) => {

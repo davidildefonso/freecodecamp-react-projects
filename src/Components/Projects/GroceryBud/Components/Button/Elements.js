@@ -2,8 +2,39 @@ import styled from 'styled-components'
 
 export const ButtonWrapper = styled.button`
 
-	background: transparent;
-	border: none;
+	
+
+	background: ${
+			({  type	}) =>
+					type === "Modal"
+						? "#000" : "transparent"
+	};
+
+	padding: ${
+			({  type	}) =>
+					type === "Modal"
+						&& "5px"
+	};
+
+	border-radius: ${
+			({  type	}) =>
+					type === "Modal"
+						&& "5px"
+	};
+
+	margin: ${
+			({  type	}) =>
+					type === "Modal"
+						&& "0px 15px"
+	};
+
+	color: ${
+			({  type	}) =>
+					type === "Modal"
+						&& "#fff"
+	};
+	
+	border: 2px solid transparent;
 	display: flex;	
 	font-size: min(12vw, 25px);
 	align-items: center;
@@ -14,9 +45,58 @@ export const ButtonWrapper = styled.button`
 
 	&:hover{
 		cursor: pointer;
-		color: #00a;
+		background: ${
+			({  type	}) =>
+					type === "Modal"
+					 && "#fff"
+		} ;
+
+
+		color: ${
+			({  type	}) =>
+					type === "Undo"
+						? "#fff" 
+						: type === "Modal" 
+								? "#000"
+								: "#00a"
+		}; 
+
+
+		border: ${
+			({  type	}) =>
+					type === "Modal"
+					 && "2px solid #000"
+					 
+		} ;
 	}
 
+
+	&:active{
+		cursor: pointer;
+		background: ${
+			({  type	}) =>
+					type === "Modal"
+					 && "#000"
+		} ;
+
+
+		color: ${
+			({  type	}) =>
+					type === "Undo"
+						? "#fff" 
+						: type === "Modal" 
+								? "#fff"
+								: "#00a"
+		}; 
+
+
+		border: ${
+			({  type	}) =>
+					type === "Modal"
+					 && "2px solid transparent"
+					 
+		} ;
+	}
 
 
 
@@ -39,7 +119,22 @@ export const Icon = styled.i`
 						? "min(30vw, 50px)" : "min(18vw, 30px)"
 	};
 
+	&:hover{
+		cursor: pointer;
+		color: ${
+			({  type	}) =>
+					type === "Undo"
+						? "#fff" : "#00a"
+		}
+	}
 
+	&:active{		
+		color: ${
+			({  type	}) =>
+					type === "Undo"
+						&&  "#00a"
+		}
+	}
 	
 	
 
@@ -47,8 +142,18 @@ export const Icon = styled.i`
 
 export const Text = styled.span`
 
+	color: ${
+			({  type	}) =>
+					type === "Modal"
+					 && "inherit" 
+	};
+	
 
-	display: none;
+	display: ${
+			({  type	}) =>
+					type === "Modal"
+						? "block" : "none"
+	};
 
 	@media only screen and (min-width: 768px) {
 		display: block;	 
@@ -56,6 +161,12 @@ export const Text = styled.span`
 	
 	}
 
-
+	&:hover{
+		color: ${
+			({  type	}) =>
+					type === "Modal"
+					 && "inherit" 
+	};
+	}
 
 `

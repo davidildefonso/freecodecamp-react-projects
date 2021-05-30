@@ -16,9 +16,9 @@ describe("setup initial", () => {
 	afterEach(() => cleanup()) 
 
 	test('renders title "GROCERY BUD"', () => {
-		render(<App />);
-		const linkElement = screen.getByText(/GROCERY BUD/);
-		expect(linkElement).toBeInTheDocument();
+		const component =	render(<App />);
+		
+		expect(component.container).toHaveTextContent(/GROCERY BUD/);
 
 	});
 
@@ -546,7 +546,7 @@ describe("when list has only one item: ", () => {
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
 		userEvent.click(screen.getByText(/Add/)) 
 		userEvent.click(screen.getByText(/Remove/))
-		userEvent.click(screen.getByText(/×/))
+		userEvent.click(screen.queryAllByText(/×/)[0])
 		expect(component.container).toHaveTextContent("1 kg of sugar")
 
 		expect(component.container).not.toHaveTextContent("Confirm Delete") 
@@ -581,14 +581,14 @@ describe("when list has only one item: ", () => {
 
 	})
 
-	test("when undo icon is clicked the item just deleted is returned to the list ", () => {
+	test("when Undo icon is clicked the item just deleted is returned to the list ", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
 		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas"))  
 		 
-		userEvent.click(screen.getByText("undo")) 
+		userEvent.click(screen.getByText("Undo")) 
  
 		expect(component.container).toHaveTextContent("bananas")
 
@@ -882,7 +882,7 @@ describe("On multiple items on the list", () => {
 
 	})
 
-	test("when undo icon is clicked the item just deleted is returned to the list on the same position", () => {
+	test("when Undo icon is clicked the item just deleted is returned to the list on the same position", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
@@ -894,7 +894,7 @@ describe("On multiple items on the list", () => {
 
 		userEvent.click(screen.getByText("bananas"))   
 		  
-		userEvent.click(screen.getByText("undo")) 
+		userEvent.click(screen.getByText("Undo")) 
  
 		const item = screen.getByText(/bananas/)  
 
@@ -1131,18 +1131,18 @@ describe("for both single item or multiple items on the list", () => {
 		
 	})
 
-	test("when item text is clicked(sent to history) it shows an undo icon ", () => {
+	test("when item text is clicked(sent to history) it shows an Undo icon ", () => {
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
 		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas")) 
-		expect(component.container).toHaveTextContent("undo")  
+		expect(component.container).toHaveTextContent("Undo")  
 
 	})
 
 
 
-	test("undo icon is visible for 8 seconds ", () => {
+	test("Undo icon is visible for 8 seconds ", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
@@ -1153,26 +1153,26 @@ describe("for both single item or multiple items on the list", () => {
 			jest.advanceTimersByTime(8000) 
 		})	 
 
-		expect(component.container).not.toHaveTextContent("undo")
+		expect(component.container).not.toHaveTextContent("Undo")
 	})
 
 
-	test("when undo icon is clicked it is not  displayed in the screen ", () => {
+	test("when Undo icon is clicked it is not  displayed in the screen ", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
 		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas")) 
-		userEvent.click(screen.getByText("undo")) 	 
-		expect(component.container).not.toHaveTextContent("undo")
+		userEvent.click(screen.getByText("Undo")) 	 
+		expect(component.container).not.toHaveTextContent("Undo")
 	})
 
-	test("when item is restored with undo button it is removed from history", () => {	
+	test("when item is restored with Undo button it is removed from history", () => {	
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
 		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas")) 
-		userEvent.click(screen.getByText("undo")) 
+		userEvent.click(screen.getByText("Undo")) 
 		userEvent.click(screen.getByText("History")) 	  
 
 

@@ -3,11 +3,12 @@ import Modal from '../Modal'
 import UndoIcon from '../Undo'
 import NewItemForm from '../NewItemForm'
 import ItemsList from '../ItemsList'
-import { saveItemsToLocalStorage, getItemsFromLocalStorage} from '../../Utils/Functions' 
+import { saveItemsToLocalStorage, getItemsFromLocalStorage, getScrollPos, getWindowHeight} from '../../Utils/Functions' 
 import { Container } from './Elements'
 import { Button }  from './Elements'
 
-const List = ({setUpdateHistoryList, setNotification, updateHistoryList, showHistory }) => { 
+const List = ({setUpdateHistoryList, setNotification, notificationTop,
+	 updateHistoryList, showHistory, setNotificationTop }) => { 
 	
 	const [items, setItems] = useState([]) 
 	const [showUndo, setShowUndo] = useState(false) 
@@ -87,6 +88,7 @@ const List = ({setUpdateHistoryList, setNotification, updateHistoryList, showHis
 	
 	
 	const updateNotification = (str) => {	
+		setNotificationTop(getScrollPos() + getWindowHeight()/5)
 		if(ref.current.timeout) clearTimeout(ref.current.timeout)  
 		setNotification(str)	
 		ref.current.timeout =  setTimeout(() => {
@@ -151,6 +153,7 @@ const List = ({setUpdateHistoryList, setNotification, updateHistoryList, showHis
 			<UndoIcon
 				showUndo = {showUndo}
 				restoreLastItemFromHistory = {restoreLastItemFromHistory}
+				notificationTop={notificationTop}
 			></UndoIcon>  
 		
 			<NewItemForm

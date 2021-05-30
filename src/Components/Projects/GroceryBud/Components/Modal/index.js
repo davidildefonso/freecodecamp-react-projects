@@ -1,39 +1,40 @@
 import React from 'react'
+import { Container , Span, Form, FormInnerContainer, FormH1, FormP, FormButtonsContainer } from './Elements'
+import Button from '../Button'
 
 const Modal = ({showModal, removeItem, cancelRemoveItem}) => {
 
-	const modalStyle = {
-		position: "fixed",
-		zIndex: 10,
-		width: "100vw",
-		height: "100vh",
-		top:0,		
-		background : "rgba(0,0,0,0.4)" 
 
-	} 
 
 	return (
 		<>
 			{showModal &&  
-				<div onClick = {cancelRemoveItem} style={modalStyle} >
-					<span
+				<Container onClick = {cancelRemoveItem}  >
+					<Span color="#fff" position="absolute"
 						onClick = {cancelRemoveItem}
-					>×</span>
-					<form>
-						<div>
-							<h1>Confirm Delete</h1>
-							<p>Are you sure you want to delete the item from list?</p>							
-							<div> 
-								<button
-									onClick =  {removeItem}
-								>Yes</button>
-								<button
-									onClick = {cancelRemoveItem}
-								>No</button>
-							</div>
-						</div>
-					</form>
-				</div>
+					>×</Span>
+				 
+						<Form>
+							<FormInnerContainer>
+								<FormH1>Confirm Delete <Span color="#000"  position="relative" >×</Span> </FormH1>
+								<FormP>Are you sure you want to delete the item from list?</FormP>							
+								<FormButtonsContainer> 
+									<Button
+										handleClick =  {removeItem}
+										text="Yes"
+										type="Modal"
+									></Button>
+									<Button
+										handleClick = {cancelRemoveItem}
+										text="No"
+										type="Modal"
+									></Button>
+								</FormButtonsContainer>
+							</FormInnerContainer>
+						</Form>
+	
+					
+				</Container>
 			}
 		</>
 	)

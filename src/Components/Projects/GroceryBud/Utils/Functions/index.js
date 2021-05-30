@@ -10,7 +10,9 @@ export const saveItemsToLocalStorage = (items, field = "items") => {
 
 export const getScrollPos = () => window.pageYOffset 
 
-export const getWindowWidth = () => window.innerWidth 
+export const getWindowWidth = () => window.innerWidth
+
+export const getWindowHeight = () => window.innerHeight
 
 
 export const  insertItemAtPosition = (list, newItem, position) => {
