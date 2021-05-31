@@ -47,10 +47,11 @@ const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 
 	const emptyBag = () => console.log("empty bag items")
 
+	
 
 	return (
 		<Container showHistory = {showHistory} >
-			<BagWrap>
+			<BagWrap showHistory = {showHistory} >
 				<Title>BAG</Title>
 				<IconWrap><BsBag></BsBag></IconWrap>
 				<ItemsWrap>

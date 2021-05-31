@@ -33,7 +33,7 @@ export const Title = styled.h1`
 	@media only screen and (min-width: 768px) {
 	
 		
-	
+		font-size: 60px;
 	}
 
 	@media only screen and (min-width: 992px) {
@@ -51,7 +51,20 @@ export const Span = styled.span`
 `
 
 export const Icon = styled.span`
-	font-size: 100px;
+	font-size: 60px;
 	vertical-align: middle;
+
+	@media only screen and (min-width: 768px) {
+	
+		
+		font-size: 80px;
+	}
+
+	@media only screen and (min-width: 992px) {
+		font-size: 100px;
+		
+	
+	}
+
 
 `

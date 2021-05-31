@@ -20,7 +20,7 @@ export const Container = styled.div`
 				({  showHistory	}) =>
 						showHistory
 							? "none"
-							: "block"
+							: "flex"
 		};
 	
 	}

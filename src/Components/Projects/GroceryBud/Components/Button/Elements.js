@@ -102,8 +102,8 @@ export const ButtonWrapper = styled.button`
 
 
 	@media only screen and (min-width: 768px) {
+		font-size: min(12vw, 20px);
 		
-
 	
 	}
 
@@ -167,9 +167,15 @@ export const Text = styled.span`
 						? "block" : "none"
 	};
 
+
+
 	@media only screen and (min-width: 768px) {
 		display: block;	 
-
+		font-size: ${
+			({  type	}) =>
+					type === "Modal"
+					 && "22px" 
+		};
 	
 	}
 
@@ -179,6 +185,14 @@ export const Text = styled.span`
 					type === "Modal"
 					 && "inherit" 
 	};
+	}
+
+	@media only screen and (min-width: 992px) {
+		font-size: ${
+			({  type	}) =>
+					type === "Modal"
+					 && "25px" 
+		};
 	}
 
 `

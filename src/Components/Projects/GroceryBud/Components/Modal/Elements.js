@@ -58,7 +58,8 @@ export const Form = styled.div`
 	
 	@media only screen and (min-width: 550px) {
 	
-		
+		width: 60%;
+		max-width: 400px;	
 	
 	}
 
@@ -89,7 +90,7 @@ export const FormP = styled.p`
 
 	@media only screen and (min-width: 550px) {
 	
-		
+		font-size: 23px;
 	
 	}
 
@@ -101,9 +102,9 @@ export const FormP = styled.p`
 export const FormH1 = styled.h1`
 
 	margin-bottom: 20px;
-		@media only screen and (min-width: 550px) {
+	@media only screen and (min-width: 550px) {
 	
-		
+		font-size: 30px;
 	
 	}
 

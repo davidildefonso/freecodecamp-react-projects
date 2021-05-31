@@ -25,7 +25,8 @@ export const Input = styled.input`
 	
 	@media only screen and (min-width: 768px) {
 	
-
+		width: 60%;
+		min-width: 450px;
 	
 	}
 
