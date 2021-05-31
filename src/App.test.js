@@ -571,6 +571,15 @@ describe("when list has only one item: ", () => {
      
 	})  
 
+	test("when modal is shown if enter key is press it confirm deletion", () => {
+	
+	})
+
+	test("when modal is shown if escape key is press it cancels deletion", () => {
+	
+	})
+	
+
 	
 	test("on clear all button click all items from the list are removed", () => {
 		const component = render(<App></App>)
@@ -1262,7 +1271,9 @@ describe("for both single item or multiple items on the list", () => {
 
 	})
 	
-
+	test("when  Bag  button 'empty bag' is clicked all bag items are deleted", () => {
+	
+	})
 
 
 })

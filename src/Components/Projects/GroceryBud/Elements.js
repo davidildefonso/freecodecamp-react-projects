@@ -8,7 +8,7 @@ export const Container = styled.div`
 	flex-direction: column;
 	padding:  0;
 	margin: 0;
-	
+	overflow: hidden;
 	@media only screen and (min-width: 768px) {
 	
 		
@@ -16,7 +16,7 @@ export const Container = styled.div`
 	}
 
 	@media only screen and (min-width: 992px) {
-		background: blue;
+	
 		
 	
 	}

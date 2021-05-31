@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const ButtonWrapper = styled.button`
 
-	
+	width: fit-content;
 
 	background: ${
 			({  type	}) =>
@@ -152,6 +152,12 @@ export const Text = styled.span`
 			({  type	}) =>
 					type === "Modal"
 					 && "inherit" 
+	};
+
+	font-size: ${
+			({  type	}) =>
+					type === "Modal"
+					 && "25px" 
 	};
 	
 

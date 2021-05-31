@@ -5,6 +5,7 @@ export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	
+	
 
 	@media only screen and (min-width: 768px) {
 	
@@ -14,7 +15,8 @@ export const Container = styled.div`
 
 	@media only screen and (min-width: 992px) {	
 			flex-direction: row ;
-			background: yellow;
+
+			
 	}
 
 `

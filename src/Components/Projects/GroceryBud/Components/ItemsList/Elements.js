@@ -25,9 +25,9 @@ export const SingleItem = styled.div`
 
 	@media only screen and (min-width: 992px) {
 	
-		max-width: 500px;
+		max-width: 600px;
 		width: 80%;
-		background: red;
+		background: rgba(0,0,0,0.1);
 	}
 
 
@@ -37,6 +37,21 @@ export const ItemText = styled.div`
 	width: 60%; 
 	max-width: 60%;
 	word-wrap: break-word;
+
+
+	@media only screen and (min-width: 550px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 992px) {
+	
+		font-size: 25px;
+	}
+
+
+
 ` 
 
 export const Container = styled.div`
@@ -58,6 +73,18 @@ export const Input = styled.input`
 		border:none;
 		background: #fff;
 		border-radius: 5px;
+	}
+
+
+	@media only screen and (min-width: 550px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 992px) {
+	
+		width: 100%;
 	}
 
 `

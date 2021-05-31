@@ -13,6 +13,7 @@ export const Container = styled.div`
 `
 
 export const Input = styled.input`
+
 	font-size: min(10vw, 25px);
 	padding: 5px;
 	border-radius: 5px;
@@ -20,5 +21,24 @@ export const Input = styled.input`
 	&:focus{
 		outline: none;
 	}
+
+	
+	@media only screen and (min-width: 768px) {
+	
+
+	
+	}
+
+	@media only screen and (min-width: 992px) {	
+		
+		width: 70%;
+		min-width: 500px;
+				
+	}
+
+
+
+
+
 
 `

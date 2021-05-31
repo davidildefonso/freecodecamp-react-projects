@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { saveItemsToLocalStorage, getItemsFromLocalStorage, insertItemAtPosition} from '../../Utils/Functions' 
-import { Container, Title,  IconWrap, ItemsWrap, ItemsUl, ItemsLi, BagWrap} from './Elements'
+import { Container, Title,  IconWrap, ItemsWrap, ItemsUl, ItemsLi, BagWrap, ButtonWrap} from './Elements'
 import { BsBag } from 'react-icons/bs'
+import Button from '../Button'
 
 
 const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
@@ -44,26 +45,32 @@ const History = ({updateHistoryList, showHistory, setUpdateHistoryList}) => {
 		setUpdateHistoryList({state: false, action: null, id: null, body: null})
 	}  
 
+	const emptyBag = () => console.log("empty bag items")
 
 
 	return (
 		<Container showHistory = {showHistory} >
 			<BagWrap>
-			<Title>BAG</Title>
-			<IconWrap><BsBag></BsBag></IconWrap>
-			<ItemsWrap>
-				<ItemsUl>
-					{historyItems.map(item => 				
-						<ItemsLi 
-							key={item.id}>
-							{item.text}
-							
-						</ItemsLi>							
-					)}
-				</ItemsUl>
-				
-			</ItemsWrap>
+				<Title>BAG</Title>
+				<IconWrap><BsBag></BsBag></IconWrap>
+				<ItemsWrap>
+					<ItemsUl>
+						{historyItems.map(item => 				
+							<ItemsLi 
+								key={item.id}>
+								{item.text}
+								
+							</ItemsLi>							
+						)}
+					</ItemsUl>
+					
+				</ItemsWrap>
+				<ButtonWrap>
+					<Button text="Empty bag" type="Modal" handleClick={emptyBag}></Button>
+				</ButtonWrap>
+			
 			</BagWrap>
+
 		</Container> 
 	)
 } 

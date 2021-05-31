@@ -10,9 +10,9 @@ export const Container = styled.div`
 						: "flex"
 	};
 	flex-direction: column;
-	justify-content: center;
+	
 	align-items: center;
-	//position: relative;
+	position: relative;
 
 	@media only screen and (min-width: 768px) {
 		width: 100%;		
@@ -28,7 +28,7 @@ export const Container = styled.div`
 	@media only screen and (min-width: 992px) {
 		width: 70%;
 		display: flex;
-		background: green;
+		
 		padding: 40px 0;
 	}
 
@@ -63,5 +63,17 @@ export const Button = styled.button`
 	}
 
 	transition: all ease-in-out 0.2s;
+
+
+	@media only screen and (min-width: 768px) {
+
+	
+	}
+
+	@media only screen and (min-width: 992px) {
+		font-size: 25px;
+	}
+
+
 
 `
