@@ -7,6 +7,22 @@ export const Container = styled.div`
 	padding-top: 40px;
 
 
+
+		
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		
+	
+	
+	}
+
+
+
 	
 	@media only screen and (min-width: 768px) {	
 		width: 100%;	
@@ -34,8 +50,34 @@ export const BagWrap = styled.div`
 						: "none"
 	};
 
-
+		width: 95%;
 	flex-direction: column;
+	background: rgba(0,0,0,0.1);
+		height: fit-content;
+	padding-top: 20px;
+
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		display: ${
+			({  showHistory	}) =>
+					showHistory
+						? "flex"
+						: "none" 
+		};
+		width: 85%;
+		height: fit-content;
+		background: rgba(0,0,0,0.1);
+		padding-top: 20px;
+		max-width: 500px;
+	
+	
+	}
+
 	
 	@media only screen and (min-width: 768px) {	
 		display: ${
@@ -65,9 +107,25 @@ export const BagWrap = styled.div`
 
 export const Title = styled.h3`
 
-	font-size: min(35px, 15vw);
+	font-size: min(30px, 15vw);
 	margin-bottom: 20px;
+		text-align: center;
 
+
+
+		
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		font-size: 35px;
+		text-align: center;
+	
+	
+	}
 
 		
 	@media only screen and (min-width: 768px) {	
@@ -98,6 +156,25 @@ export const IconWrap = styled.div`
 
 	font-weight: 100;	
 	position: absolute;
+	font-size: 40px;	
+	right: 30%;
+	top: 15px;
+
+			
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		font-size: 45px;	
+		right: 30%;
+		top: 10px;
+	
+	}
+
+
 	
 
 	@media only screen and (min-width: 768px) {	
@@ -124,20 +201,52 @@ export const IconWrap = styled.div`
 
 export const ItemsWrap = styled.div`
 	padding-left: 20px;
+	word-wrap: break-word;
+	padding-left: 50px;
+		padding-right: 50px;
+
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		padding-left: 100px;
+		padding-right: 100px;
+	}
+
+
 
 	@media only screen and (min-width: 768px) {	
 		padding-left: 100px;
+		padding-right: 100px;
 	}
 	
 
 	@media only screen and (min-width: 992px) {
 		padding-left: 20px;
+		padding-right: 20px;
 	}
 
 
 `
 
 export const  ItemsLi = styled.li`
+
+
+	@media only screen and (min-width: 340px) {
+		font-size: min(25vw, 20px);
+		margin-bottom: 15px;	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		font-size: min(25vw, 20px);
+		margin-bottom: 15px;	
+	}
+
 
 
 	@media only screen and (min-width: 768px) {	
@@ -182,7 +291,7 @@ export const ButtonWrap = styled.div`
 	
 
 	@media only screen and (min-width: 992px) {
-		justify-content: flex-end;
+		
 	}
 
 

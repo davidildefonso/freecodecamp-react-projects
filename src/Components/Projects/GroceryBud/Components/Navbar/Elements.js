@@ -2,7 +2,22 @@ import styled from "styled-components";
 
 export const Container = styled.div`
 	display: block;
-	font-size: min(10vw, 30px);
+	font-size: min(10vw, 25px);
+
+
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		
+		font-size:  25px;
+	
+	}
+
+
 
 	@media only screen and (min-width: 768px) {
 	

@@ -157,7 +157,7 @@ export const Text = styled.span`
 	font-size: ${
 			({  type	}) =>
 					type === "Modal"
-					 && "25px" 
+					 && "20px" 
 	};
 	
 
@@ -168,6 +168,22 @@ export const Text = styled.span`
 	};
 
 
+			
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		
+		font-size: ${
+			({  type	}) =>
+					type === "Modal"
+					 && "20px" 
+		};
+	
+	}
 
 	@media only screen and (min-width: 768px) {
 		display: block;	 

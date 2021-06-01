@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-	width: 100vw;	
+	/* width: 100vw;	 */
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -9,6 +9,22 @@ export const Container = styled.div`
 	padding:  0;
 	margin: 0;
 	overflow: hidden;
+	padding-top:30px;
+
+	@media only screen and (min-width: 420px) {
+	
+	
+	
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		
+		padding-top:30px;
+	
+	}
+
+
 	@media only screen and (min-width: 768px) {
 	
 		
@@ -28,8 +44,22 @@ export const Title = styled.h1`
 
 	display: inline;
 	vertical-align: middle;
-
+	font-size: min(15vw,35px);
 	margin: 0;
+
+	@media only screen and (min-width: 420px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		
+		font-size: 40px;
+	
+	}
+
+
 	@media only screen and (min-width: 768px) {
 	
 		

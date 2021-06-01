@@ -3,10 +3,10 @@ import styled from "styled-components";
 export const SingleItem = styled.div`
 	margin-bottom: 20px;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	justify-content: space-around;
 	font-size: min(10vw, 20px);
-	width: 80%;
+	width: 95%;
 	background: rgba(0,0,0,0.1);
 	border-radius: 5px;
 	padding: 20px 0px 20px 20px;
@@ -17,9 +17,11 @@ export const SingleItem = styled.div`
 		cursor: pointer;
 	}
 
-	@media only screen and (min-width: 550px) {
-			flex-direction: row;
+	@media only screen and (min-width: 420px) {
+
 		
+		width: 80%;
+		max-width: 600px;
 	
 	}
 
@@ -45,9 +47,25 @@ export const ItemText = styled.div`
 	width: 60%; 
 	max-width: 60%;
 	word-wrap: break-word;
+	display: flex;
+	align-items: center;
+	
+
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		
+		font-size:  22px;
+	
+	}
 
 
-	@media only screen and (min-width: 550px) {
+
+	@media only screen and (min-width: 768px) {
 	
 		font-size: 22px;
 	
@@ -74,13 +92,27 @@ export const Container = styled.div`
 export const Input = styled.input`
 
 	padding: 5px;
-	
+		font-size:  20px;
+		width: 100%;
 
 	&:focus{
 		outline: none;
 		border:none;
 		background: #fff;
 		border-radius: 5px;
+	}
+
+
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		
+		font-size:  20px;
+		width: 100%;
 	}
 
 
@@ -101,8 +133,8 @@ export const ButtonsContainer = styled.div`
 
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 	
-	margin-top: 20px;
 	justify-content: center;
 
 	@media only screen and (min-width: 550px) {

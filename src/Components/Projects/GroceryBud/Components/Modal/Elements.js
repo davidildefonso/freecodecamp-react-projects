@@ -13,8 +13,20 @@ export const Container = styled.div`
 	justify-content: center;
 	align-items: center;
 
+		
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
 
-	@media only screen and (min-width: 550px) {
+	@media only screen and (min-width: 600px) {
+		
+	
+	
+	}
+
+	@media only screen and (min-width: 768px) {
 	
 		
 	
@@ -51,12 +63,28 @@ export const Span = styled.span`
 export const Form = styled.div`
 
 	background: #fff;
-	width: 70%;
+	width: 90%;
 	border-radius: 10px;
 	padding: 30px;
+
+
+		
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		
+		width: 50%;
+		max-width: 400px;	
+	
+	}
+
 	
 	
-	@media only screen and (min-width: 550px) {
+	@media only screen and (min-width: 768px) {
 	
 		width: 60%;
 		max-width: 400px;	
@@ -88,7 +116,22 @@ export const FormP = styled.p`
 	margin-bottom: 20px;
 	font-size: 20px;
 
-	@media only screen and (min-width: 550px) {
+
+	
+	@media only screen and (min-width: 340px) {
+	
+		
+	
+	}
+
+	@media only screen and (min-width: 600px) {
+		
+
+	
+	}
+
+
+	@media only screen and (min-width: 768px) {
 	
 		font-size: 23px;
 	
