@@ -18,7 +18,7 @@ export const SingleItem = styled.div`
 	}
 
 	@media only screen and (min-width: 420px) {
-
+		
 		
 		width: 80%;
 		max-width: 600px;

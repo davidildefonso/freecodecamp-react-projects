@@ -9,7 +9,7 @@ const UndoIcon = ({showUndo, restoreLastItemFromHistory, notificationTop}) => {
 	const [top, setTop] = useState(getScrollPos()  + 250)
 
 	useEffect(() => {
-		setTop(getScrollPos() + 250 )
+		setTop(getScrollPos() + 150 )
 		return () => {
 			
 		}

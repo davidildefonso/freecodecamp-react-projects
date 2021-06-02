@@ -157,7 +157,7 @@ export const IconWrap = styled.div`
 	font-weight: 100;	
 	position: absolute;
 	font-size: 40px;	
-	right: 30%;
+	right: 20%;
 	top: 15px;
 
 			
@@ -233,7 +233,7 @@ export const ItemsWrap = styled.div`
 `
 
 export const  ItemsLi = styled.li`
-
+	margin-bottom: 15px;	
 
 	@media only screen and (min-width: 340px) {
 		font-size: min(25vw, 20px);
