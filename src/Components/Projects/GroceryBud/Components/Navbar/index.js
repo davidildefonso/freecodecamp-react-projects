@@ -24,7 +24,7 @@ const Navbar = ({showHistory , setShowHistory}) => {
 			<History
 				show={showHistory}
 				onClick={displayHistorySection}
-			>History</History> 
+			>Bag</History> 
 		</Container>
 	)
 }

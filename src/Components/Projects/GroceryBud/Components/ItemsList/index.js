@@ -90,7 +90,7 @@ const ItemsList = ({items, setItems, editing, setEditing,
 			saveItemsToLocalStorage(items.filter(item => item !== itemClicked))		
 			setItems(getItemsFromLocalStorage()) 		
 			setUpdateHistoryList({state: true, action: "addItem", id: id ,body: itemClicked, index: index})	
-			updateNotification("Item purchased! Moved to history") 	
+			updateNotification("Item purchased! Moved to bag") 	
 		}
 	}
 

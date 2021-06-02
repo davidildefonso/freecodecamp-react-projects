@@ -79,10 +79,12 @@ describe("If no items added yet: ", () =>  {
 		const button = screen.getByText(/Add/);
 		userEvent.click(button)
 
-		const buttonList = component.container.querySelectorAll("button")
+		const buttonList = component.container.querySelectorAll("button") 
 
-		expect(handleSubmit).not.toHaveBeenCalledTimes(1)
-		expect(buttonList).toHaveLength(2)
+		expect(handleSubmit).not.toHaveBeenCalledTimes(1) 
+		expect(buttonList).toHaveLength(3)
+		expect(component.container).toHaveTextContent("Clear All")
+		expect(component.container).toHaveTextContent("Empty bag")
 
 	})
 	
@@ -195,7 +197,7 @@ describe("when list has only one item: ", () => {
 		const input = component.container.querySelector("input")	
 		userEvent.type(input, "1 package of toilet paper")
 			
-		const button = screen.getByText(/Add/);
+		const button = screen.getByText(/Add/)
 		userEvent.click(button)
 
 		const item = screen.getByText("1 package of toilet paper")
@@ -204,7 +206,8 @@ describe("when list has only one item: ", () => {
 
 		userEvent.click(item)
 	
-		expect(component.container).toHaveTextContent(/HISTORY.*1 package of toilet paper/) 
+		
+		expect(component.container).toHaveTextContent(/BAG.*1 package of toilet paper/) 
 		
 
 	})
@@ -817,7 +820,7 @@ describe("On multiple items on the list", () => {
 		expect(component.container.querySelectorAll("input")).toHaveLength(2) 
 	})
 
-	test("on editing mode any other item is not allowed to be sent to history", () => {
+	test("on editing mode any other item is not allowed to be sent to bag", () => {
 		const component = render(<App></App>)
 		userEvent.type(component.container.querySelector("input"), "1 kg of sugar")
 		userEvent.click(screen.getByText(/Add/))  
@@ -1062,7 +1065,7 @@ describe("for both single item or multiple items on the list", () => {
 
 
 
-	test("when item text is clicked it shows a notification with the text 'item purchased moved to history' for 5 seconds", () => {
+	test("when item text is clicked it shows a notification with the text 'item purchased moved to Bag' for 5 seconds", () => {
 		jest.useFakeTimers()
 		const component = render(
 				<App />
@@ -1077,14 +1080,14 @@ describe("for both single item or multiple items on the list", () => {
 		const item = screen.getByText("1 package of toilet paper") 
 		userEvent.click(item)
 
-		expect(component.container).toHaveTextContent("Item purchased! Moved to history")   
+		expect(component.container).toHaveTextContent("Item purchased! Moved to bag")   
 	
 	
 		act(() => {
 			jest.advanceTimersByTime(5000)
 		})
 
-		expect(component.container).not.toHaveTextContent("Item purchased! Moved to history") 
+		expect(component.container).not.toHaveTextContent("Item purchased! Moved to bag") 
 
 
 	})
@@ -1140,7 +1143,7 @@ describe("for both single item or multiple items on the list", () => {
 		
 	})
 
-	test("when item text is clicked(sent to history) it shows an Undo icon ", () => {
+	test("when item text is clicked(sent to bag) it shows an Undo icon ", () => {
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
 		userEvent.click(screen.getByText(/Add/)) 		
@@ -1176,16 +1179,16 @@ describe("for both single item or multiple items on the list", () => {
 		expect(component.container).not.toHaveTextContent("Undo")
 	})
 
-	test("when item is restored with Undo button it is removed from history", () => {	
+	test("when item is restored with Undo button it is removed from bag", () => {	
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
 		userEvent.click(screen.getByText(/Add/)) 		
 		userEvent.click(screen.getByText("bananas")) 
 		userEvent.click(screen.getByText("Undo")) 
-		userEvent.click(screen.getByText("History")) 	  
+		userEvent.click(screen.getByText("Bag")) 	  
 
 
-		expect(component.container).toHaveTextContent(/bananas.*HISTORY/) 
+		expect(component.container).toHaveTextContent(/bananas.*BAG/) 
 		 
 		resizeWindow(800,500)
  
@@ -1203,14 +1206,14 @@ describe("for both single item or multiple items on the list", () => {
 	// 	jest.useFakeTimers() 
 	// 	const component = render(<App></App>) 
 	// 	userEvent.type(component.container.querySelector("input"), "bananas")
-	// 	userEvent.click(screen.getByText(/Add/)) 		
+	// 	userEvent.click(screen.getByText(/Add/)) 		 
 	// 	userEvent.click(screen.getByText("bananas"))  
 	// 	expect(component.container).toHaveTextContent("History")
 	// 	expect(component.container).toHaveTextContent("List")
 	// })
    
 
-	test("if history link is clicked the history tab is showed ", () => {
+	test("if screen is tablet or mobile (less than 992px) BAG link is clicked the BAG tab is showed ", () => {
 		jest.useFakeTimers() 
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
@@ -1219,11 +1222,10 @@ describe("for both single item or multiple items on the list", () => {
 
 		resizeWindow(700,500) 
 
-		userEvent.click(screen.getByText("History"))
-		expect(component.container).toHaveTextContent(/HISTORY/)
-		expect(component.container).toHaveTextContent(/ID/) 
-		expect(component.container).toHaveTextContent(/ITEM/) 
-		// 		expect(component.container).toHaveTextContent(/STATUS/)
+		userEvent.click(screen.getByText("Bag"))
+		expect(component.container).toHaveTextContent(/BAG/)
+
+
 		const input = component.container.querySelector('input')	
 		expect(input.getAttribute("placeholder")).toBe("new item") 
 		
@@ -1238,7 +1240,7 @@ describe("for both single item or multiple items on the list", () => {
 
 	})
 
-	test("when user selects history tab it shows a list with all purchased items most recent at top ", () => {
+	test("when user selects BAG tab it shows a list with all purchased items most recent at top ", () => {
 		const component = render(<App></App>) 
 		userEvent.type(component.container.querySelector("input"), "bananas")
 		userEvent.click(screen.getByText(/Add/)) 	
@@ -1250,7 +1252,7 @@ describe("for both single item or multiple items on the list", () => {
 		userEvent.click(screen.getByText("honey"))
 		userEvent.click(screen.getByText("milk")) 
  
-		userEvent.click(screen.getByText("History"))
+		userEvent.click(screen.getByText("Bag"))
 
 		expect(component.container).toHaveTextContent(/milk.*honey.*bananas/)   
 	}) 
@@ -1306,20 +1308,18 @@ describe("on initial render and screen size ", () => {
 
 
 
-	test("is for a desktop, its screen width is more than or equal to 992px item list and history are shown on the screen", () => {
+	test("is for a desktop, its screen width is more than or equal to 992px item list and bag are shown on the screen", () => {
 		const component = render(<App></App>)	 
-		expect(component.container).toHaveTextContent(/HISTORY/)
-		expect(component.container).toHaveTextContent(/ID/)
-		expect(component.container).toHaveTextContent(/ITEM/)    
+		expect(component.container).toHaveTextContent(/BAG/)
+	
 		
 	})
  
 	test(" is for a tablet, its screen width is more than 768px and less than 992px  only items List is shown with descriptive buttons labels ", () => {
 		const component = render(<App></App>)	
 		resizeWindow(800, 500)		
-		expect(screen.getByText("HISTORY")).not.toBeVisible()    
-		expect(screen.getByText("ID")).not.toBeVisible()  
-		expect(screen.getByText("ITEM")).not.toBeVisible()   
+		expect(screen.getByText("BAG")).not.toBeVisible()     
+	  
 	
 	//	expect(component.container).not.toHaveTextContent("STATUS")
 
@@ -1329,9 +1329,8 @@ describe("on initial render and screen size ", () => {
 	test(" is for a mobile,  screen width  less than 768px  items List is shows icons only without text ", () => {
 		const component = render(<App></App>) 
 		resizeWindow(500, 500)
-		expect(screen.getByText("HISTORY")).not.toBeVisible()    
-		expect(screen.getByText("ID")).not.toBeVisible()  
-		expect(screen.getByText("ITEM")).not.toBeVisible() 
+		expect(screen.getByText("BAG")).not.toBeVisible()    
+	
 		expect(screen.getByText("Add")).not.toBeVisible()    
 		expect(component.container).not.toHaveTextContent(/Edit/) 
 		expect(component.container).not.toHaveTextContent(/Remove/)
